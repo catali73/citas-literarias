@@ -1,47 +1,141 @@
 [
   {
-    "id": "1",
-    "cita": "Escribir es la forma más radical de estar solo y, al mismo tiempo, la forma más radical de acompañar a otros.",
+    "id": "3151bd2a8d4f811489aaca30c3433673",
+    "cita": "Experimenté el estado previo, y ese estado previo solo quiere una que termine: sea como sea.",
     "autor": "Marta Jiménez Serrano",
     "obra": "Oxígeno",
-    "pagina": 23,
-    "categorias": ["Literatura", "Vida"],
-    "favorita": true
-  },
-  {
-    "id": "2",
-    "cita": "El cuerpo recuerda lo que la mente prefiere olvidar. Por eso duele tanto volver.",
-    "autor": "Marta Jiménez Serrano",
-    "obra": "Oxígeno",
-    "pagina": 47,
-    "categorias": ["Vida", "Psicología"],
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
     "favorita": false
   },
   {
-    "id": "3",
-    "cita": "Hay lugares en el mundo donde el tiempo no pasa sino que se acumula, como polvo sobre los muebles de una casa cerrada.",
+    "id": "3151bd2a8d4f8115a0bcfad746907ce8",
+    "cita": "Nada ha perdido más prestigio hoy que la lógica y todo lo que tiene que ver con lo que un día se consideró normalidad.",
     "autor": "Juan Tallón",
-    "obra": "Mil cosas que no te he dicho",
-    "pagina": 12,
-    "categorias": ["Literatura", "Vida"],
-    "favorita": true
-  },
-  {
-    "id": "4",
-    "cita": "Todo lo que amamos profundamente se convierte en una parte de nosotros mismos.",
-    "autor": "Juan Tallón",
-    "obra": "Mil cosas que no te he dicho",
-    "pagina": 88,
-    "categorias": ["Amor", "Vida"],
+    "obra": "Mil cosas",
+    "pagina": null,
+    "categorias": [
+      "Sociedad",
+      "Modernidad"
+    ],
     "favorita": false
   },
   {
-    "id": "5",
-    "cita": "La soledad no es la ausencia de gente, sino la ausencia de propósito.",
+    "id": "3151bd2a8d4f81369eadf714134ed09d",
+    "cita": "Para ser un nuevo tú tienes que traicionar al anterior.",
     "autor": "Marta Jiménez Serrano",
     "obra": "Oxígeno",
-    "pagina": 134,
-    "categorias": ["Psicología", "Vida"],
+    "pagina": 93,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": true
+  },
+  {
+    "id": "3151bd2a8d4f813ab5e6fcafdaf5134c",
+    "cita": "Bien, aquí estamos, señor Pilgrim, atrapados en el ámbar de este momento. No hay ningún porqué.",
+    "autor": "Kurt Vonnegut",
+    "obra": "Matadero Cinco",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Humor"
+    ],
+    "favorita": true
+  },
+  {
+    "id": "3151bd2a8d4f81479dcfeffb8747463a",
+    "cita": "Una redactora le dijo que el semáforo amarillo es la metáfora de nuestras vidas.",
+    "autor": "Juan Tallón",
+    "obra": "Mil cosas",
+    "pagina": 66,
+    "categorias": [
+      "Vida",
+      "Literatura"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3151bd2a8d4f814aa7eafc994bf3e551",
+    "cita": "En la muerte no estaba Dios, ni vi mi vida pasar ante mí como una película, ni una luz, ni cuatro angelitos. Pero no sé si alguna vez he estado más acompañada de mí misma.",
+    "autor": "Marta Jiménez Serrano",
+    "obra": "Oxígeno",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Muerte"
+    ],
+    "favorita": true
+  },
+  {
+    "id": "3151bd2a8d4f815fb527e8d350fb3e0e",
+    "cita": "Ojalá supiese vivir como si nada, pero vive como si todo.",
+    "autor": "Juan Tallón",
+    "obra": "Mil cosas",
+    "pagina": 16,
+    "categorias": [
+      "Vida",
+      "Psicología"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3151bd2a8d4f816fba55f7235cb40b25",
+    "cita": "Las cebras no sostienen el estado de alerta de manera constante en el cuerpo, como sí hemos empezado a hacer los seres humanos, con nefastos resultados.",
+    "autor": "Marta Jiménez Serrano",
+    "obra": "Oxígeno",
+    "pagina": null,
+    "categorias": [
+      "Psicología"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3151bd2a8d4f81a4afe9c3eed78efffc",
+    "cita": "Siempre ha pensado que uno de los puestos más frágiles de toda organización es el de segundo de a bordo.",
+    "autor": "Juan Tallón",
+    "obra": "Mil cosas",
+    "pagina": null,
+    "categorias": [
+      "Negocios"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3151bd2a8d4f81aeacf9d4626c9f5dff",
+    "cita": "Lo raro es vivir. Que estemos aquí sentados, que hablemos y se nos oiga, poner una frase detrás de otra sin mirar ningún libro, que no nos duela nada, que lo que bebemos entre por el camino que es y sepa cuándo tiene que torcer, que nos alimente el aire y a otros ya no, que según el antojo de las vísceras nos den ganas de hacer una cosa o la contraria y que de esas ganas dependa a lo mejor el destino, es mucho a la vez, tú, no se abarca, y lo más raro es que lo encontramos normal.",
+    "autor": "Carmen Martín Gaite",
+    "obra": "Lo raro es vivir",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": true
+  },
+  {
+    "id": "3151bd2a8d4f81c086b4fe8f0ad25ebf",
+    "cita": "Respira por él, existe desde él.",
+    "autor": "Juan Tallón",
+    "obra": "Mil cosas",
+    "pagina": 71,
+    "categorias": [
+      "Modernidad",
+      "Psicología"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3151bd2a8d4f81f28781d32d79660dd2",
+    "cita": "Sigo creyendo que las emergencias les suceden a los demás. Digo que lo sigo creyendo, pero sé que no es verdad.",
+    "autor": "Joan Didion",
+    "obra": "Noches azules",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Muerte"
+    ],
     "favorita": true
   }
 ]
