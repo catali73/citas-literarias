@@ -3,7 +3,7 @@
     "id": "3151bd2a8d4f811489aaca30c3433673",
     "cita": "Experimenté el estado previo, y ese estado previo solo quiere una que termine: sea como sea.",
     "autor": "Marta Jiménez Serrano",
-    "obra": "Oxigeno",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida"
@@ -26,7 +26,7 @@
     "id": "3151bd2a8d4f81369eadf714134ed09d",
     "cita": "Para ser un nuevo tú tienes que traicionar al anterior.",
     "autor": "Marta Jiménez Serrano",
-    "obra": "Oxigeno",
+    "obra": "",
     "pagina": 93,
     "categorias": [
       "Vida"
@@ -61,7 +61,7 @@
     "id": "3151bd2a8d4f814aa7eafc994bf3e551",
     "cita": "En la muerte no estaba Dios, ni vi mi vida pasar ante mí como una película, ni una luz, ni cuatro angelitos. Pero no sé si alguna vez he estado más acompañada de mí misma.",
     "autor": "Marta Jiménez Serrano",
-    "obra": "Oxigeno",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -85,7 +85,7 @@
     "id": "3151bd2a8d4f816fba55f7235cb40b25",
     "cita": "Las cebras no sostienen el estado de alerta de manera constante en el cuerpo, como sí hemos empezado a hacer los seres humanos, con nefastos resultados.",
     "autor": "Marta Jiménez Serrano",
-    "obra": "Oxigeno",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Psicología"
@@ -139,10 +139,30 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f810096a2f3cdc0a087e2",
+    "cita": "Seguramente, la foto del menor de los hermanos Panero en El desencanto, que tuvo clavada durante años en el corcho de su cuarto. Seguramente, la polaroid donde comparte cama con su mejor amiga tras una noche de risas y confidencias.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f8101a6bec845fece4211",
+    "cita": "Cuántos senderos, y a qué paso diferente los remontamos, en lo que parece un único viaje. Un día, estando sentados en un parque, me explicó que todos tenemos una determinada idea de nosotros mismos, tal vez apenas esbozada, confusa, pero al final nos vemos llevados a una determinada idea de nosotros mismos, y la verdad es que a menudo hacemos coincidir esa idea con un determinado personaje imaginario en el que nos reconocemos. Había llegado a la conclusión de que cada ser humano recuerda perfectamente una media de por lo menos ocho días de su vida.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81039356e5448133ff27",
     "cita": "Todos tenemos una vida pública y una vida privada. Pero, más allá de ambas, hay una vida secreta que nos llena de desconcierto.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 7,
     "categorias": [
       "Vida",
@@ -151,10 +171,45 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f810394e6ddf38c86861f",
+    "cita": "¿Qué nos define? ¿Por qué ambicionar algo hasta el final es mejor que desistir a tiempo?",
+    "autor": "",
+    "obra": "",
+    "pagina": 221,
+    "categorias": [
+      "Vida",
+      "Psicología"
+    ],
+    "favorita": true
+  },
+  {
+    "id": "3161bd2a8d4f8105a24bcdf886b57256",
+    "cita": "cuenta de que uno nunca cambia de verdad, que no hay forma de cambiar: como uno es de niño lo será durante toda la vida, no es para cambiar por lo que se puede empezar desde cero.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81089622fa352da534b8",
+    "cita": "yo le hablaba del bien y de lo bueno, acaso de Dios y del amor, de la responsabilidad utilitarista de reducir el sufrimiento, de evitar el dolor innecesario incluso en los animales, de que vivir reflexivamente es la única forma de vivir bien, pero ahora pienso que puede que él haya encontrado todo eso directamente en los ojos de Amanda, que esa noche estaban pintados de lila o de un rojo más oscuro. No era un mal lugar para encontrarse con esas cosas, por cierto, pero al menos para mí resultó inesperado.",
+    "autor": "",
+    "obra": "",
+    "pagina": 176,
+    "categorias": [
+      "Vida",
+      "Amor"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8108a5e6fd1f9a3432c9",
     "cita": "Caballero soy, y de la profesión que decís; y aunque en mi alma tienen su propio asiento las tristezas, las desgracias y las desventuras, no por eso se ha ausentado della la compasión que tengo de las ajenas desdichas.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -163,10 +218,47 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81099698e1ca909b8959",
+    "cita": "Las modas son la obsolescencia programada que los diseñadores dominan mejor. También pueden ser justo el veneno que los aniquile.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Modernidad",
+      "Sociedad"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f810a8886f79e059449cd",
+    "cita": "No conviene creerse del todo nada de uno mismo, aún menos en relación con lo que eres capaz o no de hacer.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Psicología",
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f810aa8cfd9147a5934a2",
+    "cita": "Hoy, 25 de mayo de 2018, el enfado se ha disipado. Se ha impuesto la vida con la rotundidad de un niño que está creciendo, y de pronto, sin que sepa reseñar mediante qué pasos, prefiero pensar que el cisma se originó en debilidades antagónicas del corazón. No hay malos. Existía un relato alternativo al nuestro que movilizó sus fuerzas. Con mezquindad de ambos bandos y, en el mío, con el estéril decadentismo de esos héroes de novela que prefieren morir aferrados al mundo que se va. No he perdonado en todos los casos, pero solo porque el conflicto no está ya tan vivo como para que hacerlo represente un aliciente.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Memoria",
+      "Tiempo"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f810bac8dd2b1a1529a9b",
     "cita": "Igual que los virus, algunas ficciones pueden convertirse en plagas o epidemias y pocas vacunas lograrán contrarrestarlas.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Literatura",
@@ -177,8 +269,8 @@
   {
     "id": "3161bd2a8d4f810e80fcea389ac35521",
     "cita": "Debo a la conjunción de un espejo y una enciclopedia el descubrimiento de Uqbar",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Literatura"
@@ -188,8 +280,8 @@
   {
     "id": "3161bd2a8d4f810f9f40c9d6119d024e",
     "cita": "Donde Cervantes tiene discípulos entusiastas es donde también los tiene Montaigne: en Francia, en Inglaterra. Diderot, Fielding, Sterne, Jane Austen, George Eliot, Dickens, Balzac, Flaubert vindican su linaje cervantino.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Literatura"
@@ -197,9 +289,21 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f810fbf5be71a453aa51c",
+    "cita": "¿A mí y a mis hermanos? Poca cosa. Lo que a todo el mundo: que la vida empieza a decantarse muy pronto. A nosotros nos zarandeó. A otros los arrolla.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Infancia"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8110b4d4c338a6e85141",
     "cita": "él torpe, enconado, silencioso, rebelde, escribiendo diarios de furiosa desdicha en cuadernos de apuntes y odiando la ciudad donde vivía y la única clase de vida que había conocido y que legítimamente tenía derecho a esperar en nombre de otras vidas que le fueron anunciadas por las canciones, los libros y las películas",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -212,7 +316,7 @@
   {
     "id": "3161bd2a8d4f8111b11fd0437470e8a2",
     "cita": "la sabiduría y también toda la inocencia, la certidumbre y el miedo, la cautela y la temeridad.",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -224,8 +328,8 @@
   {
     "id": "3161bd2a8d4f8112b684f5b05dc1f3be",
     "cita": "Joyce comprime el tiempo en Ulises, como Cervantes lo expande en Don Quijote. Pero los dos hacen lo que Samuel Beckett atribuye a Joyce, su maestro: Trying to bring in as much as he could, llenar el libro con todo lo que pudiera.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Literatura",
@@ -236,8 +340,8 @@
   {
     "id": "3161bd2a8d4f81139ca8e9e0e60fa4d3",
     "cita": "Está la pieza más misteriosa porque en el manuscrito no consta el nombre de su autor, la Novela del curioso impertinente, y junto a ella otra más que ya no da tiempo a leer, la de Rinconete y Cortadillo, que el cura se lleva como un tesoro secreto y anónimo consigo.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 180,
     "categorias": [
       "Literatura"
@@ -247,8 +351,8 @@
   {
     "id": "3161bd2a8d4f81139cc0f2ef898e560d",
     "cita": "en la siempre algo indecorosa realidad, en lo impuro y mezclado de los sentimientos humanos: pero, con todo, comía la sobrina, brindaba el ama, y se regocijaba Sancho Panza; que esto del heredar algo borra o templa en el heredero la memoria de la pena que es razón que deje el muerto.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -258,10 +362,19 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81178e2dd107ae9b936e",
+    "cita": "última página Jasper Gwyn la leyó todavía más despacio, y a decir verdad le pareció impecable. Cogió las hojas, al final, las colocó bien, las dobló por la mitad y las dejó sobre la cama. Las máquinas seguían lanzando mensajes inescrutables, con una torpeza vagamente militar.–Ven aquí, dijo Tom. Jasper Gwyn se inclinó sobre él. Ahora estaba bien cerca. Tom sacó un brazo de debajo de las mantas y apoyó una mano sobre la cabeza de su amigo. En la nuca. Luego lo estrechó contra él–apoyó la cabeza de su amigo sobre el hombro y la mantenía allí. Movía levemente los dedos, como para estar seguro de algo.–Lo sabía, dijo. Apretó un poco los dedos sobre la nuca de su amigo.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f811892cdfe4b68d66fda",
     "cita": "ni siquiera el cautiverio o encantamiento en la jaula tirada por el carro de bueyes. El don Quijote de 1605 no habría dicho lo que declara amargamente el de diez años después, tras el desenlace malogrado de la aventura del barco encantado: Yo no puedo más. Es la confesión de un derrumbe, una íntima capitulación, un reconocimiento de la propia impotencia. El episodio acaba en fraude y ridículo muy poco después de empezar. Nunca hasta ahora había sido tan ínfimo el punto de",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -273,8 +386,8 @@
   {
     "id": "3161bd2a8d4f811a807af7655c0ba817",
     "cita": "Tras el enorme éxito de La máquina del tiempo, en 1895, el joven H.G. Wells publicó a una velocidad vertiginosa cinco «novelas científicas» —como entonces se llamaba la ciencia ficción— en tres años, que culminaron, en 1898, con la que quizá sea su obra más imperecedera, La guerra de los mundos, en la que una antigua civilización de seres parecidos a pulpos, procedentes de Marte, invade la Tierra con extrema violencia. La guerra de los mundos es la gran historia por excelencia de la ciencia ficción.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Literatura"
@@ -282,10 +395,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f811a90cefcfbdc7d9b61",
+    "cita": "El dinero es como el estiércol, sirve de muy poco si no se esparce.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Negocios",
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f811abb7bdc1358905804",
     "cita": "y no pudo su malenconía tanto en él que no dejara de reírse.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 35,
     "categorias": [
       "Humor",
@@ -296,8 +421,8 @@
   {
     "id": "3161bd2a8d4f811b9e5beb0265709299",
     "cita": "Mi tío tenía un sentido del humor desopilante, guardaba en la memoria cientos de historias y, si le sonreía la fortuna o no la tenía adversa, era una de las personas más alegres que he conocido. Podía serlo, además, sin mala conciencia: carecía de las limitaciones de un trabajo ordinario, y los proyectos literarios en los que decía andar embarcado nunca lo acuciaban.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 84,
     "categorias": [
       "Vida",
@@ -309,8 +434,8 @@
   {
     "id": "3161bd2a8d4f811da745cac9ea64c2ff",
     "cita": "No, fue Kafka, que, en alemán, contaba las cosas de la misma manera que mi abuela. Cuando yo leí a los diecisiete años La metamorfosis, descubrí que iba a ser escritor. Al ver que Gregorio Samsa podía",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Literatura",
@@ -321,8 +446,8 @@
   {
     "id": "3161bd2a8d4f811e8d7fefb47d4433d2",
     "cita": "La única manera de aprender a escribir una novela es ponerse a escribirla. La novela misma es el cuaderno de ejercicios y el testimonio del aprendizaje.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 14,
     "categorias": [
       "Literatura"
@@ -332,8 +457,8 @@
   {
     "id": "3161bd2a8d4f811f8922d50f4afef7fe",
     "cita": "final todos somos o perversos o neuróticos.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Psicología"
@@ -355,8 +480,8 @@
   {
     "id": "3161bd2a8d4f8120b87bc91c1373fd97",
     "cita": "Don Quijote y Sancho se encuentran con dos lectores del libro de Avellaneda, los cuales acreditan que sus dobles tramposos son torpes caricaturas, indignas del caballero y el escudero a los que han conocido.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 27,
     "categorias": [
       "Literatura"
@@ -364,10 +489,23 @@
     "favorita": false
   },
   {
-    "id": "3161bd2a8d4f8127b2d0f0d6f4a0afe6",
-    "cita": "la perfecta comprobación de que toda vida es tan ficticia como real y de que el propio punto de vista depende siempre de los puntos de vista de los demás.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "id": "3161bd2a8d4f81258e6ae4221acadce7",
+    "cita": "Hubo más asuntos feos que prefiero callar. Las nuevas vidas se construyen sobre el cuestionamiento de las vidas anteriores y, puestos a ello, no hay límites. Si no nos movemos, otros nos harán cambiar. ¿Actuó mi abuelo con autonomía o fue débil y, por tanto, maleable? Afirmar cualquiera de las dos cosas sería impropio. Me inclino por lo segundo, pero se trata de una elucubración. No acuso, nos describo, y por eso es justo señalar que en esas misivas",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Memoria",
+      "Psicología"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81269b21d637e62a48fa",
+    "cita": "Calvert abordó el problema desde una perspectiva casi platónica. Basándose en exhaustivas investigaciones sobre comunicación y legibilidad, redujo el aspecto de los dibujos a la esencia absoluta, como si fueran letras, y les dio el máximo sentido con el mínimo coste.",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida"
@@ -375,10 +513,33 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8127b2d0f0d6f4a0afe6",
+    "cita": "la perfecta comprobación de que toda vida es tan ficticia como real y de que el propio punto de vista depende siempre de los puntos de vista de los demás.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81299c5ac9c00085589b",
+    "cita": "Las prisas se van y la mierda se queda!",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Modernidad"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f812a977cc0bf6bd8e17d",
     "cita": "Pues la libertad, la igualdad y la fraternidad, junto con los valores de la razón y la Ilustración (aquellos sobre los que se ha construido la civilización moderna desde los días de la Revolución norteamericana), son más necesarios que nunca cuando el irracionalismo, la religión fundamentalista, el oscurantismo y la barbarie están ganando terreno otra vez».",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Libertad",
@@ -390,8 +551,8 @@
   {
     "id": "3161bd2a8d4f812b9718d7d5cb3effed",
     "cita": "el truco está en saber cuánto del mundo hay que dejar entrar en tu vida sin acabar abrumado.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -400,10 +561,23 @@
     "favorita": true
   },
   {
+    "id": "3161bd2a8d4f812b9a0ad8f4cef5f7a5",
+    "cita": "vida que me permitiera continuar a su lado. La contrapartida es que el peso de la responsabilidad me ha fatigado muchas veces. Me hizo antipático. Encontré refugio en el silencio, y pasé a combatir en exceso actitudes y comentarios suyos tras los que vislumbraba un deje de afectación, fantasiosos o simplemente desapegados de nuestra realidad. Si adornaba uno de sus relatos de grandezas, si aparecían clubs de campo y chóferes y palacios sevillanos, aunque supiera que les otorgaba el valor estrictamente denotativo que la narración demandaba, no podía evitar irritarme.",
+    "autor": "",
+    "obra": "",
+    "pagina": 221,
+    "categorias": [
+      "Vida",
+      "Silencio",
+      "Psicología"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f812b9fecc2bf1efb44bb",
     "cita": "recuerdo haber regalado a mi madre rosas rojas hurtadas del jardín; recuerdo mi júbilo al encontrar una moneda de cincuenta pesetas en el suelo; recuerdo mi sensación de que, salvo por detalles como este, los días parecían iguales; y recuerdo sentirme solo, no desesperadamente solo, no tristemente solo, simplemente solo.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 69,
     "categorias": [
       "Infancia",
@@ -415,8 +589,8 @@
   {
     "id": "3161bd2a8d4f812c874edea1f230f235",
     "cita": "por su influencia me aficioné al flamenco y leí libros como El maestro y Margarita o Las ciudades invisibles.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 84,
     "categorias": [
       "Literatura"
@@ -424,10 +598,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f812d940cd7adc89ae7c4",
+    "cita": "No soy de los que necesitan distanciarse de los puntos de vista que no coinciden con los suyos. Si acaso, necesito entenderlos mejor para así reforzar mis opi-",
+    "autor": "",
+    "obra": "",
+    "pagina": 97,
+    "categorias": [
+      "Psicología",
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f812ebc0adb865dc8c89d",
     "cita": "Diferente sexo. Misma persona",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida"
@@ -435,10 +621,63 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f812fbc5ec8074aebc87b",
+    "cita": "—En ese caso, Irene tiene más sustancia.",
+    "autor": "",
+    "obra": "",
+    "pagina": 31,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f8130bb31f797158ad015",
+    "cita": "–A quien afina pianos no le gusta desafinarlos, explicó Jasper Gwyn.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81349484c226aab5d821",
+    "cita": "a veces estaba con ellos, a veces no—, y él se las llevaba a casa para escucharlas con calma y se fijaba en los sonidos y las texturas, esperando a sentir algo; a que las palabras llegaran.",
+    "autor": "",
+    "obra": "",
+    "pagina": 34,
+    "categorias": [
+      "Vida",
+      "Silencio"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f8134976bfccbdf3edda8",
+    "cita": "Ya ni siquiera la veía gorda, o bella, y todo cuanto hubiera pensado o advertido sobre ella, antes de entrar en aquel estudio, se había disuelto por completo, o nunca había existido.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f8138ae77fde42adc3a6b",
+    "cita": "No soy de los que necesitan distanciarse de los puntos de vista que no coinciden con los suyos. Si acaso, necesito entenderlos mejor para así reforzar mis opi-",
+    "autor": "",
+    "obra": "",
+    "pagina": 97,
+    "categorias": [
+      "Vida",
+      "Psicología"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8138b01edd45ead24dc9",
     "cita": "Es curioso que, con la cantidad de cosas que se han dicho y escrito a lo largo de los siglos acerca de las flores, hiciera falta alguien tan especial como Hungry Paul para darse cuenta de lo calladas que son.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Silencio",
@@ -449,9 +688,20 @@
   {
     "id": "3161bd2a8d4f813b8db9ed36051e6066",
     "cita": "Aunque imposible de responder, es la pregunta que tenemos que seguir haciendo, siquiera para comprender que la vida nunca es binaria, ni reductible a palabrería o a código, sino un misterio que, a lo sumo, intuimos.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 7,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f813c9666cc38950068c2",
+    "cita": "por un instante sintió que le subía el límpido descaro que tenía de joven, cuando sabía que no era ni peor ni mejor que tanta gente, sino únicamente distinta, de una manera preciosa e inevitable.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
     "categorias": [
       "Vida"
     ],
@@ -460,8 +710,8 @@
   {
     "id": "3161bd2a8d4f813cb007da861e75a4fb",
     "cita": "La familia es el territorio de la memoria. Memoria de sí misma y del mundo que la contiene. Memoria en construcción y no siempre fiable, donde el amor y el conflicto confluyen.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 9,
     "categorias": [
       "Familia",
@@ -472,8 +722,8 @@
   {
     "id": "3161bd2a8d4f813dac1ffb629bdb66c7",
     "cita": "¿De qué trata el poema? ¿De Kublai Kan y su rico palacio de Xanadú? No: su tema, que es el de este libro, es el poder de la imaginación.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Literatura"
@@ -483,8 +733,8 @@
   {
     "id": "3161bd2a8d4f813db35dda3d8e648ac4",
     "cita": "mismo dejó su impronta la sobreprotección, a veces de cuerpo presente y a veces por control remoto, con que mi madre compensaba las muchas horas que consumía a mi albedrío mientras ella trabajaba. Pero qué más da,",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 72,
     "categorias": [
       "Infancia",
@@ -495,7 +745,7 @@
   {
     "id": "3161bd2a8d4f813f9234d5f301b2a0c9",
     "cita": "mirar que a vivir",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -517,8 +767,8 @@
   {
     "id": "3161bd2a8d4f814183c5e22da4e1ea6a",
     "cita": "Dice Mann: ¿No es la muerte de don Quijote en la convicción de que Dulcinea no es en absoluto una princesa adorable sino una rústica y mugrienta moza, y que toda su fe, su empeño y su sufrimiento fue necedad, una muerte desesperada?",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Muerte",
@@ -528,10 +778,55 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8142900cd0fa4537af52",
+    "cita": "Sentí un poco de vergüenza por él, de que pensara que yo no tenía estilo porque la ropa que llevaba era yo, y, si había salido de tiendas de segunda mano y no eran prendas corrientes, ni se me pasó por la cabeza que eso significara nada, salvo para alguien bastante superficial. Y un día dejó caer:",
+    "autor": "",
+    "obra": "",
+    "pagina": 31,
+    "categorias": [
+      "Vida",
+      "Sociedad"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f8142aee8c3745fea423b",
+    "cita": "–No me queda mucho tiempo y necesito regresar a casa, dijo. Jasper Gwyn levantó la mirada porque no quería mirar a los ojos de Tom. Estaban todas aquellas máquinas, y el color de las paredes, y el sello del hospital por todas partes. Pensó que todo era absurdo.–Me saldrá de pena, dijo. Tom Bruce Shepperd aflojó el apretón y cerró los ojos.–Qué más da, no vayas a pensar que voy a pagártelo, dijo.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f8142bc60cd021682175d",
+    "cita": "ing somehow, attending or, Vivien, Rose and I, teaching classes, on Shakespeare, Jane Austen, Mabel Fisk and the rest. Francis liked to quote T. S. Eliot's 'Teach us to care and not to care'. Sonorous lines, but empty, for no one ever needed that lesson. We can't care. We are trapped between the dead and the unborn, the past ghosts and the future ghosts, and they matter less.",
+    "autor": "Ian McEwan",
+    "obra": "What We Can Know",
+    "pagina": null,
+    "categorias": [
+      "Literatura",
+      "Vida",
+      "Tiempo"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81439979d2fea28087d6",
+    "cita": "there are occasions when prose must eclipse poetry",
+    "autor": "Ian McEwan",
+    "obra": "What We Can Know",
+    "pagina": null,
+    "categorias": [
+      "Literatura"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8143a840ca1fc927f20b",
     "cita": "Quienes ven el pasado con mayor claridad siempre son quienes nunca lo vieron.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 8,
     "categorias": [
       "Memoria",
@@ -552,10 +847,32 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8144b8ade078c21b1808",
+    "cita": "Aquel viaje de más de veinticuatro horas de un hotel a otro inspiró la creación de «Departure», una explosiva y acelerada pieza guitarrera, la primera de las canciones recién compuestas que pasaron a formar parte del repertorio. La primera frase de la canción —«Just arrived Singapore, San Sebastián, Spain, twenty-six-hour trip»— era una descripción literal de ese recien-",
+    "autor": "",
+    "obra": "",
+    "pagina": 383,
+    "categorias": [
+      "Viajes"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81468ffde124705e544f",
+    "cita": "Yo dije: —Pero el estilo es la sustancia.",
+    "autor": "",
+    "obra": "",
+    "pagina": 31,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f814781bfdb1d47170f16",
     "cita": "Vocabulario oficial del Scrabble",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Humor"
@@ -563,10 +880,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8147a6a4c398ff5079a5",
+    "cita": "Estoy convencido de que los argumentos que se oponen a mis opiniones deben existir y deben abordarse",
+    "autor": "",
+    "obra": "",
+    "pagina": 97,
+    "categorias": [
+      "Psicología",
+      "Sociedad"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8147b4c9fbeb0ee8e207",
     "cita": "You put together two things that have not been put together before. And the world is changed.",
-    "autor": "Julian Barnes",
-    "obra": "Levels of life",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Vida",
@@ -575,10 +904,46 @@
     "favorita": true
   },
   {
+    "id": "3161bd2a8d4f8148bb64fb228c7f6bca",
+    "cita": "Somos cuerpo en acto. Somos siendo",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Cuerpo",
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f814aac6bc72673a0ef56",
+    "cita": "Pensaba en la misteriosa permanencia del amor, en la corriente nunca quieta de la vida.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Amor",
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f814b8c57c4183c0a5590",
+    "cita": "Pero sobre todo he olvidado algo fundamental en lo que solo ahora reparo. Uno se sentía protegido a su lado. Yendo con él sabías que, si surgía un peligro, sería el primero en batirse por ti sin preocuparse de arriesgar su vida.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f814bbf9af4114d073938",
     "cita": "Escribiría en los ratos que le dejaran libre las obligaciones y en los días de largas esperas administrativas en los que no sucedía nada. Aprovecharía para escribir pliegos de papel de sus contadurías y sus informes oficiales, tal vez rodeado de gente ruidosa, de relinchos de caballerías, de martillazos de toneleros o herreros.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 26,
     "categorias": [
       "Literatura",
@@ -587,10 +952,31 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f814c8272cb1c2e39fef6",
+    "cita": "Cuántos senderos, y a qué paso diferente los remontamos, en lo que parece un único viaje.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f814c9355ddbb7001c30a",
+    "cita": "El tiempo del oficio es un tiempo desafiantemente lento que hay que ir royendo con paciencia –nunca con calma–. Es un tiempo de turbulencias, de ensayo-error. De lucha.",
+    "autor": "",
+    "obra": "",
+    "pagina": 1,
+    "categorias": [
+      "Vida",
+      "Tiempo"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f814c9f30e867aea05a47",
     "cita": "Su mensaje era inequívoco: solo hay un modo de evitar una vida de mentiras —dijo de Sájarov su amigo Nathan Sharansky, disidente, como él—. Para ser verdaderamente libre uno tiene que decir lo que piensa.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 5,
     "categorias": [
       "Libertad",
@@ -601,8 +987,8 @@
   {
     "id": "3161bd2a8d4f814d811cf0ed8e9960b8",
     "cita": "En algún momento comprendí que escribía desde el frente de una guerra de la que la mayoría de la gente no tiene la menor idea. Durante mucho tiempo, no entendí que era posible estar al mismo tiempo en el bando que tiene el poder, en el que ha desencadenado la destrucción, tan inmensa como indescriptible, y en el bando que lo pierde todo.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 8,
     "categorias": [
       "Vida",
@@ -611,10 +997,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f814dabc4c97b9ed67013",
+    "cita": "Te puedes hacer el idiota, pero la ética, ya te digo, es una condena. Una maldición que ahora me persigue.",
+    "autor": "",
+    "obra": "",
+    "pagina": 232,
+    "categorias": [
+      "Vida",
+      "Dolor"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f814e8cdace390e0367d0",
     "cita": "el objetivo no es hacer buena filosofía, que no existe, sino obtener un sueldo del Estado",
-    "autor": "Desconocido",
-    "obra": "LO ÚNICO QUE IMPORTA",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Sociedad",
@@ -625,8 +1023,8 @@
   {
     "id": "3161bd2a8d4f814f8e22efa7003fc133",
     "cita": "Nietzsche dijo de sí mismo «soy dinamita» y, consciente de que sus libros apenas se vendían, pronosticó su fama póstuma. No se equivocó: igual que a miles de lectores, Así habló Zaratustra, su «mayor regalo para la humanidad», me cambió la vida.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -637,7 +1035,7 @@
   {
     "id": "3161bd2a8d4f814fa6a6c786049dd56c",
     "cita": "sueños degradados por la palabrería y la mentira. La miro desnuda y reclamándome en la media luz de un anochecer o de una madrugada insomne y no puedo soportar la evidencia de que otros hombres han estado con ella y les ha sonreído al tenderles sus brazos separando los muslos igual que me recibe a mí. Hasta ahora nunca supe que el amor quiere prolongar su dominio hacia el tiempo en que aún no existía y que se pueden tener celos feroces del pasado.",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -650,8 +1048,8 @@
   {
     "id": "3161bd2a8d4f81519713efbefd6f5d8c",
     "cita": "para Freud, en los humanos la sexualidad no es un mero instinto, sino una pulsión, y, mientras en los animales su único objetivo es la reproducción, en nosotros se trata de una fuerza general e irresistible.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Psicología"
@@ -661,8 +1059,8 @@
   {
     "id": "3161bd2a8d4f8151a53fdaeb03fcb9a7",
     "cita": "You marry to continue the conversation.",
-    "autor": "Julian Barnes",
-    "obra": "Levels of life",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Amor",
@@ -671,10 +1069,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f815491f5ecd5e47e2e70",
+    "cita": "Más tarde, conforme fui creciendo, los tesoros hacia los que me dirigía pasaron a ser los mismos libros. Eran el Tristram Shandy en una edición francesa heredada de su padre, las Memorias de Saint-Simon o el Ulises de Joyce, que prefería enseñarme en el facsímil que reproducía los manuscritos y galeradas cien veces corregidas.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Literatura",
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f815492c6f396c18fb440",
     "cita": "every love story is a potential grief story.",
-    "autor": "Julian Barnes",
-    "obra": "Levels of life",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Amor",
@@ -684,10 +1094,21 @@
     "favorita": true
   },
   {
+    "id": "3161bd2a8d4f8154afe4cfd2a835f6fe",
+    "cita": "Seguramente, la tarde en que mi padre y yo le escayolamos una pierna ante la visita intempestiva de un preten-",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8156a389c1f06424fd76",
     "cita": "Perdona, no debería hacer bromas. Solo puedo decirte que te deseo mucha suerte. Si necesitas consejo sobre cómo cagarla, no tienes más que pedirlo.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Humor",
@@ -698,8 +1119,8 @@
   {
     "id": "3161bd2a8d4f8157bc26d22a5f038563",
     "cita": "recuerdo los cumpleaños infantiles, las piñatas y las medianoches empalagadas de margarina; recuerdo chapotear en los charcos, los descampados, escapar",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 69,
     "categorias": [
       "Infancia",
@@ -710,12 +1131,60 @@
   {
     "id": "3161bd2a8d4f8158a092c00be58a913c",
     "cita": "Las estancias de mi tío en casa finalizaban tan de repente como comenzaban.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 84,
     "categorias": [
       "Vida",
       "Memoria"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f815ab72ad471b6246fd7",
+    "cita": "Mi trabajo no consiste en enseñar a distinguir a los lectores una voz narrativa de la opinión particular del escritor.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Literatura"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f815bba9ac983d40ee022",
+    "cita": "Porque el error no siempre tiene carácter destructivo. Pero el sistema está hecho para esquivar el conflicto. Esquivar el conflicto para volver a producir con más rapidez.",
+    "autor": "",
+    "obra": "",
+    "pagina": 84,
+    "categorias": [
+      "Vida",
+      "Sociedad",
+      "Modernidad"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f815d8b96d258fc55ee5f",
+    "cita": "Toma lo mejor de tus padres, o recházalo todo, y vuela.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Libertad"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f815d9012d28183791c2a",
+    "cita": "Seguramente, parando taxis con una pierna en la acera y la otra, larguísima, en el asfalto.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Memoria",
+      "Cuerpo"
     ],
     "favorita": false
   },
@@ -733,8 +1202,8 @@
   {
     "id": "3161bd2a8d4f815db1b7c73832810354",
     "cita": "«No había nada más que muerte en esa nube —diría muchos años más tarde el subingeniero Robert Shumard, que entonces tenía veinticuatro años—. Las almas de todos esos japoneses subiendo al cielo.»",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Muerte",
@@ -745,8 +1214,8 @@
   {
     "id": "3161bd2a8d4f815e9becd04f53aad59a",
     "cita": "Para cambiar el mundo, a veces no se requiere más que la terquedad de un joven y el afán crítico de un viejo.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -755,10 +1224,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f815f9767ff7031ae3cde",
+    "cita": "Es el encanto de la caligrafía: no sirve para nada.",
+    "autor": "",
+    "obra": "",
+    "pagina": 47,
+    "categorias": [
+      "Vida",
+      "Humor"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81609c2cca7eec893ed0",
     "cita": "turas a las que dieron lugar. Nos gusta lo inacabado, lo indeterminado, lo no cumplido por completo. Virginia Woolf se preguntaba si era posible mantener la viveza de un sketch en la obra acabada. Nuestro sentido estético desciende de Tiziano y Tintoretto y no de Rafael, de Goya y no de Ingres",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Literatura"
@@ -766,10 +1247,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8161a733c5c0c86562ed",
+    "cita": "ante los que calla. Por supuesto ya no es capaz de citar una sola obra suya, pero si oye Proust, si oye Conrad, si oye Canetti, si oye Melville, si oye Leopardi, si oye Borges, si oye Balzac, si oye James, si oye Jünger, su mirada se afila y simula atención. Si pongo ante ella una revista, la mira con perezosa curiosidad; si le pongo un libro, finge leerlo.",
+    "autor": "",
+    "obra": "",
+    "pagina": 221,
+    "categorias": [
+      "Literatura",
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8161bfc4c19f32370e45",
     "cita": "Cervantes está siempre apareciendo y desapareciendo en la novela. Se nos presenta en el prólogo de 1605 mirándonos de frente, como Velázquez en Las meninas, como sorprendido en plena tarea, descubriendo a quien lo mira al levantar los ojos.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 27,
     "categorias": [
       "Literatura"
@@ -777,11 +1270,77 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8162a0dad01a43f97d02",
+    "cita": "«El diseño es estrategia», afirma el diseñador Mario Eskenazi",
+    "autor": "",
+    "obra": "",
+    "pagina": 39,
+    "categorias": [
+      "Negocios"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f8162baa9e3ccbc791085",
+    "cita": "cambiar las cartas es imposible, lo único que nos queda es cambiar la mesa de juego.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8163b8c0f4030f45e7b1",
     "cita": "En el centro de su amabilidad residía la sensación de que sin bondad no somos nada.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f8163bebae71e47f51b33",
+    "cita": "Fácil no ha sido —contestó—. Pero tengo boca, y de algo me tenía que servir.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81658973d6a849fc8b1b",
+    "cita": "A decir verdad, nunca le oí que estuviera escribiendo algo o que se propusiera hacerlo. Creo que atribuirle tal",
+    "autor": "",
+    "obra": "",
+    "pagina": 221,
+    "categorias": [
+      "Literatura"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f816693e0d1a634410f9b",
+    "cita": "Cuando el ser humano deja de crear, deja de vivir.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f816793d9cc5cf6ec1dc9",
+    "cita": "un poco me doctoré en Alemania, pensando que la antigua e impecable ciudad de Jena me traspasaría por osmosis parte de su sabiduría",
+    "autor": "",
+    "obra": "",
+    "pagina": 131,
     "categorias": [
       "Vida"
     ],
@@ -790,8 +1349,8 @@
   {
     "id": "3161bd2a8d4f8167a555cd5cc07c797f",
     "cita": "Con Cide Hamete lo que irrumpe en la historia es el juego gozoso de la literatura y su parodia: desde ahora al tirón de lo real habrá que añadir la evidencia de que lo que se despliega ante nosotros es una gran composición narrativa, una burla, un homenaje, una celebración de la felicidad doble de escribir y leer, de jugar con las normas de los géneros, seguirlas o romperlas, según el antojo soberano del que escribe.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 35,
     "categorias": [
       "Literatura"
@@ -801,8 +1360,8 @@
   {
     "id": "3161bd2a8d4f8168b60cef81a4a038ce",
     "cita": "Uno quiere creer que los abusones no van a manejar el cotarro durante mucho tiempo y que su caída va a ser rápida y definitiva.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Sociedad",
@@ -813,8 +1372,8 @@
   {
     "id": "3161bd2a8d4f816b87e5e0cbeacbcd40",
     "cita": "Cuando escribe la segunda parte, El ingenioso caballero, la novela de 1605 ya es muy popular, y Cervantes es consciente de esa popularidad, para bien y para mal, en el momento en que decide reanudar la escritura. La traducción narrativa de esa circunstancia real es que don Quijote y Sancho, a través del bachiller Sansón Carrasco, se enteran de que sus aventuras están contadas en un libro muy leído, probablemente escrito por un encantador, pues de otro modo no sería posible que esa historia concluida solo un mes antes haya tenido tiempo de ser escrita, traducida del árabe y publicada.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 14,
     "categorias": [
       "Literatura"
@@ -824,8 +1383,8 @@
   {
     "id": "3161bd2a8d4f816db18acea45e05db35",
     "cita": "la inmortalidad solo existe en las mentes de quienes te recuerdan.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Muerte",
@@ -846,9 +1405,32 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f816faa70d2d17b751b73",
+    "cita": "Seguramente, sus lentillas. Poniéndoselas, quitándoselas, perdiéndolas, llamándome para que se las buscara.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81709036f6688474b77b",
+    "cita": "el valor estético, al menos para un diseño duradero, es el único valor perdurable, pues con el paso del tiempo las necesidades funcionales pueden cambiar y el mercado pasa al objetivo siguiente",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Tiempo"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81709a0bf50a92b4378c",
     "cita": "cuando abras los ojos pensarás que éste es el día de tu viaje. La espera se me ha convertido en una acuciante necesidad sexual. Te echo de menos como un adicto, descubro con alarma que no puedo vivir sin ti, si me besara de besos de su boca, leías en la Biblia, porque más dulces son tus amores que el vino. Voy por la esquina del Real y veo una cara detrás de una reja, una cara familiar, ancha y lívida, que me estaba mirando antes de que yo",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -860,8 +1442,8 @@
   {
     "id": "3161bd2a8d4f81709c93dc53483a4b9c",
     "cita": "Perhaps the world progresses not by maturing, but by being in a permanent state of adolescence, of thrilled discovery.",
-    "autor": "Julian Barnes",
-    "obra": "Levels of life",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Vida",
@@ -872,8 +1454,8 @@
   {
     "id": "3161bd2a8d4f8171a539f3ac57c99d38",
     "cita": "Si puedes encontrarte con el triunfo y la derrota —dijo al cabo de un rato, citando unos versos de Kipling— y tratar por igual a estos dos impostores...",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 275,
     "categorias": [
       "Vida"
@@ -881,10 +1463,21 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8171b7c5ec4760f2aa45",
+    "cita": "Cuando lo dijo me pareció un chiste tonto, pero cuando descubrí que lo decía en serio me pareció un poco menos chistoso.",
+    "autor": "",
+    "obra": "",
+    "pagina": 228,
+    "categorias": [
+      "Humor"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f817387e5fa295568e27d",
     "cita": "One grief throws no light upon another.",
-    "autor": "Julian Barnes",
-    "obra": "Levels of life",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Dolor",
@@ -895,8 +1488,8 @@
   {
     "id": "3161bd2a8d4f8173be17facfe39d4c90",
     "cita": "«Obra de tal modo que la máxima de tu voluntad siempre pueda valer al mismo tiempo como principio de una legislación universal».",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -907,8 +1500,8 @@
   {
     "id": "3161bd2a8d4f8177aba6d474d254ecb4",
     "cita": "el arte no era «un juguete sino una necesidad, y su esencia, la forma, no es un complemento decorativo sino una copa en la que derramar la vida para llevársela a los labios y saborearla», y el libro al que corresponden estas palabras, Cordero negro y halcón gris, reinventó el periodismo literario y prefiguró buena parte de la literatura posterior.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Literatura",
@@ -919,8 +1512,8 @@
   {
     "id": "3161bd2a8d4f81799180ddd6fea1164f",
     "cita": "Ahora ves —le dijo Einstein, delante de un té helado, a su antiguo alumno y amigo, Leo Szilard, cuando fue a visitarlo después de Hiroshima— que los chinos antiguos tenían razón. No es posible predecir los resultados de lo que haces. La única cosa sabia es no hacer nada... No hacer absolutamente nada.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Vida",
@@ -929,10 +1522,22 @@
     "favorita": true
   },
   {
+    "id": "3161bd2a8d4f8179ad39dacac687577d",
+    "cita": "Me puse un chaleco de lana y salí a detener la revolución.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Humor",
+      "Vida"
+    ],
+    "favorita": true
+  },
+  {
     "id": "3161bd2a8d4f817dbef4fb1711d17592",
     "cita": "simbólica mucho mayor que su propio relato, ajena al libro mismo del que forma parte, convertida en metáfora y hasta en expresión de la lengua común, Tilting at windmills, la locura o la nobleza de lanzarse alguien a un empeño muy superior a sus propias fuerzas, de poner los ideales muy por encima de los mediocres límites de la realidad.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Literatura",
@@ -941,10 +1546,21 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81819bd3cb63d7bdcdc6",
+    "cita": "la maldad es una luz fría en la que todas las cosas pierden su color, y lo pierden para siempre.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8184849dffb66973bcc8",
     "cita": "En las descripciones de las novelas, casi todos los detalles los pone el lector, aunque no se dé cuenta.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Literatura"
@@ -954,8 +1570,8 @@
   {
     "id": "3161bd2a8d4f818495c2c9c3c6e9d2bb",
     "cita": "Muchos años ha que es grande amigo mío este Cervantes, y sé que es más versado en desdichas que en versos.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 27,
     "categorias": [
       "Literatura",
@@ -964,10 +1580,19 @@
     "favorita": true
   },
   {
+    "id": "3161bd2a8d4f81849e21c34796ce7f1b",
+    "cita": "Mientras caminaba por Regent’s Park–a lo largo de un paseo que, de entre muchos, elegía siempre–, Jasper Gwyn tuvo de pronto la límpida sensación de que todo lo que hacía cada día para ganarse la vida había dejado de ser adecuado para él. Ya le había asaltado en otras ocasiones este pensamiento, pero nunca con semejante nitidez y tanta gracia.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81878649cfd468edd4f5",
     "cita": "La ficción engaña, no se abandona la infancia de una sola vez, nunca se abandona por completo.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 84,
     "categorias": [
       "Infancia",
@@ -978,8 +1603,8 @@
   {
     "id": "3161bd2a8d4f8187939fcd2035659a2b",
     "cita": "Estoy leyendo mucho, empleando gran parte del día. Por ejemplo, ahora estoy poseído por Don Quijote de la Mancha, más concentrado en él que en la anatomía del cerebro.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 35,
     "categorias": [
       "Literatura",
@@ -988,10 +1613,34 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81889fcdfa1955d10843",
+    "cita": "Blundy clapped his hands and laughed. It was not an act. 'I'm so glad. I agree with you completely. \"We are not now that strength which in old days / Moved earth and heaven.\"' Famous lines from my favourite Tennyson poem, and gen-erously spoken. The applause rose as Blundy stepped over",
+    "autor": "Ian McEwan",
+    "obra": "What We Can Know",
+    "pagina": null,
+    "categorias": [
+      "Literatura",
+      "Tiempo"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f818a806ee5546738f01f",
+    "cita": "El sonido de la mandolina se escuchaba en los coches, en el café de la esquina, llevado por la brisa. Y también en la televisión, con Michael bailando al otro lado de la pantalla; Michael de pie, con alas de ángel brotándole de los hombros; Michael desmayándose bruscamente fuera de plano; Michael sentado en el suelo, con la cara medio tapada, mirando a la pantalla con los ojos ardientes, implorando, cantando; Michael clavándote la mirada, atravesando la pantalla.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f818a8affdc48f2b9d06a",
     "cita": "el pecho de un llanto que no puede evitarse. Al comprender la gravedad de su amo, Sancho comenzó a hacer pucheros y a derramar lágrimas. Las lágrimas de la página impresa nos las contagian los personajes a nosotros: Estas nuevas dieron un terrible empujón a los ojos preñados de ama, sobrina y de Sancho Panza, su buen escudero, de tal manera que los hizo reventar las lágrimas de los ojos y mil profundos suspiros del pecho. Pero el gran ironista no puede resistirse a un quiebro que ancla de nuevo el relato",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Literatura",
@@ -1002,8 +1651,8 @@
   {
     "id": "3161bd2a8d4f818bb6fed36813d7f02b",
     "cita": "Lo que importa es cómo es realmente una persona. Lo que importa es lo que una persona está dispuesta a demostrarte en la vida real y en el mundo real, cuando no está sonando ninguna banda sonora de fondo ni se está jugando a nada. Me importas un montón, pero no me da miedo estar solo. No puedo estar interpretando un papel para ti, Shelley. Pero sí que he estado pensando mucho en Patrick.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Amor",
@@ -1014,7 +1663,7 @@
   {
     "id": "3161bd2a8d4f818cb9e7c9ecb23891b2",
     "cita": "cómo sonará ese idioma, cómo se nombrarán en él las cosas comunes o las extraordinarias.",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -1024,10 +1673,21 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f818fbd2cc29682d6b2ad",
+    "cita": "En la importancia que tiene también ser buenos empresarios y buenos gestores para que podamos, entre todos, crecer.",
+    "autor": "",
+    "obra": "",
+    "pagina": 81,
+    "categorias": [
+      "Negocios"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f8190b087eda85dc7be1d",
     "cita": "Wells describió cómo la bomba «se extendía hasta formar una monstruosa caverna de energía incandescente en la base de lo que acabó convertido en un volcán activo en miniatura... una confusa ebullición de tierra derretida y vapor sobrecalentado», dibujando una imagen escalofrirantemente parecida a la que ofrecería Thomas Ferebee décadas después: «Vio que algo bullía en la tierra y que el tallo [del hongo] empezaba a ascender, mientras los edificios salían volando entre el vapor». Bob Caron recordaba que la nube «era blanca por fuera y de un tono entre negro y morado hacia el interior, con el centro rojo incandescente, y que no paraba de bullir».",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Muerte",
@@ -1036,10 +1696,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8193877efe40d76a4cb4",
+    "cita": "Algunas noches he pensado en fundar mi escuela filosófica o en hacer una revolución, si es que no es lo mismo",
+    "autor": "",
+    "obra": "",
+    "pagina": 228,
+    "categorias": [
+      "Vida",
+      "Humor"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81939937dbe9b85533f5",
     "cita": "Every love story is a potential grief story. If not at first, then later. If not for one, then for the other. Sometimes, for both.",
-    "autor": "Julian Barnes",
-    "obra": "Levels of life",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Amor",
@@ -1051,8 +1723,8 @@
   {
     "id": "3161bd2a8d4f8193bbb7da805b30b64c",
     "cita": "¿Por qué alguien es como es? ¿Qué elementos conforman una personalidad determinada? Responderlo es difícil en uno mismo y todavía lo es más en el caso de otros. Influyen los genes, influyen las vivencias, en especial las ad-",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 84,
     "categorias": [
       "Psicología",
@@ -1061,10 +1733,19 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f8195a02ceabe9428f286",
+    "cita": "Jasper Gwyn se fue cuando Tom ya estaba dormido. Tenía una mano sobre las páginas del retrato, y a Jasper Gwyn le pareció la mano de un niño.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f819697f2cd544c368889",
     "cita": "Es Leopold Bloom, Quijote y Sancho al mismo tiempo, pegado al suelo y a la vez cargado de planes ideales de mejora del mundo, quien será su guía, casi su lazarillo, en una noche de borrachera y delirio, quien velará por él, le hará compañía, le inducirá con cuidado paternal a tomar una bebida caliente en la madrugada, lo acogerá en su casa.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 35,
     "categorias": [
       "Literatura"
@@ -1074,8 +1755,8 @@
   {
     "id": "3161bd2a8d4f8198b93feef438ae19df",
     "cita": "les pertenece a ellos. Lo que hace uno desde el primer día es ir devolviéndosela poco a poco hasta que siguen su camino solos.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1086,8 +1767,8 @@
   {
     "id": "3161bd2a8d4f8198b9f5e0f9b13763b0",
     "cita": "la única forma posible de hacer carrera es pasar de explotado a explotador",
-    "autor": "Desconocido",
-    "obra": "LO ÚNICO QUE IMPORTA",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Sociedad",
@@ -1098,8 +1779,8 @@
   {
     "id": "3161bd2a8d4f819996c6db9b26da48f0",
     "cita": "Que uno se hundía solo mientras que, en colaboración con los demás, podía sobrevivir.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1108,10 +1789,43 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f819aa2f1e05dd7d0fe3a",
+    "cita": "Había llegado a la conclusión de que cada ser humano recuerda perfectamente una media de por lo menos ocho días de su vida.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f819abacdc99ec7da753e",
+    "cita": "I felt, though I could never say, that I had made a sacrifice in marrying a man who had no taste for reading, who would rather fix the plumbing than talk about literature, even though he liked it when I read short poems to him. By an unspoken accord, we used to talk about everything that existed that was not gluing violins together and not books. But a world minus the glued violin is larger than a world without books. It would have challenged Percy's generous nature to think that I had lost more mental freedom in our marriage than he had. But of course I had. A significant portion of all possible worlds,",
+    "autor": "Ian McEwan",
+    "obra": "What We Can Know",
+    "pagina": null,
+    "categorias": [
+      "Amor",
+      "Literatura",
+      "Libertad"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f819c8b61e8991aca1896",
+    "cita": "Lo único peor que no conseguir lo que quieres es conseguir más de lo que esperabas.",
+    "autor": "",
+    "obra": "",
+    "pagina": 162,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f819f841ccb8c4b40e103",
     "cita": "La teoría de la evolución ha sido la más disruptiva y combatida de nuestras teorías científicas, aún más que el heliocentrismo de Copérnico y Galileo, porque sus respuestas a las grandes preguntas—¿ quién soy?, ¿de dónde vengo?, ¿cómo llegué hasta aquí?—nos abandonan en medio de una soledad cósmica: no somos hijos de ningún dios, sino el resultado de un mecanismo sordo y ciego.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1120,10 +1834,30 @@
     "favorita": true
   },
   {
+    "id": "3161bd2a8d4f81a187d8cbe8e142a5f0",
+    "cita": "Seguramente, «Garota de Ipanema». Seguramente, «Por qué te vas». Seguramente, «Tintarella di luna».",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81a3b111fea3c65b5ad8",
+    "cita": "Siempre tardaba un poco en admitir la desnuda realidad de las cosas.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81a3b77ed735e946e650",
     "cita": "recordada, olvidada, la vida entera que encajaba de pronto en una sola composición: como el músico que hasta ahora ha ido escribiendo canciones sueltas y descubre en un momento de fervor una secuencia única que las enhebra a todas en una unidad superior, orgánica como una sinfonía.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 14,
     "categorias": [
       "Literatura",
@@ -1132,10 +1866,19 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81a58603f7da99b0f917",
+    "cita": "Se dio cuenta de que, de manera análoga a lo que sucede en la vida, sólo cierta puntualidad podía hacer que se cumpliera aquella acción–como felices son algunos instantes de los vivos.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81a78805ff63a46a6aca",
     "cita": "No obstante, debo dejar la puerta abierta.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida"
@@ -1145,8 +1888,8 @@
   {
     "id": "3161bd2a8d4f81a7a4a7db0e67990e93",
     "cita": "La mayor ficción tramada por la Revolución francesa, y una de las mayores de la humanidad, es sin duda la Declaración de los derechos del hombre y del ciudadano.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Sociedad",
@@ -1155,10 +1898,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81a88e94ee3e39937838",
+    "cita": "Los que saben, los que ven la injusticia, tienen el deber de actuar acorde a eso.",
+    "autor": "",
+    "obra": "",
+    "pagina": 232,
+    "categorias": [
+      "Vida",
+      "Sociedad"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81aab971db2a90c1694a",
     "cita": "Como nuestro cerebro no evolucionó para conservar intacto el pasado y como cada vez que retomamos un recuerdo lo modificamos en el proceso, nuestras personalidades no quedan fijas en piedra, sino en plastilina.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Memoria",
@@ -1167,10 +1922,30 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81abbb3ae596ae02fd53",
+    "cita": "«Los errores no existen»",
+    "autor": "",
+    "obra": "",
+    "pagina": 84,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81ac8161f480b7a295f0",
+    "cita": "–Las resoluciones definitivas se toman siempre y solamente en un estado de ánimo que no está destinado a durar.–¿ Quién dijo eso?–Marcel Proust. Ese tío nunca se equivocaba.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81ac8b3ecbc39af396aa",
     "cita": "En los relatos de Chéjov, los únicos tontos son los que saben las respuestas.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 7,
     "categorias": [
       "Literatura"
@@ -1180,8 +1955,8 @@
   {
     "id": "3161bd2a8d4f81afbec7f62f4c0e4353",
     "cita": "¿Es suficiente? No, no lo es. Nada nos explica de un modo indubitable. Falta el misterio y faltan los pasos entrelazados que sin quererlo encauzan una trayectoria.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": 95,
     "categorias": [
       "Vida",
@@ -1190,10 +1965,19 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81b29e11f6150dfed8ad",
+    "cita": "De manera que acabó comprendiendo que se encontraba en una situación conocida por muchos seres humanos pero no por ello menos dolorosa: lo único que los hace sentirse vivos es algo que sin embargo, lentamente, está destinado a matarlos. Los hijos para los padres, el éxito para los artistas, las montañas demasiado altas para los alpinistas. Escribir libros, para Jasper Gwyn.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81b2b6bac6c277ad6f4f",
     "cita": "Dios: la ficción más contagiosa—y peligrosa—que hayamos perpetrado.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Sociedad"
@@ -1201,10 +1985,33 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81b3951afbc03b7fe65b",
+    "cita": "y será siempre la función, el servicio al otro, la atemporalidad.",
+    "autor": "",
+    "obra": "",
+    "pagina": 39,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81b3b450d076de22991f",
+    "cita": "La mayor parte de la gente de nuestro entorno no lo haría.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Sociedad"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81b4b753c2f1dcadf7c5",
     "cita": "Todo ello surge gradualmente (recupero el adverbio borgiano) en cuanto esas primeras proteínas recubiertas de membranas adquieren el don de replicarse. Nacen así, en sentido biológico, tanto el futuro como el egoísmo.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": 1,
     "categorias": [
       "Vida",
@@ -1226,8 +2033,8 @@
   {
     "id": "3161bd2a8d4f81b6a543e4550d0b75ad",
     "cita": "El dinero es como la mierda —decía—. Si lo amontonas, apesta. Si lo extiendes, sirve de abono.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1238,8 +2045,8 @@
   {
     "id": "3161bd2a8d4f81b78798e256e4408dd2",
     "cita": "cortés y comedido",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 35,
     "categorias": [
       "Vida"
@@ -1249,8 +2056,8 @@
   {
     "id": "3161bd2a8d4f81b8ad9cdf09f537c6c2",
     "cita": "La idea de una reacción nuclear en cadena fue solo el principio de las revelaciones que tuvo Leo Szilard mientras las luces del semáforo cambiaban. Si era posible producir una reacción en cadena, sería posible producir energía atómica a escala industrial. Y si la energía atómica era posible, entonces la bomba atómica también lo era. Pero su visión no se detuvo ahí, porque era, a un tiempo, teórica y política, una fuente de éxtasis y de agonía simultáneas.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 8,
     "categorias": [
       "Vida",
@@ -1259,10 +2066,46 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81b9aa47c792f85af72a",
+    "cita": "El número de contratos firmados no nos libera de los compromisos adquiridos en ellos.",
+    "autor": "",
+    "obra": "",
+    "pagina": 221,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81ba87b3e644de4091fc",
+    "cita": "siempre es mejor «tener a un ingenuo al mando de personas que saben muy bien lo que hacen, porque es precisamente quien no lo tiene muy claro quien hará algo innovador».",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Negocios",
+      "Psicología"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81bd9589cc67861793cb",
+    "cita": "see that wheelbarrow, its redness, the white of the chickens. I quoted Williams's line from another poem, whose title I've forgotten: 'no ideas but in things'. It's become his catch-phrase. After breakfast he sometimes murmurs those words as he kisses me and heads off to his shed for the day's work.",
+    "autor": "Ian McEwan",
+    "obra": "What We Can Know",
+    "pagina": null,
+    "categorias": [
+      "Literatura",
+      "Amor",
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81bd9ba7d2a8788d470d",
     "cita": "Reconocía que su trabajo personal en el campo de la física atómica era muy escaso. Esto se le presentó como una ventaja. Estaba libre del peso del conocimiento. Podía inventar numerosas teorías.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1273,8 +2116,8 @@
   {
     "id": "3161bd2a8d4f81bfbf09d84938e879aa",
     "cita": "su universo volvía a expandirse una vez más.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida"
@@ -1282,9 +2125,33 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81c091c9e73013a1a75a",
+    "cita": "Sin estabilidad económica la libertad creativa se debilita.",
+    "autor": "",
+    "obra": "",
+    "pagina": 81,
+    "categorias": [
+      "Negocios",
+      "Libertad"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81c3a079fb9620174d6d",
+    "cita": "A los diseñadores se nos pregunta a menudo por qué trabajamos con ciertos clientes o con ciertos proyectos, si nos gusta o no el producto, cómo nos posicionamos con respecto a él y cuáles son nuestros valores en contraposición al otro.",
+    "autor": "",
+    "obra": "",
+    "pagina": 97,
+    "categorias": [
+      "Negocios",
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81c5a486fe086ec38cde",
     "cita": "le dura todavía el miedo al hambre",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -1306,10 +2173,32 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81c6bc4bef062e4df506",
+    "cita": "Es un dato relevante.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81c7b84ede831e85f594",
+    "cita": "Seguramente, su forma de decir tejanos para referirse a los pantalones vaqueros.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81c8a3daceb33d7772d4",
     "cita": "En Madrid, escribe colaboraciones para distintos medios y publica su primera novela, que la censura secuestra al poco de salir.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Literatura"
@@ -1319,8 +2208,8 @@
   {
     "id": "3161bd2a8d4f81c8a574e49e9d556106",
     "cita": "Cervantes así le roba al ladrón un personaje, y le da la nobleza y la consistencia de las que carecía en su novela originaria: como el luchador en un arte marcial que aprovecha el impulso agresivo de su adversario para derribarlo.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 27,
     "categorias": [
       "Literatura"
@@ -1330,8 +2219,8 @@
   {
     "id": "3161bd2a8d4f81cb88e9e438a05969b4",
     "cita": "por, los brazos de mi padre aún firmes en su tarea, aunque debilitados, la lenta rendición de una cosa a la otra. Y me eché a reír.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 275,
     "categorias": [
       "Vida",
@@ -1342,8 +2231,8 @@
   {
     "id": "3161bd2a8d4f81cda81cdf8ce7c3df54",
     "cita": "Los aeropuertos siempre la hacían sentirse anestesiada y se alegró de tener un poco de tiempo muerto para dejar que toda la agitación del día se calmara. En el móvil, que llevaba en el bolsillo, tenía varias notificaciones de llamadas perdidas y correos electrónicos, símbolos de la falsa urgencia de la impaciencia.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Modernidad",
@@ -1352,10 +2241,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81cf9595f304a0ba7628",
+    "cita": "«We Walk», cuya música alegre parece avanzar de manera despreocupada, tiene un toque de lo más inquietante: describe cómo Michael sube por las escaleras de uno de los destartalados edificios de apartamentos de Athens y se detiene para recordar el cuadro del pintor revolucionario francés Jean-Paul Marat, tal y como lo encontraron después de que lo asesinasen en la bañera.",
+    "autor": "",
+    "obra": "",
+    "pagina": 34,
+    "categorias": [
+      "Muerte",
+      "Memoria"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81d0a10ffcd39628866f",
     "cita": "Y a veces es difícil saber si quieres gritar o taparte los oídos para no oír un grito",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1367,8 +2268,8 @@
   {
     "id": "3161bd2a8d4f81d39c39d8bec5575b5e",
     "cita": "Uno lee a Shakespeare y piensa que supo imaginarlo todo: Cervantes parece que lo ha visto todo, haberlo atesorado todo a lo largo de su vida, tan incesante de peripecias como de lecturas y proyectos literarios, y que ha prestado atención a cada historia escuchada o leída.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 180,
     "categorias": [
       "Literatura",
@@ -1379,8 +2280,8 @@
   {
     "id": "3161bd2a8d4f81d49eadfec29ae829d1",
     "cita": "Dentro de toda gran novela, en los márgenes, en los espacios en blanco, están las novelas que se han callado y las que se quedan esbozadas apenas. Gravitan en el interior de la historia principal. Son el motivo de que el sabio narrador Cide Hamete pida que se le alabe no por lo que escribe, sino por lo que ha dejado de escribir.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": null,
     "categorias": [
       "Literatura",
@@ -1391,8 +2292,8 @@
   {
     "id": "3161bd2a8d4f81d4b5a6ff4c54a82f7b",
     "cita": "Mi bisabuelo G. era tan mujeriego y se llevaba tan mal con su esposa que en el lecho de muerte le dio un beso en la boca a la mejor amiga de ella.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1403,8 +2304,8 @@
   {
     "id": "3161bd2a8d4f81d5a72cdc775c8ea23b",
     "cita": "Lo único que se sabe es esto: en la biblioteca del escritor, delante de una estantería, mientras hablaban de cuestiones de estilo literario, se besaron.",
-    "autor": "Richard Flanagan",
-    "obra": "La pregunta 7",
+    "autor": "",
+    "obra": "",
     "pagina": 7,
     "categorias": [
       "Amor",
@@ -1415,7 +2316,7 @@
   {
     "id": "3161bd2a8d4f81d5b437dea03683fd32",
     "cita": "todas las mujeres que pareces, Allison y Nadia, te he conocido desde siempre y no sé nada de ti, he estado contigo una sola noche sin porvenir ni pasado y una vida entera, rabio de celos porque te has acostado con otros hombres y le has hecho a alguno de ellos las mismas cosas que me haces a mí y veo en tus ojos el deslumbramiento y la sorpresa de la primera vez, toda",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -1426,10 +2327,33 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81d88f39e6a108ea6041",
+    "cita": "¿Qué os pasó?",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81d899c4f1f22cb914c1",
+    "cita": "'That was good last night. No, Vivien, it was very good.' And he quoted, '\"Thou'st heard the knave, abusing those in power.\"' I continued, '\"Bawl freedom loud and then oppress the free.\" So you came! Why didn't you say hello?' 'Too many fans. Couldn't get near you.' He smiled to confirm that this was not true. 'Besides, I hoped",
+    "autor": "Ian McEwan",
+    "obra": "What We Can Know",
+    "pagina": null,
+    "categorias": [
+      "Literatura",
+      "Humor"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81d8a431f9e6ed6a55b3",
     "cita": "y viole que tenía los carrillos hinchados y la boca llena de risa, con evidentes señales de querer reventar con ella.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 35,
     "categorias": [
       "Humor",
@@ -1440,8 +2364,8 @@
   {
     "id": "3161bd2a8d4f81daafeac87bfa86c2a0",
     "cita": "Donde no hay ningún derecho, no hay ningún deber.",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Libertad",
@@ -1452,13 +2376,22 @@
   {
     "id": "3161bd2a8d4f81dab086ee6e38ef3c98",
     "cita": "Cuando, una mañana, Gregor Samsa se despertó de unos sueños agitados, se encontró en su cama transformado en un bicho monstruoso",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Literatura",
       "Vida"
     ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81dba11ad3af87b852e9",
+    "cita": "Ella dijo, en un momento dado, que le gustaría un mundo sin números, y una vida sin repeticiones.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
     "favorita": false
   },
   {
@@ -1473,10 +2406,21 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81dfbcc2efb191478a54",
+    "cita": "«la forma sigue a la función» de Sullivan",
+    "autor": "",
+    "obra": "",
+    "pagina": 39,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81e09294d404051ed55a",
     "cita": "eran hogares anodinamente burgueses –con un salón reservado a las visitas y una sala de estar para la vida diaria– donde los periódicos, si se mostraban, constituían casi la única pista acerca de las inclinaciones de sus moradores.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Sociedad",
@@ -1487,7 +2431,7 @@
   {
     "id": "3161bd2a8d4f81e3b41ee3b5d57ae41b",
     "cita": "Se sonríe en el espejo del cuarto de baño, examina sin disgusto la palidez de su cara, gastada por el amor, humedece la punta de una toalla para limpiarse del mentón un rastro de carmín y de semen. Se le ha abierto la bata y sus pechos sueltos y blancos oscilan mientras se lava los dientes. Se pinta los labios y los frunce como en una burla fugaz de sí misma, y luego corrige con el dedo índice la línea roja de carmín.",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -1499,8 +2443,8 @@
   {
     "id": "3161bd2a8d4f81e59a0ad2faad8c7bb4",
     "cita": "surgió el Big Bang y a él regresará algún día. Y, sin embargo, el silencio, aun con toda su ubicidad y su intemporalidad, había acabado en conflicto con la naturaleza estrepitosa de la humanidad moderna. Este mundo ruidoso y lleno de opiniones tajantes había convertido al silencio en su enemigo: se había vuelto algo indeseable que había que romper o que llenar.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Silencio",
@@ -1512,7 +2456,7 @@
   {
     "id": "3161bd2a8d4f81e5aa61c39a7854c015",
     "cita": "estampado la huella de su dedo pulgar al pie de un documento. Y a su marido, a mi abuelo Manuel, fueron las palabras las que le hicieron perderse, no la lealtad ni el sentido del deber, únicamente el brillo de las sonoras palabras que tanto le gustaban, ruido y aire, murmuraba con desprecio mi bisabuelo hablándole a su perro, al que tal vez lo aliaba sobre todas las cosas el hábito común del silencio.",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -1524,8 +2468,8 @@
   {
     "id": "3161bd2a8d4f81e5bad3f45bd7129404",
     "cita": "la curiosidad, esta «pocas veces es recompensada con respuestas significativas y satisfactorias, sino más bien con un deseo cada vez mayor de formular nuevas preguntas».",
-    "autor": "Jorge Volpi",
-    "obra": "La invención de todas las cosas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1534,9 +2478,76 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81e68ed4ec09a63caa0e",
+    "cita": "Mr Gwyn -Baricco, Alessandro Mientras caminaba por Regent’s Park–a lo largo de un paseo que, de entre muchos, elegía siempre–, Jasper Gwyn tuvo de pronto la límpida sensación de que todo lo que hacía cada día para ganarse la vida había dejado de ser adecuado para él. Ya le había asaltado en otras ocasiones este pensamiento, pero nunca con semejante nitidez y tanta gracia. De manera que acabó comprendiendo que se encontraba en una situación",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81e986c7ec309dd5b267",
+    "cita": "Mami —susurré, y ella movió los dedos—. ¿Cómo has podido encontrarme?",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Memoria",
+      "Infancia"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81e98ab4f243c1674f51",
+    "cita": "todos lo sabemos: construimos, más consciente que inconscientemente, sobre el trabajo de los demás.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Sociedad"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81eaa752c87606fcdc37",
+    "cita": "para el sistema nacional de autopistas e indicadores de tránsito de Gran Bretaña. Estuvo años probando la legibilidad en todo tipo de condiciones extremas: con lluvia, de noche, a gran velocidad.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81ebac48c059f51333f8",
+    "cita": "Alguna vez un poeta inglés dijo que la rutina era un signo claro de ambición y ese también era el caso de Piña.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida",
+      "Literatura"
+    ],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81ec83cad77a908666f1",
+    "cita": "I believe my humor's wearing thin / And change is what I believe in.",
+    "autor": "",
+    "obra": "",
+    "pagina": 69,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81ecb176f521f89e0734",
     "cita": "común y por qué es mi mejor amigo desde hace casi treinta años. Sin duda él se hacía la misma pregunta aquella mañana, pero la cerveza y la música nos animaban lentamente",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -1548,8 +2559,8 @@
   {
     "id": "3161bd2a8d4f81edaebfe60f48a446d2",
     "cita": "¿Pero no ves que da igual lo que sea verdad? Dices que esa no es la realidad, pero ¿qué es la realidad? Esa es una realidad tan convincente como la que tú reivindicas, y desde luego más bonita.",
-    "autor": "Marcos Giralt Torrente",
-    "obra": "Los ilusionistas",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1558,10 +2569,40 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81f09734cf07474f25bb",
+    "cita": "Un día, estando sentados en un parque, me explicó que todos tenemos una determinada idea de nosotros mismos, tal vez apenas esbozada, confusa, pero al final nos vemos llevados a una determinada idea de nosotros mismos, y la verdad es que a menudo hacemos coincidir esa idea con un determinado personaje imaginario en el que nos reconocemos.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81f0a0a1cfc4cd7eaaff",
+    "cita": "Pero sabía que no era verdad, porque Jasper Gwyn era un hombre exacto, incluso en el error.",
+    "autor": "Alessandro Baricco",
+    "obra": "Mr Gwyn",
+    "pagina": null,
+    "categorias": [],
+    "favorita": false
+  },
+  {
+    "id": "3161bd2a8d4f81f0b1bbf3c3079940ee",
+    "cita": "Todavía no sabía que eso fuera verdad: simplemente lo había anotado un día en la clase de Shakespeare porque lo dijo el profesor de Shakespeare, y me pareció que era verdad.",
+    "autor": "",
+    "obra": "",
+    "pagina": 31,
+    "categorias": [
+      "Vida",
+      "Literatura"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81f39416ee4ed098d7f2",
     "cita": "Sola la vida humana corre a su fin ligera más que el tiempo.",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 156,
     "categorias": [
       "Vida",
@@ -1573,8 +2614,8 @@
   {
     "id": "3161bd2a8d4f81f4bceccb3f153fc61b",
     "cita": "Tu hermano me sacó de mi error. Él nunca parece estar atrapado en el pasado. Nunca le oyes hablar del pasado. Parece que nunca mira atrás, o al menos nunca se queda dando vueltas a algo que ya ha ocurrido. Tú fíjate en él la próxima vez que se te caiga algo. Para él, lo que sea ya se ha derramado y ahora su atención está centrada en limpiarlo; lo único que cuenta es lo que está pasando ahora mismo. No estoy seguro de si es la causa o la consecuencia de que sea como es, pero a veces es la persona perfecta para aportar un poco de claridad a las cosas.",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
@@ -1584,10 +2625,22 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81f7ba27d49b43f8ea67",
+    "cita": "ahora el tiempo de creación, alterado por la tecnología y la automatización de los procesos, se ha ido",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Modernidad",
+      "Tiempo"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81f9a288fa2356b3bcc0",
     "cita": "En el último momento, en las efusiones de la despe-",
-    "autor": "Antonio Muñoz Molina",
-    "obra": "El Verano de Cervantes",
+    "autor": "Antonio Muñoz Molina",
+    "obra": "El verano de Cervantes",
     "pagina": 180,
     "categorias": [
       "Literatura"
@@ -1597,7 +2650,7 @@
   {
     "id": "3161bd2a8d4f81fa92b7f3f028760af9",
     "cita": "un hombre que ha obedecido durante muchos años y en menos de diez segundos decide que ya no obedecerá, y no sólo lo decide, sino que lo cumple, con incertidumbre y terror, pero al mismo tiempo con una convicción invencible",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -1607,9 +2660,20 @@
     "favorita": false
   },
   {
+    "id": "3161bd2a8d4f81fa93e2dcb603e14da5",
+    "cita": "De lo que me considero afortunado es de sentir que las cosas todavía me sorprenden, y me da la impresión de que esa es la gran ventaja de dedicarse al mundo del arte",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Vida"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81fbb90fc962e2e19536",
     "cita": "Quiero contarte quién he sido y qué he hecho y es como si se me hubiera borrado de la memoria la mitad de mi vida, como si yo mismo estuviera ausente de mis propios recuerdos y me hubieran sido relatados por otro, porque veo con claridad lugares donde he estado pero no me veo a mí en ellos, o no me reconozco",
-    "autor": "Antonio Muñoz Molina",
+    "autor": "Antonio Muñoz Molina",
     "obra": "El jinete polaco",
     "pagina": null,
     "categorias": [
@@ -1619,10 +2683,22 @@
     "favorita": true
   },
   {
+    "id": "3161bd2a8d4f81fbb995fa094de6811d",
+    "cita": "La herramienta tecnológica es tan fácil, tan amplia, tan agradecida, tiene tantos alicientes y te ahorra tanto tiempo que, si no fuerzas una mirada curiosa, te quedas flotando tan plácida en la superficie sin tener que mojarte ni gota.",
+    "autor": "",
+    "obra": "",
+    "pagina": null,
+    "categorias": [
+      "Modernidad",
+      "Sociedad"
+    ],
+    "favorita": false
+  },
+  {
     "id": "3161bd2a8d4f81ffa81fe42464d3661c",
     "cita": "Miró a Peter, que seguía dormido. El hombre con el que había compartido su vida y al que tanto quería. Hacía mucho tiempo que no tenían una relación libre de cargas. Habían hablado de vez en cuando de lo que harían cuando la",
-    "autor": "Rónán Hession",
-    "obra": "Leonard y Hungry Paul",
+    "autor": "",
+    "obra": "",
     "pagina": null,
     "categorias": [
       "Amor",
