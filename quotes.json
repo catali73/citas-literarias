@@ -2,7 +2,7 @@
   {
     "id": "3151bd2a8d4f811489aaca30c3433673",
     "cita": "Experimenté el estado previo, y ese estado previo solo quiere una que termine: sea como sea.",
-    "autor": "",
+    "autor": "Marta Jiménez Serrano",
     "obra": "",
     "pagina": null,
     "categorias": [
@@ -13,7 +13,7 @@
   {
     "id": "3151bd2a8d4f8115a0bcfad746907ce8",
     "cita": "Nada ha perdido más prestigio hoy que la lógica y todo lo que tiene que ver con lo que un día se consideró normalidad.",
-    "autor": "",
+    "autor": "Juan Tallón",
     "obra": "Mil cosas",
     "pagina": null,
     "categorias": [
@@ -25,13 +25,13 @@
   {
     "id": "3151bd2a8d4f81369eadf714134ed09d",
     "cita": "Para ser un nuevo tú tienes que traicionar al anterior.",
-    "autor": "",
+    "autor": "Marta Jiménez Serrano",
     "obra": "",
     "pagina": 93,
     "categorias": [
       "Vida"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3151bd2a8d4f813ab5e6fcafdaf5134c",
@@ -43,12 +43,12 @@
       "Vida",
       "Humor"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3151bd2a8d4f81479dcfeffb8747463a",
     "cita": "Una redactora le dijo que el semáforo amarillo es la metáfora de nuestras vidas.",
-    "autor": "",
+    "autor": "Juan Tallón",
     "obra": "Mil cosas",
     "pagina": 66,
     "categorias": [
@@ -60,19 +60,19 @@
   {
     "id": "3151bd2a8d4f814aa7eafc994bf3e551",
     "cita": "En la muerte no estaba Dios, ni vi mi vida pasar ante mí como una película, ni una luz, ni cuatro angelitos. Pero no sé si alguna vez he estado más acompañada de mí misma.",
-    "autor": "",
+    "autor": "Marta Jiménez Serrano",
     "obra": "",
     "pagina": null,
     "categorias": [
       "Vida",
       "Muerte"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3151bd2a8d4f815fb527e8d350fb3e0e",
     "cita": "Ojalá supiese vivir como si nada, pero vive como si todo.",
-    "autor": "",
+    "autor": "Juan Tallón",
     "obra": "Mil cosas",
     "pagina": 16,
     "categorias": [
@@ -84,7 +84,7 @@
   {
     "id": "3151bd2a8d4f816fba55f7235cb40b25",
     "cita": "Las cebras no sostienen el estado de alerta de manera constante en el cuerpo, como sí hemos empezado a hacer los seres humanos, con nefastos resultados.",
-    "autor": "",
+    "autor": "Marta Jiménez Serrano",
     "obra": "",
     "pagina": null,
     "categorias": [
@@ -95,7 +95,7 @@
   {
     "id": "3151bd2a8d4f81a4afe9c3eed78efffc",
     "cita": "Siempre ha pensado que uno de los puestos más frágiles de toda organización es el de segundo de a bordo.",
-    "autor": "",
+    "autor": "Juan Tallón",
     "obra": "Mil cosas",
     "pagina": null,
     "categorias": [
@@ -106,18 +106,18 @@
   {
     "id": "3151bd2a8d4f81aeacf9d4626c9f5dff",
     "cita": "Lo raro es vivir. Que estemos aquí sentados, que hablemos y se nos oiga, poner una frase detrás de otra sin mirar ningún libro, que no nos duela nada, que lo que bebemos entre por el camino que es y sepa cuándo tiene que torcer, que nos alimente el aire y a otros ya no, que según el antojo de las vísceras nos den ganas de hacer una cosa o la contraria y que de esas ganas dependa a lo mejor el destino, es mucho a la vez, tú, no se abarca, y lo más raro es que lo encontramos normal.",
-    "autor": "",
+    "autor": "Carmen Martín Gaite",
     "obra": "Lo raro es vivir",
     "pagina": null,
     "categorias": [
       "Vida"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3151bd2a8d4f81c086b4fe8f0ad25ebf",
     "cita": "Respira por él, existe desde él.",
-    "autor": "",
+    "autor": "Juan Tallón",
     "obra": "Mil cosas",
     "pagina": 71,
     "categorias": [
@@ -136,7 +136,7 @@
       "Vida",
       "Muerte"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3161bd2a8d4f811f9ac0d895c4c7794a",
@@ -171,7 +171,7 @@
       "Vida",
       "Sociedad"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3161bd2a8d4f815da70fc891f46e18d1",
@@ -182,7 +182,7 @@
     "categorias": [
       "Vida"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3161bd2a8d4f816f9118f8d8c77b5e42",
@@ -205,7 +205,7 @@
     "categorias": [
       "Vida"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3161bd2a8d4f81c6a93eeecd8d1cd494",
@@ -216,7 +216,7 @@
     "categorias": [
       "Sociedad"
     ],
-    "favorita": true
+    "favorita": false
   },
   {
     "id": "3161bd2a8d4f81dd973adf0d693677b5",
