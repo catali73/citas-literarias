@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "cita": "Escribir es la forma más radical de estar solo y, al mismo tiempo, la forma más radical de acompañar a otros.",
+    "autor": "Marta Jiménez Serrano",
+    "obra": "Oxígeno",
+    "pagina": 23,
+    "categorias": ["Literatura", "Vida"],
+    "favorita": true
+  },
+  {
+    "id": "2",
+    "cita": "El cuerpo recuerda lo que la mente prefiere olvidar. Por eso duele tanto volver.",
+    "autor": "Marta Jiménez Serrano",
+    "obra": "Oxígeno",
+    "pagina": 47,
+    "categorias": ["Vida", "Psicología"],
+    "favorita": false
+  },
+  {
+    "id": "3",
+    "cita": "Hay lugares en el mundo donde el tiempo no pasa sino que se acumula, como polvo sobre los muebles de una casa cerrada.",
+    "autor": "Juan Tallón",
+    "obra": "Mil cosas que no te he dicho",
+    "pagina": 12,
+    "categorias": ["Literatura", "Vida"],
+    "favorita": true
+  },
+  {
+    "id": "4",
+    "cita": "Todo lo que amamos profundamente se convierte en una parte de nosotros mismos.",
+    "autor": "Juan Tallón",
+    "obra": "Mil cosas que no te he dicho",
+    "pagina": 88,
+    "categorias": ["Amor", "Vida"],
+    "favorita": false
+  },
+  {
+    "id": "5",
+    "cita": "La soledad no es la ausencia de gente, sino la ausencia de propósito.",
+    "autor": "Marta Jiménez Serrano",
+    "obra": "Oxígeno",
+    "pagina": 134,
+    "categorias": ["Psicología", "Vida"],
+    "favorita": true
+  }
+]

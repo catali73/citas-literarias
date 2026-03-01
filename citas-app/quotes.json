@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "cita": "Sobrevivir no es lo mismo que vivir, aunque a veces tengamos que conformarnos con lo primero para llegar a lo segundo.",
+    "autor": "Marta Jiménez Serrano",
+    "obra": "Oxígeno",
+    "categorias": ["Vida", "Supervivencia"],
+    "favorita": true,
+    "pagina": 23
+  },
+  {
+    "id": "2",
+    "cita": "El cuerpo recuerda lo que la mente preferiría olvidar. Esa es su sabiduría y también su crueldad.",
+    "autor": "Marta Jiménez Serrano",
+    "obra": "Oxígeno",
+    "categorias": ["Cuerpo", "Memoria"],
+    "favorita": false,
+    "pagina": 47
+  },
+  {
+    "id": "3",
+    "cita": "Hay palabras que no se dicen porque contenerlas es la única forma de que no destruyan todo.",
+    "autor": "Juan Tallón",
+    "obra": "Mil cosas",
+    "categorias": ["Silencio", "Amor"],
+    "favorita": true,
+    "pagina": 112
+  },
+  {
+    "id": "4",
+    "cita": "La literatura no sirve para nada y eso es exactamente lo que la hace imprescindible.",
+    "autor": "Juan Tallón",
+    "obra": "Mil cosas",
+    "categorias": ["Literatura"],
+    "favorita": false,
+    "pagina": 89
+  },
+  {
+    "id": "5",
+    "cita": "Creía que el tiempo lo curaba todo. Ahora sé que solo lo cambia de forma.",
+    "autor": "Marta Jiménez Serrano",
+    "obra": "Oxígeno",
+    "categorias": ["Tiempo", "Dolor"],
+    "favorita": true,
+    "pagina": 156
+  }
+]
