@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+"""
+Sync Notion citations database -> quotes.json
+Executed by GitHub Actions every hour.
+
+Required env vars:
+  NOTION_TOKEN       -> Integration token (secret_...)
+  NOTION_DATABASE_ID -> Database ID (from Notion URL)
+"""
+
 import json
 import os
 import sys
@@ -14,6 +24,7 @@ HEADERS = {
     "Content-Type": "application/json",
 }
 
+
 def notion_request(url, method="GET", data=None):
     body = json.dumps(data).encode() if data else None
     req = urllib.request.Request(url, data=body, headers=HEADERS, method=method)
@@ -24,73 +35,101 @@ def notion_request(url, method="GET", data=None):
         print(f"HTTP Error {e.code}: {e.read().decode()}")
         sys.exit(1)
 
+
 def get_all_pages():
+    """Paginate through all Notion database entries."""
     pages = []
     start_cursor = None
+
     while True:
         body = {"page_size": 100}
         if start_cursor:
             body["start_cursor"] = start_cursor
+
         result = notion_request(
             f"https://api.notion.com/v1/databases/{DATABASE_ID}/query",
             method="POST",
             data=body,
         )
+
         pages.extend(result.get("results", []))
+
         if not result.get("has_more"):
             break
         start_cursor = result.get("next_cursor")
+
     return pages
 
+
 def extract_text(prop):
+    """Extract plain text from Notion rich_text or title property."""
     if not prop:
         return ""
     items = prop.get("rich_text") or prop.get("title") or []
     return "".join(item.get("plain_text", "") for item in items)
 
+
 def extract_multi_select(prop):
+    """Extract list of multi-select option names."""
     if not prop:
         return []
     return [opt.get("name", "") for opt in prop.get("multi_select", [])]
 
+
 def extract_number(prop):
+    """Extract number value."""
     if not prop:
         return None
     return prop.get("number")
 
+
 def extract_checkbox(prop):
+    """Extract checkbox boolean."""
     if not prop:
         return False
     return prop.get("checkbox", False)
 
+
 def parse_page(page):
+    """Convert a Notion page to a quote dict."""
     props = page.get("properties", {})
     page_id = page["id"].replace("-", "")
+
     return {
         "id": page_id,
         "cita": extract_text(props.get("Cita") or props.get("Name") or props.get("Nombre")),
         "autor": extract_text(props.get("Autor")),
         "obra": extract_text(props.get("Obra")),
-        "pagina": extract_number(props.get("Pagina") or props.get("Pagina")),
-        "categorias": extract_multi_select(props.get("Categoria") or props.get("Categoria")),
+        "pagina": extract_number(props.get("Pagina") or props.get("Página")),
+        "categorias": extract_multi_select(props.get("Categoria") or props.get("Categoría")),
         "favorita": extract_checkbox(props.get("Favorita")),
     }
 
+
 def main():
     if not NOTION_TOKEN or not DATABASE_ID:
-        print("Missing NOTION_TOKEN or NOTION_DATABASE_ID")
+        print("Missing NOTION_TOKEN or NOTION_DATABASE_ID environment variables.")
         sys.exit(1)
+
     print(f"Fetching from Notion database: {DATABASE_ID[:8]}...")
     pages = get_all_pages()
     print(f"Found {len(pages)} pages")
+
     quotes = [parse_page(p) for p in pages]
     quotes = [q for q in quotes if q["cita"].strip()]
     print(f"{len(quotes)} valid quotes")
+
     with open("quotes.json", "w", encoding="utf-8") as f:
         json.dump(quotes, f, ensure_ascii=False, indent=2)
+
     with open("sync-meta.json", "w", encoding="utf-8") as f:
-        json.dump({"synced_at": datetime.now(timezone.utc).isoformat(), "total": len(quotes)}, f)
-    print(f"Done")
+        json.dump({
+            "synced_at": datetime.now(timezone.utc).isoformat(),
+            "total": len(quotes)
+        }, f)
+
+    print(f"quotes.json written with {len(quotes)} quotes")
+
 
 if __name__ == "__main__":
     main()
