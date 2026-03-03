@@ -106,7 +106,7 @@ def parse_page(page):
     return {
         "id": page_id,
         "cita": extract_text(props.get("Cita") or props.get("Name") or props.get("Nombre")),
-        "autor": extract_text(props.get("Autor")),,
+        "autor": extract_text(props.get("Autor")),
         "obra": extract_text(props.get("Obra")),
         "pagina": extract_number(props.get("Página") or props.get("Pagina")),
         "categorias": extract_multi_select(props.get("Categoría") or props.get("Categoria")),
