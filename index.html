@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Citas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f3ed;
+      --surface: #ede8e0;
+      --border: #d5cdc0;
+      --gold: #8a6f3e;
+      --gold-light: #c9a96e;
+      --ink: #1e1a15;
+      --ink-dim: #6b6050;
+      --red: #a0291e;
+      --white: #fdfaf6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Subtle paper texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .btn-icon {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--ink-dim);
+      padding: 0.45rem 1rem;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-icon:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .btn-icon.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--white);
+    }
+
+    /* Stats bar */
+    .stats {
+      display: flex;
+      gap: 2rem;
+      padding: 0.7rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      background: var(--surface);
+    }
+
+    .stats span strong {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* Filters panel */
+    #filters-panel {
+      display: none;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2.5rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    #filters-panel.open { display: flex; }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 180px;
+    }
+
+    .filter-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .filter-group select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      padding: 0.5rem 0.8rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .filter-group select:focus {
+      border-color: var(--gold);
+    }
+
+    .filter-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--ink-dim);
+    }
+
+    .tag:hover, .tag.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(138, 111, 62, 0.07);
+    }
+
+    /* ── MODO: 3 CITAS ── */
+    main {
+      flex: 1;
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Título de sección */
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold-light);
+      opacity: 0.5;
+    }
+
+    /* Grid de 3 citas */
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1100px;
+      width: 100%;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.5s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .quote-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .quote-card:hover {
+      border-color: var(--gold-light);
+      box-shadow: 0 4px 20px rgba(138,111,62,0.08);
+    }
+
+    .card-ornament {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      color: var(--gold-light);
+      line-height: 1;
+      opacity: 0.5;
+    }
+
+    .card-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--ink);
+      flex: 1;
+    }
+
+    .card-meta {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .card-autor {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .card-obra {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--ink-dim);
+    }
+
+    .card-cats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.4rem;
+    }
+
+    .cat-badge {
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
+      color: var(--ink-dim);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Botón refrescar */
+    .refresh-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--ink-dim);
+      padding: 0.7rem 1.8rem;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .refresh-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ── VISTA FAVORITAS ── */
+    .favs-list {
+      max-width: 800px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .fav-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .fav-card .card-text { font-size: 1.05rem; }
+
+    .fav-card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid var(--border);
+      padding-top: 0.8rem;
+    }
+
+    /* Botones */
+    .btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--ink-dim);
+      padding: 0.45rem 1rem;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .btn:hover { border-color: var(--gold); color: var(--gold); }
+    .btn.favorita { border-color: var(--red); color: var(--red); }
+
+    /* No results */
+    .no-results {
+      text-align: center;
+      padding: 4rem;
+      color: var(--ink-dim);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+    }
+
+    /* Counter */
+    .grid-counter {
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-dim);
+      opacity: 0.6;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--gold);
+      color: var(--white);
+      padding: 0.8rem 1.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1.2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-dim);
+      opacity: 0.5;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .quotes-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 1rem 1.2rem; }
+      .stats { padding: 0.6rem 1.2rem; gap: 1rem; flex-wrap: wrap; }
+      #filters-panel { padding: 1rem 1.2rem; }
+      main { padding: 2rem 1rem; }
+      .quotes-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Mis Citas</div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btn-favs-view" onclick="toggleFavsView()">♡ Favoritas</button>
+      <button class="btn-icon" id="btn-filters" onclick="toggleFilters()">≡ Filtros</button>
+    </div>
+  </header>
+
+  <div class="stats" id="stats-bar">
+    <span><strong id="stat-total">0</strong> citas</span>
+    <span><strong id="stat-filtered">0</strong> visibles</span>
+    <span><strong id="stat-favs">0</strong> favoritas</span>
+  </div>
+
+  <div id="filters-panel">
+    <div class="filter-group">
+      <div class="filter-label">Autor</div>
+      <select id="filter-autor" onchange="applyFilters()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Obra</div>
+      <select id="filter-obra" onchange="applyFilters()">
+        <option value="">Todas</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Categoría</div>
+      <div class="filter-tags" id="filter-cats"></div>
+    </div>
+    <div class="filter-group" style="justify-content: flex-end; margin-left: auto;">
+      <button class="btn" onclick="clearFilters()">Limpiar filtros</button>
+    </div>
+  </div>
+
+  <main id="main-area">
+
+    <!-- Vista 3 citas -->
+    <div id="quotes-view" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+      <div class="section-label">Selección del día</div>
+      <div class="quotes-grid" id="quotes-grid"></div>
+      <button class="refresh-btn" onclick="refreshQuotes()">↻ Nuevas citas</button>
+      <div class="grid-counter" id="grid-counter"></div>
+    </div>
+
+    <!-- Vista favoritas -->
+    <div id="favs-view" style="display:none;width:100%;display:none;flex-direction:column;align-items:center;">
+      <div class="section-label">Mis favoritas</div>
+      <div class="favs-list" id="favs-container"></div>
+    </div>
+
+    <div class="no-results" id="no-results" style="display:none;">
+      No hay citas con estos filtros.
+    </div>
+
+  </main>
+
+  <footer>Sincronizado desde Notion · <span id="last-sync">—</span></footer>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let allQuotes = [];
+    let filtered = [];
+    let currentSelection = []; // las 3 citas mostradas
+    let favorites = new Set(JSON.parse(localStorage.getItem('citas-favs') || '[]'));
+    let showFavs = false;
+    let activeCategories = new Set();
+
+    // ── Carga ──
+    async function loadQuotes() {
+      try {
+        const res = await fetch('quotes.json?t=' + Date.now());
+        allQuotes = await res.json();
+        allQuotes.forEach(q => { if (favorites.has(q.id)) q.favorita = true; });
+        init();
+      } catch(e) {
+        document.getElementById('quotes-grid').innerHTML = '<p style="color:var(--ink-dim)">Error cargando citas.</p>';
+      }
+    }
+
+    function init() {
+      buildFilters();
+      applyFilters();
+      updateStats();
+      document.getElementById('last-sync').textContent = allQuotes.length + ' citas';
+    }
+
+    // Normaliza texto: trim + colapsa espacios múltiples
+    function norm(s) { return (s||'').trim().replace(/\s+/g, ' '); }
+
+    // Normaliza todos los autores/obras al cargar
+    function normalizeQuotes() {
+      allQuotes.forEach(q => {
+        q.autor = norm(q.autor);
+        q.obra  = norm(q.obra);
+      });
+    }
+
+    function buildFilters() {
+      normalizeQuotes();
+      const autores = [...new Set(allQuotes.map(q => q.autor).filter(Boolean))].sort((a,b) => a.localeCompare(b, 'es'));
+      const obras   = [...new Set(allQuotes.map(q => q.obra).filter(Boolean))].sort((a,b) => a.localeCompare(b, 'es'));
+      const cats    = [...new Set(allQuotes.flatMap(q => q.categorias || []))].sort();
+
+      const selAutor = document.getElementById('filter-autor');
+      autores.forEach(a => selAutor.add(new Option(a, a)));
+
+      const selObra = document.getElementById('filter-obra');
+      obras.forEach(o => selObra.add(new Option(o, o)));
+
+      const catsEl = document.getElementById('filter-cats');
+      cats.forEach(c => {
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.textContent = c;
+        tag.onclick = () => {
+          activeCategories.has(c) ? activeCategories.delete(c) : activeCategories.add(c);
+          tag.classList.toggle('active');
+          applyFilters();
+        };
+        catsEl.appendChild(tag);
+      });
+    }
+
+    function applyFilters() {
+      const autor = document.getElementById('filter-autor').value;
+      const obra  = document.getElementById('filter-obra').value;
+
+      filtered = allQuotes.filter(q => {
+        if (autor && q.autor !== autor) return false;
+        if (obra  && q.obra  !== obra)  return false;
+        if (activeCategories.size > 0) {
+          if (!q.categorias || !q.categorias.some(c => activeCategories.has(c))) return false;
+        }
+        return true;
+      });
+
+      updateStats();
+
+      if (showFavs) { renderFavs(); return; }
+
+      if (filtered.length === 0) {
+        document.getElementById('quotes-view').style.display = 'none';
+        document.getElementById('no-results').style.display = 'block';
+      } else {
+        document.getElementById('no-results').style.display = 'none';
+        document.getElementById('quotes-view').style.display = 'flex';
+        pickRandomThree();
+      }
+    }
+
+    // ── Seleccionar 3 aleatorias ──
+    function pickRandomThree() {
+      const pool = [...filtered];
+      // Mezclar Fisher-Yates
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      currentSelection = pool.slice(0, Math.min(3, pool.length));
+      renderGrid();
+    }
+
+    function refreshQuotes() {
+      pickRandomThree();
+      // Re-trigger animation
+      const grid = document.getElementById('quotes-grid');
+      grid.style.animation = 'none';
+      void grid.offsetWidth;
+      grid.style.animation = 'fadeUp 0.4s ease';
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('quotes-grid');
+      grid.innerHTML = currentSelection.map(q => cardHTML(q)).join('');
+      document.getElementById('grid-counter').textContent =
+        `Mostrando 3 de ${filtered.length} citas`;
+    }
+
+    function cardHTML(q) {
+      const isFav = favorites.has(q.id) || q.favorita;
+      const cats  = (q.categorias || []).map(c => `<span class="cat-badge">${c}</span>`).join('');
+      return `
+        <div class="quote-card">
+          <div class="card-ornament">&ldquo;</div>
+          <div class="card-text">${q.cita}</div>
+          <div class="card-meta">
+            <div class="card-autor">${(q.autor||'').toUpperCase()}</div>
+            <div class="card-obra">${q.obra||''}</div>
+            ${cats ? `<div class="card-cats">${cats}</div>` : ''}
+          </div>
+          <div class="card-actions">
+            <button class="btn ${isFav?'favorita':''}" onclick="toggleFavCard('${q.id}', this)">
+              ${isFav ? '♥' : '♡'} Favorita
+            </button>
+            <button class="btn" onclick="shareQ('${q.id}')">𝕏</button>
+          </div>
+        </div>`;
+    }
+
+    function toggleFavCard(id, btn) {
+      const q = allQuotes.find(x => x.id === id);
+      if (!q) return;
+      if (favorites.has(id)) {
+        favorites.delete(id); q.favorita = false;
+        btn.textContent = '♡ Favorita'; btn.classList.remove('favorita');
+      } else {
+        favorites.add(id); q.favorita = true;
+        btn.textContent = '♥ Favorita'; btn.classList.add('favorita');
+      }
+      localStorage.setItem('citas-favs', JSON.stringify([...favorites]));
+      updateStats();
+      showToast(favorites.has(id) ? 'Añadida a favoritas' : 'Eliminada de favoritas');
+    }
+
+    function shareQ(id) {
+      const q = allQuotes.find(x => x.id === id);
+      if (!q) return;
+      const text = `"${q.cita}"\n\n— ${q.autor}, ${q.obra}`;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'width=600,height=400');
+    }
+
+    // ── Favoritas ──
+    function toggleFavsView() {
+      showFavs = !showFavs;
+      document.getElementById('btn-favs-view').classList.toggle('active', showFavs);
+      document.getElementById('quotes-view').style.display = showFavs ? 'none' : 'flex';
+      document.getElementById('favs-view').style.display   = showFavs ? 'flex' : 'none';
+      document.getElementById('no-results').style.display  = 'none';
+      if (showFavs) renderFavs();
+    }
+
+    function renderFavs() {
+      const favQuotes = allQuotes.filter(q => favorites.has(q.id) || q.favorita);
+      const container = document.getElementById('favs-container');
+      if (favQuotes.length === 0) {
+        container.innerHTML = '<div class="no-results">No tienes citas favoritas aún.</div>';
+        return;
+      }
+      container.innerHTML = favQuotes.map(q => `
+        <div class="fav-card">
+          <div class="card-text">"${q.cita}"</div>
+          <div class="fav-card-bottom">
+            <div>
+              <div class="card-autor">${(q.autor||'').toUpperCase()}</div>
+              <div class="card-obra" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink-dim)">
+                ${q.obra||''}${q.pagina ? ` · p.${q.pagina}` : ''}
+              </div>
+            </div>
+            <div style="display:flex;gap:0.5rem">
+              <button class="btn" onclick="shareQ('${q.id}')">𝕏</button>
+              <button class="btn" onclick="removeFav('${q.id}')">✕</button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function removeFav(id) {
+      favorites.delete(id);
+      const q = allQuotes.find(x => x.id === id);
+      if (q) q.favorita = false;
+      localStorage.setItem('citas-favs', JSON.stringify([...favorites]));
+      updateStats(); renderFavs();
+    }
+
+    // ── Filtros ──
+    function toggleFilters() {
+      document.getElementById('filters-panel').classList.toggle('open');
+      document.getElementById('btn-filters').classList.toggle('active');
+    }
+
+    function clearFilters() {
+      document.getElementById('filter-autor').value = '';
+      document.getElementById('filter-obra').value  = '';
+      activeCategories.clear();
+      document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+      applyFilters();
+    }
+
+    // ── Stats & Toast ──
+    function updateStats() {
+      document.getElementById('stat-total').textContent    = allQuotes.length;
+      document.getElementById('stat-filtered').textContent = filtered.length;
+      document.getElementById('stat-favs').textContent     = allQuotes.filter(q => favorites.has(q.id) || q.favorita).length;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    loadQuotes();
+  </script>
+</body>
+</html>
