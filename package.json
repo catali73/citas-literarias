@@ -1,0 +1,16 @@
+{
+  "name": "citas-literarias",
+  "version": "2.0.0",
+  "description": "Biblioteca personal de citas literarias",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

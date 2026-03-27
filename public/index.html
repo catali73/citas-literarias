@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Personal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0e0c0a;
+      --bg2:       #141210;
+      --paper:     #1c1814;
+      --gold:      #c9a84c;
+      --gold-dim:  #8a6f32;
+      --cream:     #e8dfc8;
+      --text:      #d4c9b0;
+      --muted:     #7a6e5e;
+      --border:    #2e2820;
+      --accent:    #9b3d3d;
+      --radius:    3px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'EB Garamond', Georgia, serif;
+      min-height: 100vh;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9998; opacity: 0.35;
+    }
+
+    /* ── HEADER ───────────────────────────────────────────────── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      backdrop-filter: blur(12px);
+      padding: 1.25rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-family: 'Cormorant SC', serif;
+      color: var(--gold);
+      font-size: 1rem;
+      letter-spacing: 0.3em;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .logo small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.6rem;
+      letter-spacing: 0.5em;
+      margin-top: 2px;
+    }
+
+    nav { display: flex; gap: 0.25rem; }
+
+    .nav-btn {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      background: none; border: none; cursor: pointer;
+      padding: 0.4rem 0.9rem;
+      transition: color 0.2s;
+      border-bottom: 1px solid transparent;
+    }
+    .nav-btn:hover { color: var(--cream); }
+    .nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* ── VIEWS ───────────────────────────────────────────────── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    main { padding: 3rem 2.5rem; max-width: 1400px; margin: 0 auto; }
+
+    /* ── LOADING SKELETONS ──────────────────────────────────── */
+    .skeleton-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1.25rem;
+    }
+    .skeleton-card {
+      aspect-ratio: 2/3;
+      background: linear-gradient(90deg, var(--bg2) 25%, var(--paper) 50%, var(--bg2) 75%);
+      background-size: 300% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius);
+    }
+    @keyframes shimmer {
+      0%   { background-position: 300% 0; }
+      100% { background-position: -300% 0; }
+    }
+
+    /* ── BOOK GRID ───────────────────────────────────────────── */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .book-card {
+      position: relative;
+      aspect-ratio: 2/3;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      background: var(--bg2);
+    }
+    .book-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.8);
+    }
+
+    .book-cover {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.3s;
+    }
+    .book-card:hover .book-cover { filter: brightness(0.85); }
+
+    /* Placeholder for books without cover */
+    .book-no-cover {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 1rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+    }
+    .book-no-cover .nc-icon { font-size: 2rem; margin-bottom: 0.75rem; opacity: 0.3; }
+    .book-no-cover .nc-title {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .book-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(14,12,10,0.97) 60%);
+      padding: 2.5rem 0.75rem 0.75rem;
+      transform: translateY(0);
+    }
+    .book-title {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--cream);
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .book-meta {
+      font-size: 0.65rem;
+      color: var(--gold-dim);
+      margin-top: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Quote count badge */
+    .quote-badge {
+      position: absolute; top: 0.5rem; right: 0.5rem;
+      background: rgba(14,12,10,0.8);
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      padding: 0.15rem 0.4rem;
+      border-radius: 2px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ── MODAL ───────────────────────────────────────────────── */
+    #modal {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(10,9,8,0.92);
+      backdrop-filter: blur(6px);
+      display: none; align-items: flex-start; justify-content: center;
+      overflow-y: auto; padding: 2rem 1rem;
+    }
+    #modal.open { display: flex; }
+
+    .modal-panel {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      width: 100%; max-width: 800px;
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      width: 2rem; height: 2rem;
+      font-size: 1rem; line-height: 1;
+      transition: all 0.2s; z-index: 10;
+    }
+    .modal-close:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Book header inside modal */
+    .modal-book-header {
+      display: flex; gap: 2rem; padding: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-book-cover {
+      width: 120px; min-width: 120px;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .modal-no-cover {
+      width: 120px; min-width: 120px;
+      aspect-ratio: 2/3;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: var(--radius);
+      font-size: 2rem; opacity: 0.3;
+    }
+    .modal-book-info { display: flex; flex-direction: column; justify-content: center; }
+    .modal-book-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; color: var(--cream);
+      line-height: 1.3; margin-bottom: 0.5rem;
+    }
+    .modal-book-author {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.85rem; letter-spacing: 0.15em;
+      color: var(--gold); margin-bottom: 0.75rem;
+    }
+    .modal-book-stats {
+      font-size: 0.8rem; color: var(--muted);
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .modal-book-stats span { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* Stars rating */
+    .stars { color: var(--gold); letter-spacing: 0.05em; }
+
+    /* Quotes inside modal */
+    .modal-quotes { padding: 1.5rem 2rem 2rem; }
+
+    .modal-quote {
+      border-left: 2px solid var(--gold-dim);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--bg2);
+      transition: border-color 0.2s;
+    }
+    .modal-quote:hover { border-left-color: var(--gold); }
+    .modal-quote.is-fav { border-left-color: var(--accent); }
+
+    .mq-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+    }
+    .mq-footer {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .mq-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .mq-tag {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.62rem; letter-spacing: 0.12em;
+      color: var(--muted); border: 1px solid var(--border);
+      padding: 0.1rem 0.5rem; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mq-tag:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+    .mq-right { display: flex; align-items: center; gap: 0.75rem; }
+    .mq-page { font-size: 0.72rem; color: var(--muted); }
+
+    .fav-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.3rem 0.7rem;
+      font-size: 0.8rem;
+      font-family: 'EB Garamond', serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .fav-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .fav-btn.active { border-color: var(--accent); color: var(--accent); }
+
+    /* ── RANDOM / ALEATORIAS ─────────────────────────────────── */
+    .random-section { max-width: 900px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.68rem; letter-spacing: 0.5em;
+      color: var(--gold-dim); margin-bottom: 2.5rem;
+      text-align: center;
+    }
+
+    .random-cards { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .random-card {
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--paper);
+      transition: border-color 0.25s;
+    }
+    .random-card:hover { border-color: var(--gold-dim); }
+
+    /* Blurred cover as card background */
+    .rc-bg {
+      position: absolute; inset: -30px;
+      background-image: var(--cover);
+      background-size: cover; background-position: center;
+      filter: blur(28px) brightness(0.1) saturate(0.4);
+      transform: scale(1.1);
+    }
+
+    .rc-content {
+      position: relative; z-index: 1;
+      padding: 2rem 2.5rem;
+      display: flex; gap: 1.5rem; align-items: flex-start;
+    }
+
+    .rc-thumb {
+      width: 56px; min-width: 56px;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      margin-top: 0.25rem;
+    }
+    .rc-thumb-empty {
+      width: 56px; min-width: 56px;
+      aspect-ratio: 2/3;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; opacity: 0.3;
+      margin-top: 0.25rem;
+    }
+
+    .rc-body { flex: 1; }
+    .rc-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.2rem; line-height: 1.7;
+      color: var(--cream); margin-bottom: 1.25rem;
+    }
+    .rc-quote::before { content: '\201C'; color: var(--gold-dim); opacity: 0.6; margin-right: 0.1em; }
+    .rc-quote::after  { content: '\201D'; color: var(--gold-dim); opacity: 0.6; margin-left: 0.1em; }
+
+    .rc-footer {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .rc-attr { line-height: 1.5; }
+    .rc-autor {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.78rem; letter-spacing: 0.15em; color: var(--gold);
+    }
+    .rc-obra { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+    .rc-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .rc-tag {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.6rem; letter-spacing: 0.12em;
+      color: var(--muted); border: 1px solid var(--border);
+      padding: 0.1rem 0.45rem;
+    }
+
+    .random-actions {
+      text-align: center; margin-top: 2.5rem;
+    }
+    .btn-refresh {
+      background: none;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.8rem; letter-spacing: 0.3em;
+      padding: 0.75rem 2.5rem; cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 0.75rem;
+    }
+    .btn-refresh:hover { background: var(--gold); color: var(--bg); }
+    .btn-refresh svg { transition: transform 0.4s; }
+    .btn-refresh:hover svg { transform: rotate(180deg); }
+
+    /* ── FAVORITES ───────────────────────────────────────────── */
+    .favs-section { max-width: 820px; margin: 0 auto; }
+    .favs-empty {
+      text-align: center; padding: 5rem 2rem;
+      color: var(--muted); font-style: italic; font-size: 1.1rem;
+    }
+    .fav-count {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.68rem; letter-spacing: 0.4em;
+      color: var(--muted); margin-bottom: 2rem; text-align: center;
+    }
+
+    /* Fav card = similar to modal-quote but with book thumb */
+    .fav-card {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent);
+      background: var(--paper);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    .fav-card:hover { border-color: var(--gold-dim); border-left-color: var(--accent); }
+
+    .fav-thumb {
+      width: 48px; min-width: 48px;
+      aspect-ratio: 2/3;
+      object-fit: cover; border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .fav-thumb-empty {
+      width: 48px; min-width: 48px;
+      aspect-ratio: 2/3;
+      background: var(--bg2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; opacity: 0.3; border-radius: 2px;
+    }
+
+    .fav-body { flex: 1; }
+    .fav-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1rem; line-height: 1.6;
+      color: var(--cream); margin-bottom: 0.75rem;
+    }
+    .fav-attr {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.75rem; letter-spacing: 0.12em; color: var(--gold);
+    }
+    .fav-obra { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-top: 0.2rem; }
+
+    .fav-unfav {
+      background: none; border: none;
+      color: var(--accent); font-size: 1.1rem;
+      cursor: pointer; padding: 0.25rem;
+      transition: opacity 0.2s; align-self: flex-start;
+      margin-top: 0.1rem;
+    }
+    .fav-unfav:hover { opacity: 0.6; }
+
+    /* ── ERROR STATE ─────────────────────────────────────────── */
+    .error-state {
+      text-align: center; padding: 4rem 2rem;
+      color: var(--muted);
+    }
+    .error-state h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--cream); margin-bottom: 1rem;
+    }
+    .error-state pre {
+      font-size: 0.75rem; color: #c97070;
+      background: var(--bg2); padding: 1rem;
+      border: 1px solid var(--border); max-width: 600px;
+      margin: 1rem auto; text-align: left; overflow: auto;
+    }
+
+    /* ── TOAST ───────────────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(4rem);
+      background: var(--paper); border: 1px solid var(--gold-dim);
+      color: var(--cream); padding: 0.7rem 1.5rem;
+      font-family: 'EB Garamond', serif; font-size: 0.9rem;
+      transition: transform 0.3s ease; z-index: 9999; white-space: nowrap;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── DIVIDER ─────────────────────────────────────────────── */
+    .divider {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin: 0 0 2.5rem; color: var(--border);
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .divider-ornament { color: var(--gold-dim); font-size: 1rem; opacity: 0.5; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      header { padding: 1rem 1.25rem; }
+      main   { padding: 2rem 1.25rem; }
+      .nav-btn { font-size: 0.68rem; padding: 0.4rem 0.6rem; }
+      .modal-book-header { flex-direction: column; gap: 1.25rem; }
+      .modal-book-cover, .modal-no-cover { width: 100px; }
+      .modal-quotes { padding: 1.25rem 1.25rem 1.5rem; }
+      .rc-content { padding: 1.5rem; }
+      .rc-quote { font-size: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .books-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.85rem; }
+      .skeleton-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.85rem; }
+      .rc-content { flex-direction: column; }
+      .rc-thumb, .rc-thumb-empty { width: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    Biblioteca
+    <small>Personal</small>
+  </div>
+  <nav>
+    <button class="nav-btn active" data-view="biblioteca">Biblioteca</button>
+    <button class="nav-btn"        data-view="aleatorias">Aleatorias</button>
+    <button class="nav-btn"        data-view="favoritas">Favoritas</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ── BIBLIOTECA ─────────────────────────────────────── -->
+  <section id="view-biblioteca" class="view active">
+    <div id="biblioteca-content">
+      <!-- Skeleton on load -->
+      <div class="skeleton-grid" id="skeleton">
+        ${Array(12).fill('<div class="skeleton-card"></div>').join('')}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ALEATORIAS ─────────────────────────────────────── -->
+  <section id="view-aleatorias" class="view">
+    <div class="random-section">
+      <p class="section-label">― Tres citas al azar ―</p>
+      <div class="random-cards" id="random-cards">
+        <div style="text-align:center;color:var(--muted);padding:3rem;font-style:italic">Cargando citas…</div>
+      </div>
+      <div class="random-actions">
+        <button class="btn-refresh" onclick="loadRandom()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/>
+          </svg>
+          Otras tres citas
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAVORITAS ──────────────────────────────────────── -->
+  <section id="view-favoritas" class="view">
+    <div class="favs-section">
+      <p class="section-label">― Citas favoritas ―</p>
+      <div id="favs-content"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── MODAL (book detail) ────────────────────────────────── -->
+<div id="modal" onclick="closeModalIfBackdrop(event)">
+  <div class="modal-panel">
+    <button class="modal-close" onclick="closeModal()" title="Cerrar">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────────
+let library   = []     // [{id, nombre, author, portada, quotes:[…]}, …]
+let allQuotes = []     // flat list, for favorites
+let currentView = 'biblioteca'
+let randomLoaded = false
+
+// ─────────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────────
+async function init() {
+  setupNav()
+  try {
+    library = await fetchLibrary()
+    allQuotes = library.flatMap(b => b.quotes)
+    renderBiblioteca()
+  } catch (err) {
+    document.getElementById('biblioteca-content').innerHTML = `
+      <div class="error-state">
+        <h2>No se pudo cargar la biblioteca</h2>
+        <p>Verifica que el servidor tiene acceso a Notion.</p>
+        <pre>${esc(err.message)}</pre>
+      </div>`
+  }
+}
+
+// ─────────────────────────────────────────────────
+// Fetch helpers
+// ─────────────────────────────────────────────────
+async function fetchLibrary() {
+  const r = await fetch('/api/library')
+  if (!r.ok) throw new Error(await r.text())
+  return r.json()
+}
+
+async function fetchRandom() {
+  const r = await fetch('/api/random')
+  if (!r.ok) throw new Error(await r.text())
+  return r.json()
+}
+
+async function patchFavorite(id, favorita) {
+  const r = await fetch(`/api/quotes/${id}/favorite`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ favorita }),
+  })
+  if (!r.ok) throw new Error(await r.text())
+  return r.json()
+}
+
+// ─────────────────────────────────────────────────
+// Navigation
+// ─────────────────────────────────────────────────
+function setupNav() {
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => showView(btn.dataset.view))
+  })
+}
+
+function showView(name) {
+  currentView = name
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'))
+  document.querySelectorAll('.nav-btn').forEach(el => {
+    el.classList.toggle('active', el.dataset.view === name)
+  })
+  document.getElementById('view-' + name).classList.add('active')
+
+  if (name === 'aleatorias' && !randomLoaded) loadRandom()
+  if (name === 'favoritas') renderFavoritas()
+}
+
+// ─────────────────────────────────────────────────
+// Biblioteca — book grid
+// ─────────────────────────────────────────────────
+function renderBiblioteca() {
+  const el = document.getElementById('biblioteca-content')
+  if (!library.length) {
+    el.innerHTML = `<div class="error-state"><h2>Biblioteca vacía</h2>
+      <p>Aún no hay libros con citas en Notion.</p></div>`
+    return
+  }
+
+  el.innerHTML = `<div class="books-grid">${library.map(bookCard).join('')}</div>`
+}
+
+function bookCard(b) {
+  const coverHtml = b.portada
+    ? `<img class="book-cover" src="${esc(b.portada)}" alt="${esc(b.nombre)}" loading="lazy">`
+    : `<div class="book-no-cover"><div class="nc-icon">📖</div><div class="nc-title">${esc(b.nombre)}</div></div>`
+
+  const stars = b.rating ? '★'.repeat(Math.round(b.rating)) + '☆'.repeat(5 - Math.round(b.rating)) : ''
+
+  return `
+    <div class="book-card" onclick="openBook('${esc(b.id)}')" title="${esc(b.nombre)}">
+      ${coverHtml}
+      <div class="quote-badge">${b.quotes.length}</div>
+      <div class="book-overlay">
+        <div class="book-title">${esc(b.nombre)}</div>
+        <div class="book-meta">${b.author ? esc(b.author) : ''}${stars ? ' · ' + stars : ''}</div>
+      </div>
+    </div>`
+}
+
+// ─────────────────────────────────────────────────
+// Book modal
+// ─────────────────────────────────────────────────
+function openBook(id) {
+  const book = library.find(b => b.id === id)
+  if (!book) return
+
+  const modal = document.getElementById('modal')
+  document.getElementById('modal-content').innerHTML = renderModalContent(book)
+  modal.classList.add('open')
+  document.body.style.overflow = 'hidden'
+}
+
+function renderModalContent(b) {
+  const coverHtml = b.portada
+    ? `<img class="modal-book-cover" src="${esc(b.portada)}" alt="${esc(b.nombre)}">`
+    : `<div class="modal-no-cover">📖</div>`
+
+  const stars = b.rating
+    ? `<span><span class="stars">${'★'.repeat(Math.round(b.rating))}${'☆'.repeat(5 - Math.round(b.rating))}</span></span>`
+    : ''
+  const dateRead = b.dateRead
+    ? `<span>📅 ${new Date(b.dateRead).toLocaleDateString('es-ES', { year:'numeric', month:'long' })}</span>`
+    : ''
+
+  const quotesHtml = b.quotes.map(q => modalQuoteHtml(q, b)).join('')
+
+  return `
+    <div class="modal-book-header">
+      ${coverHtml}
+      <div class="modal-book-info">
+        <div class="modal-book-title">${esc(b.nombre)}</div>
+        ${b.author ? `<div class="modal-book-author">${esc(b.author)}</div>` : ''}
+        <div class="modal-book-stats">
+          ${stars}${dateRead}
+          <span>📝 ${b.quotes.length} cita${b.quotes.length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-quotes">
+      ${quotesHtml}
+    </div>`
+}
+
+function modalQuoteHtml(q, book) {
+  const tags = (q.categorias || []).map(c =>
+    `<span class="mq-tag" onclick="event.stopPropagation()">${esc(c)}</span>`
+  ).join('')
+  const favClass = q.favorita ? 'active' : ''
+  const favIcon  = q.favorita ? '♥ Favorita' : '♡ Favorita'
+  const pageStr  = q.pagina ? `p. ${q.pagina}` : ''
+
+  return `
+    <div class="modal-quote${q.favorita ? ' is-fav' : ''}" id="mq-${esc(q.id)}">
+      <p class="mq-text">${esc(q.cita)}</p>
+      <div class="mq-footer">
+        <div class="mq-tags">${tags}</div>
+        <div class="mq-right">
+          ${pageStr ? `<span class="mq-page">${pageStr}</span>` : ''}
+          <button class="fav-btn ${favClass}"
+            onclick="toggleFav('${esc(q.id)}', ${!q.favorita}, this, '${esc(book.id)}')">
+            ${favIcon}
+          </button>
+        </div>
+      </div>
+    </div>`
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open')
+  document.body.style.overflow = ''
+}
+
+function closeModalIfBackdrop(e) {
+  if (e.target === document.getElementById('modal')) closeModal()
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal()
+})
+
+// ─────────────────────────────────────────────────
+// Random quotes
+// ─────────────────────────────────────────────────
+async function loadRandom() {
+  randomLoaded = true
+  const container = document.getElementById('random-cards')
+  container.innerHTML = `<div style="text-align:center;color:var(--muted);padding:3rem;font-style:italic">Buscando citas…</div>`
+
+  try {
+    const quotes = await fetchRandom()
+    if (!quotes.length) {
+      container.innerHTML = `<div class="error-state"><p>No hay citas disponibles.</p></div>`
+      return
+    }
+    container.innerHTML = quotes.map(randomCardHtml).join('')
+  } catch (err) {
+    container.innerHTML = `<div class="error-state"><h2>Error</h2><pre>${esc(err.message)}</pre></div>`
+  }
+}
+
+function randomCardHtml(q) {
+  const coverStyle = q.bookPortada ? `--cover: url('${esc(q.bookPortada)}')` : ''
+  const thumb = q.bookPortada
+    ? `<img class="rc-thumb" src="${esc(q.bookPortada)}" alt="${esc(q.bookNombre)}">`
+    : `<div class="rc-thumb-empty">📖</div>`
+
+  const tags = (q.categorias || []).slice(0, 3).map(c =>
+    `<span class="rc-tag">${esc(c)}</span>`
+  ).join('')
+
+  const favClass = q.favorita ? 'active' : ''
+  const favIcon  = q.favorita ? '♥' : '♡'
+
+  return `
+    <div class="random-card" style="${coverStyle}" id="rc-${esc(q.id)}">
+      ${q.bookPortada ? '<div class="rc-bg"></div>' : ''}
+      <div class="rc-content">
+        ${thumb}
+        <div class="rc-body">
+          <p class="rc-quote">${esc(q.cita)}</p>
+          <div class="rc-footer">
+            <div class="rc-attr">
+              <div class="rc-autor">${esc(q.autor || q.bookNombre || '')}</div>
+              <div class="rc-obra">${esc(q.bookNombre || q.obra || '')}</div>
+              ${tags ? `<div class="rc-tags">${tags}</div>` : ''}
+            </div>
+            <button class="fav-btn ${favClass}" style="align-self:flex-start"
+              onclick="toggleFav('${esc(q.id)}', ${!q.favorita}, this)">
+              ${favIcon} Favorita
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`
+}
+
+// ─────────────────────────────────────────────────
+// Favorites
+// ─────────────────────────────────────────────────
+function renderFavoritas() {
+  const favs = allQuotes.filter(q => q.favorita)
+  const el = document.getElementById('favs-content')
+
+  if (!favs.length) {
+    el.innerHTML = `<div class="favs-empty">Aún no tienes citas favoritas.<br>Marca el corazón en cualquier cita.</div>`
+    return
+  }
+
+  const bookById = new Map(library.map(b => [b.id, b]))
+
+  el.innerHTML = `
+    <p class="fav-count">${favs.length} cita${favs.length !== 1 ? 's' : ''} favorita${favs.length !== 1 ? 's' : ''}</p>
+    ${favs.map(q => {
+      const book = q.bookIds?.map(id => bookById.get(id)).find(Boolean)
+      const thumb = book?.portada
+        ? `<img class="fav-thumb" src="${esc(book.portada)}" alt="${esc(book.nombre)}">`
+        : `<div class="fav-thumb-empty">📖</div>`
+      return `
+        <div class="fav-card" onclick="book && openBook('${esc(book?.id || '')}')">
+          ${thumb}
+          <div class="fav-body">
+            <p class="fav-text">${esc(q.cita)}</p>
+            <div class="fav-attr">${esc(q.autor || book?.author || '')}</div>
+            <div class="fav-obra">${esc(book?.nombre || q.obra || '')}</div>
+          </div>
+          <button class="fav-unfav" title="Quitar de favoritas"
+            onclick="event.stopPropagation(); toggleFav('${esc(q.id)}', false, this)">♥</button>
+        </div>`
+    }).join('')}`
+}
+
+// ─────────────────────────────────────────────────
+// Toggle favorite
+// ─────────────────────────────────────────────────
+async function toggleFav(quoteId, newState, btn, bookId) {
+  // Optimistic UI
+  btn.textContent = newState
+    ? (btn.classList.contains('fav-btn') ? '♥ Favorita' : '♥')
+    : (btn.classList.contains('fav-btn') ? '♡ Favorita' : '♡')
+  btn.classList.toggle('active', newState)
+
+  // Update local state
+  const q = allQuotes.find(q => q.id === quoteId)
+  if (q) q.favorita = newState
+
+  if (bookId) {
+    const book = library.find(b => b.id === bookId)
+    const bq = book?.quotes.find(q => q.id === quoteId)
+    if (bq) {
+      bq.favorita = newState
+      const el = document.getElementById(`mq-${quoteId}`)
+      if (el) el.classList.toggle('is-fav', newState)
+    }
+  }
+
+  // Persist to Notion
+  try {
+    await patchFavorite(quoteId, newState)
+    showToast(newState ? '♥ Añadida a favoritas' : 'Eliminada de favoritas')
+  } catch (err) {
+    // Rollback optimistic update
+    btn.textContent = !newState
+      ? (btn.classList.contains('fav-btn') ? '♥ Favorita' : '♥')
+      : (btn.classList.contains('fav-btn') ? '♡ Favorita' : '♡')
+    btn.classList.toggle('active', !newState)
+    if (q) q.favorita = !newState
+    showToast('Error al actualizar Notion')
+    console.error(err)
+  }
+
+  // Re-render favorites if visible
+  if (currentView === 'favoritas') renderFavoritas()
+}
+
+// ─────────────────────────────────────────────────
+// Toast
+// ─────────────────────────────────────────────────
+let toastTimer
+function showToast(msg) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.classList.add('show')
+  clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600)
+}
+
+// ─────────────────────────────────────────────────
+// Utils
+// ─────────────────────────────────────────────────
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+// Start
+init()
+</script>
+</body>
+</html>

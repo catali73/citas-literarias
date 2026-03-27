@@ -1,35 +1,22 @@
-name: Sync Notion → quotes.json
+# Este workflow ya no es necesario para el funcionamiento principal.
+# El servidor Express ahora lee de Notion directamente (con caché de 15 min).
+#
+# Se mantiene como opción de recarga manual: dispara /api/refresh en el servidor.
+# Para usarlo, añade RAILWAY_URL como secret en GitHub.
+
+name: Refrescar caché (manual)
 
 on:
-  schedule:
-    - cron: '0 * * * *'   # Every hour
-  workflow_dispatch:        # Manual trigger desde GitHub
+  workflow_dispatch:
 
 jobs:
-  sync:
+  refresh:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write       # Needed to commit quotes.json
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Sync Notion database
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-        run: python sync-notion.py
-
-      - name: Commit & push quotes.json if changed
+      - name: Ping /api/refresh
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add quotes.json sync-meta.json
-          git diff --staged --quiet || git commit -m "🔄 Sync citas desde Notion [$(date -u '+%Y-%m-%d %H:%M UTC')]"
-          git push
+          if [ -n "${{ secrets.RAILWAY_URL }}" ]; then
+            curl -s -X POST "${{ secrets.RAILWAY_URL }}/api/refresh" && echo "✅ Caché refrescada"
+          else
+            echo "ℹ️  RAILWAY_URL no configurado — nada que hacer"
+          fi
