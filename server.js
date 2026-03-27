@@ -225,4 +225,19 @@ app.post('/api/refresh', async (req, res) => {
 // SPA fallback
 app.get('*', (req, res) => res.sendFile(join(__dirname, 'public', 'index.html')))
 
-app.listen(PORT, () => console.log(`📚 Biblioteca en http://localhost:${PORT}`))
+app.listen(PORT, () => {
+  console.log(`📚 Biblioteca en http://localhost:${PORT}`)
+
+  // Calentar caché al arrancar — el primer usuario no espera
+  getData()
+    .then(d => console.log(`✅ Caché lista: ${d.library.length} libros, ${d.allQuotes.length} citas`))
+    .catch(err => console.error('⚠️  Error precargando caché:', err.message))
+
+  // Auto-refresh cada 12 min para que la caché nunca expire en frío
+  setInterval(() => {
+    cache = { data: null, at: 0 }
+    getData()
+      .then(d => console.log(`🔄 Caché refrescada: ${d.library.length} libros`))
+      .catch(err => console.error('⚠️  Error refrescando caché:', err.message))
+  }, 12 * 60 * 1000)
+})

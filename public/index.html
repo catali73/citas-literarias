@@ -564,8 +564,20 @@
     <div id="biblioteca-content">
       <!-- Skeleton on load -->
       <div class="skeleton-grid" id="skeleton">
-        ${Array(12).fill('<div class="skeleton-card"></div>').join('')}
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
       </div>
+      <p id="loading-msg" style="text-align:center;margin-top:2rem;font-family:'Cormorant SC',serif;font-size:0.75rem;letter-spacing:0.3em;color:var(--muted)">Cargando biblioteca…</p>
     </div>
   </section>
 
@@ -693,6 +705,7 @@ function renderBiblioteca() {
   }
 
   el.innerHTML = `<div class="books-grid">${library.map(bookCard).join('')}</div>`
+  document.getElementById('loading-msg')?.remove()
 }
 
 function bookCard(b) {
