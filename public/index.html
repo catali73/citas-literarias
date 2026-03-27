@@ -486,6 +486,56 @@
     }
     .fav-unfav:hover { opacity: 0.6; }
 
+    /* ── FILTERS BAR ─────────────────────────────────────────── */
+    .filters-bar {
+      display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-input-wrap {
+      position: relative; flex: 1; min-width: 180px;
+    }
+    .filter-input-wrap svg {
+      position: absolute; left: 0.75rem; top: 50%;
+      transform: translateY(-50%); color: var(--muted); pointer-events: none;
+    }
+    .filter-input {
+      width: 100%;
+      background: var(--paper); border: 1px solid var(--border);
+      color: var(--text); padding: 0.55rem 0.75rem 0.55rem 2.25rem;
+      font-family: 'EB Garamond', serif; font-size: 0.95rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .filter-input::placeholder { color: var(--muted); }
+    .filter-input:focus { border-color: var(--gold-dim); }
+
+    .filter-select {
+      background: var(--paper); border: 1px solid var(--border);
+      color: var(--text); padding: 0.55rem 2rem 0.55rem 0.75rem;
+      font-family: 'EB Garamond', serif; font-size: 0.95rem;
+      outline: none; cursor: pointer; transition: border-color 0.2s;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a6f32'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 0.7rem center;
+      min-width: 160px;
+    }
+    .filter-select:focus { border-color: var(--gold-dim); }
+
+    .filter-count {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.68rem; letter-spacing: 0.3em;
+      color: var(--muted); white-space: nowrap; align-self: center;
+    }
+
+    .btn-clear-filter {
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.5rem 0.75rem;
+      font-family: 'Cormorant SC', serif; font-size: 0.7rem;
+      letter-spacing: 0.15em; cursor: pointer; transition: all 0.2s;
+      display: none;
+    }
+    .btn-clear-filter.visible { display: block; }
+    .btn-clear-filter:hover { border-color: var(--gold-dim); color: var(--gold); }
+
     /* ── ERROR STATE ─────────────────────────────────────────── */
     .error-state {
       text-align: center; padding: 4rem 2rem;
@@ -561,6 +611,17 @@
 
   <!-- ── BIBLIOTECA ─────────────────────────────────────── -->
   <section id="view-biblioteca" class="view active">
+    <div class="filters-bar" id="filters-bar" style="display:none">
+      <div class="filter-input-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="filter-input" id="filter-search" type="text" placeholder="Buscar libro…" oninput="applyFilters()">
+      </div>
+      <select class="filter-select" id="filter-author" onchange="applyFilters()">
+        <option value="">Todos los autores</option>
+      </select>
+      <span class="filter-count" id="filter-count"></span>
+      <button class="btn-clear-filter" id="btn-clear" onclick="clearFilters()">✕ Limpiar</button>
+    </div>
     <div id="biblioteca-content">
       <!-- Skeleton on load -->
       <div class="skeleton-grid" id="skeleton">
@@ -578,6 +639,7 @@
         <div class="skeleton-card"></div>
       </div>
       <p id="loading-msg" style="text-align:center;margin-top:2rem;font-family:'Cormorant SC',serif;font-size:0.75rem;letter-spacing:0.3em;color:var(--muted)">Cargando biblioteca…</p>
+    </div>
     </div>
   </section>
 
@@ -706,6 +768,7 @@ function renderBiblioteca() {
 
   el.innerHTML = `<div class="books-grid">${library.map(bookCard).join('')}</div>`
   document.getElementById('loading-msg')?.remove()
+  buildFilters()
 }
 
 function bookCard(b) {
@@ -963,6 +1026,53 @@ function esc(s) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;')
+}
+
+// ─────────────────────────────────────────────────
+// Filters
+// ─────────────────────────────────────────────────
+function buildFilters() {
+  const authors = [...new Set(library.map(b => b.author).filter(Boolean))].sort()
+  const sel = document.getElementById('filter-author')
+  authors.forEach(a => {
+    const opt = document.createElement('option')
+    opt.value = a; opt.textContent = a
+    sel.appendChild(opt)
+  })
+  document.getElementById('filters-bar').style.display = 'flex'
+}
+
+function applyFilters() {
+  const search = document.getElementById('filter-search').value.toLowerCase().trim()
+  const author = document.getElementById('filter-author').value
+
+  const filtered = library.filter(b => {
+    if (author && b.author !== author) return false
+    if (search && !b.nombre.toLowerCase().includes(search) && !(b.author || '').toLowerCase().includes(search)) return false
+    return true
+  })
+
+  const hasFilter = search || author
+  document.getElementById('btn-clear').classList.toggle('visible', hasFilter)
+  document.getElementById('filter-count').textContent = hasFilter
+    ? `${filtered.length} libro${filtered.length !== 1 ? 's' : ''}`
+    : ''
+
+  const grid = document.querySelector('#biblioteca-content .books-grid')
+  if (!grid) return
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="error-state" style="grid-column:1/-1">
+      <h2>Sin resultados</h2><p>Prueba con otro título o autor.</p></div>`
+    return
+  }
+  grid.innerHTML = filtered.map(bookCard).join('')
+}
+
+function clearFilters() {
+  document.getElementById('filter-search').value = ''
+  document.getElementById('filter-author').value = ''
+  applyFilters()
 }
 
 // Start
