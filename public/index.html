@@ -44,12 +44,15 @@
 
     /* ── Header ─────────────────────────────────── */
     header {
-      background: var(--bg);
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(250,249,247,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
     .masthead {
       max-width: 1100px; margin: 0 auto;
-      padding: 2rem 2rem 1.5rem;
+      padding: 1.5rem 2rem;
       display: flex; align-items: center; gap: 2rem;
     }
     .masthead-seal {
@@ -68,18 +71,7 @@
       letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--text-3); margin-top: 0.35rem;
     }
-    .navbar {
-      position: sticky; top: 0; z-index: 200;
-      background: rgba(250,249,247,0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .navbar-inner {
-      max-width: 1100px; margin: 0 auto;
-      padding: 0 2rem; height: 46px;
-      display: flex; align-items: center; gap: 0.25rem;
-    }
+    .masthead-nav { margin-left: auto; display: flex; gap: 0.25rem; align-items: center; }
     nav { display: flex; gap: 0.25rem; }
     .nav-btn {
       background: none; border: none; color: var(--text-2);
@@ -459,10 +451,11 @@
     @media (max-width: 768px) {
       .trio-grid { grid-template-columns: 1fr; }
       .weekly-grid { grid-template-columns: 1fr; }
-      .masthead { padding: 1.25rem; gap: 1.25rem; }
-      .masthead-seal { width: 80px; height: 80px; }
-      .masthead-title { font-size: 1.8rem; }
-      .navbar-inner { padding: 0 1.25rem; }
+      .masthead { padding: 1rem 1.25rem; gap: 1rem; }
+      .masthead-seal { width: 72px; height: 72px; }
+      .masthead-title { font-size: 1.6rem; }
+      .masthead-nav { gap: 0.1rem; }
+      .nav-btn { padding: 0.3rem 0.5rem; font-size: 0.78rem; }
       .page-wrap { padding: 2rem 1.25rem 4rem; }
       .nav-btn { padding: 0.35rem 0.6rem; font-size: 0.8rem; }
       .books-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
@@ -477,19 +470,15 @@
     <img class="masthead-seal" src="/icon-seal.png" alt="Noray Ex Libris">
     <div class="masthead-text">
       <div class="masthead-title">Noray</div>
-      <div class="masthead-sub">Biblioteca Personal · Puerto de Lectura</div>
+      <div class="masthead-sub">Puerto de Lectura</div>
     </div>
   </div>
-</header>
-<div class="navbar">
-  <div class="navbar-inner">
-    <nav>
+    <nav class="masthead-nav">
       <button class="nav-btn active" data-view="inicio">Inicio</button>
       <button class="nav-btn" data-view="biblioteca">Biblioteca</button>
       <button class="nav-btn" data-view="favoritas">Favoritas</button>
     </nav>
-  </div>
-</div>
+</header>
 
 <!-- ══════════ INICIO ══════════ -->
 <div id="view-inicio" class="view active">
