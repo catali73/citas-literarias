@@ -773,6 +773,8 @@ function renderLibroSemana(b) {
   const coverInner = b.portada
     ? `<img src="${esc(b.portada)}" alt="" loading="lazy">`
     : esc(initials(b.nombre))
+  card.style.cursor = 'pointer'
+  card.onclick = () => openBook(b.id)
   card.innerHTML = `
     <div class="weekly-label">📖 Libro destacado</div>
     <div class="weekly-book-top">
@@ -783,7 +785,8 @@ function renderLibroSemana(b) {
         <div class="stars">${starsHTML(b.rating)}</div>
       </div>
     </div>
-    ${sample ? `<p class="weekly-quote-preview">${esc(sample.cita)}</p>` : ''}`
+    ${sample ? `<p class="weekly-quote-preview">${esc(sample.cita)}</p>` : ''}
+    <p style="font-size:0.72rem;color:var(--text-3);margin-top:1rem;text-align:right">Ver todas las citas →</p>`
 }
 
 function renderAutorSemana(a) {
