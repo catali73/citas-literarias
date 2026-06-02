@@ -852,8 +852,12 @@ function bookCardHTML(b) {
 }
 
 // ── Filters (Biblioteca) ───────────────────────────────
+function bookAuthor(b) {
+  return b.author || b.quotes[0]?.autor || ''
+}
+
 function buildFilters() {
-  const authors = [...new Set(library.map(b => b.author).filter(Boolean))].sort()
+  const authors = [...new Set(library.map(b => bookAuthor(b)).filter(Boolean))].sort()
   const sel = document.getElementById('filter-author')
   authors.forEach(a => { const o = document.createElement('option'); o.value = a; o.textContent = a; sel.appendChild(o) })
   document.getElementById('filters-bar').style.display = 'flex'
@@ -863,8 +867,9 @@ function applyFilters() {
   const search = document.getElementById('filter-search').value.toLowerCase().trim()
   const author = document.getElementById('filter-author').value
   const filtered = library.filter(b => {
-    if (author && b.author !== author) return false
-    if (search && !b.nombre.toLowerCase().includes(search) && !(b.author || '').toLowerCase().includes(search)) return false
+    const bAuthor = bookAuthor(b)
+    if (author && bAuthor !== author) return false
+    if (search && !b.nombre.toLowerCase().includes(search) && !bAuthor.toLowerCase().includes(search)) return false
     return true
   })
   const hasFilter = search || author
