@@ -74,13 +74,18 @@ async function buildLibrary() {
     notionQuery(QUOTES_DB),
   ])
 
+  // Log property names from first book to help debug field mapping
+  if (bookPages.length > 0) {
+    console.log('📖 Book property names:', Object.keys(bookPages[0].properties).join(', '))
+  }
+
   // Process books
   const books = bookPages
     .map(p => ({
       id:       p.id,
       nombre:   richText(p.properties.Nombre),
-      author:   richText(p.properties.Author ?? p.properties.Autor),
-      rating:   p.properties['My Rating']?.number ?? null,
+      author:   richText(p.properties.Author ?? p.properties.Autor ?? p.properties.Autores ?? p.properties['Nombre del autor']),
+      rating:   p.properties['My Rating']?.number ?? p.properties['Valoración']?.number ?? p.properties.Valoracion?.number ?? null,
       portada:  fileUrl(p.properties.Portada),
       shelf:    p.properties['Exclusive Shelf']?.select?.name ?? null,
       dateRead: p.properties['Date Read']?.date?.start ?? null,

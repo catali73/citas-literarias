@@ -749,11 +749,14 @@ function renderWeekly() {
   renderLibroSemana(weeklyPick(eligibleBooks, 1))
 
   // Autor semanal: autores con >= 2 libros distintos
+  // Fallback: si el campo author del libro está vacío, tomarlo de sus citas
   const byAuthor = {}
   library.forEach(b => {
-    if (!b.author) return
-    if (!byAuthor[b.author]) byAuthor[b.author] = []
-    byAuthor[b.author].push(b)
+    const autor = b.author || b.quotes[0]?.autor || ''
+    if (!autor) return
+    b._autor = autor  // cache para no recalcular
+    if (!byAuthor[autor]) byAuthor[autor] = []
+    byAuthor[autor].push(b)
   })
   const eligibleAuthors = Object.entries(byAuthor)
     .filter(([, bs]) => bs.length >= 2)
@@ -773,6 +776,7 @@ function renderLibroSemana(b) {
   const coverInner = b.portada
     ? `<img src="${esc(b.portada)}" alt="" loading="lazy">`
     : esc(initials(b.nombre))
+  const displayAuthor = b.author || b.quotes[0]?.autor || ''
   card.style.cursor = 'pointer'
   card.onclick = () => openBook(b.id)
   card.innerHTML = `
@@ -781,7 +785,7 @@ function renderLibroSemana(b) {
       <div class="weekly-cover" style="background:${color}">${coverInner}</div>
       <div>
         <h3>${esc(b.nombre)}</h3>
-        <div class="weekly-autor">${esc(b.author || '')}</div>
+        <div class="weekly-autor">${esc(displayAuthor)}</div>
         <div class="stars">${starsHTML(b.rating)}</div>
       </div>
     </div>
@@ -797,7 +801,7 @@ function renderAutorSemana(a) {
     return
   }
   const booksHTML = a.books.map(b => `
-    <div class="author-book-item">
+    <div class="author-book-item" style="cursor:pointer" onclick="openBook('${esc(b.id)}')">
       <div class="author-book-dot" style="background:${strColor(b.nombre)}"></div>
       <span class="author-book-name">${esc(b.nombre)}</span>
       <span class="author-book-stars">${starsHTML(b.rating)}</span>
