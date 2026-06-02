@@ -79,7 +79,7 @@ async function buildLibrary() {
     .map(p => ({
       id:       p.id,
       nombre:   richText(p.properties.Nombre),
-      author:   richText(p.properties.Author),
+      author:   richText(p.properties.Author ?? p.properties.Autor),
       rating:   p.properties['My Rating']?.number ?? null,
       portada:  fileUrl(p.properties.Portada),
       shelf:    p.properties['Exclusive Shelf']?.select?.name ?? null,
