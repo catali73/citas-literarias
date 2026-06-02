@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Citas · Biblioteca Personal</title>
+  <title>Noray · Biblioteca Personal</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/icon-apple.png">
   <meta name="theme-color" content="#FAF9F7">
@@ -56,10 +56,13 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .logo {
+      display: flex; align-items: center; gap: 0.6rem;
       font-family: 'Playfair Display', serif;
       font-size: 1.15rem; font-weight: 600;
       color: var(--text); letter-spacing: -0.01em;
+      text-decoration: none;
     }
+    .logo img { width: 32px; height: 32px; object-fit: contain; }
     .logo span { color: var(--accent); }
     nav { display: flex; gap: 0.25rem; }
     .nav-btn {
@@ -452,7 +455,10 @@
 
 <header>
   <div class="header-inner">
-    <div class="logo">Mis<span>&nbsp;Citas</span></div>
+    <div class="logo">
+      <img src="/icon-seal.png" alt="Noray">
+      Noray
+    </div>
     <nav>
       <button class="nav-btn active" data-view="inicio">Inicio</button>
       <button class="nav-btn" data-view="biblioteca">Biblioteca</button>
