@@ -491,6 +491,8 @@ function starsHTML(n) { if (!n) return ''; const r=Math.round(n); return '★'.r
 function strColor(str,l=42) { let h=0; for(const c of str) h=(h*31+c.charCodeAt(0))&0xffff; return `hsl(${h%360},38%,${l}%)` }
 function initials(str) { return (str||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() }
 function bookAuthor(b) { return b.author || b.quotes[0]?.autor || '' }
+// Solo cuenta como "con portada" si está guardada en nuestra BD
+function hasLocalCover(b) { return b.portada?.startsWith('/api/covers/') || b.portada?.startsWith('data:') }
 
 // Seeded random for weekly picks
 function seededRNG(seed) { let s=seed>>>0; return ()=>{ s^=s<<13; s^=s>>17; s^=s<<5; return (s>>>0)/4294967296 } }
@@ -591,11 +593,11 @@ function shareQuote(id, cita, autor, obra) {
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${cita}"\n\n— ${autor}, ${obra}`)}`, '_blank')
 }
 
-// Carrusel de libros
+// Carrusel de libros (mismo orden que la biblioteca: fecha lectura desc)
 function renderCarousel() {
   const track = document.getElementById('carousel-track')
   if (!library.length) { track.innerHTML='<div class="loading-state">Sin libros.</div>'; return }
-  const sorted = [...library].sort((a,b)=>(b.rating||0)-(a.rating||0)||(b.quotes.length)-(a.quotes.length))
+  const sorted = library // ya viene ordenado por fecha desc desde el servidor
   track.innerHTML = sorted.map(b => {
     const color = strColor(b.nombre)
     const cover = b.portada
@@ -827,7 +829,7 @@ async function toggleFav(quoteId, newState, btn, bookId) {
 
 // ── Admin panel ──
 function renderAdminPanel() {
-  const noCover=library.filter(b=>!b.portada).length, noQuotes=library.filter(b=>!b.quotes.length).length
+  const noCover=library.filter(b=>!hasLocalCover(b)).length, noQuotes=library.filter(b=>!b.quotes.length).length
   document.getElementById('admin-stats').innerHTML=`
     <div class="admin-stat-card"><div class="stat-num">${library.length}</div><div class="stat-label">Libros</div></div>
     <div class="admin-stat-card"><div class="stat-num">${allQuotes.length}</div><div class="stat-label">Citas</div></div>
@@ -839,7 +841,7 @@ function setAdminFilter(f,btn) { adminFilter=f; document.querySelectorAll('.admi
 function renderAdminList() {
   const search=(document.getElementById('admin-search')?.value||'').toLowerCase()
   const books=library.filter(b=>{
-    if(adminFilter==='no-cover'&&b.portada) return false
+    if(adminFilter==='no-cover'&&hasLocalCover(b)) return false
     if(adminFilter==='no-quotes'&&b.quotes.length) return false
     if(search&&!b.nombre.toLowerCase().includes(search)&&!bookAuthor(b).toLowerCase().includes(search)) return false
     return true
@@ -852,7 +854,7 @@ function renderAdminList() {
       <div style="flex:1;min-width:0">
         <div style="font-weight:600;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(b.nombre)}</div>
         <div style="font-size:.73rem;color:var(--text-2);display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.2rem">
-          ${b.portada?'<span class="admin-badge badge-ok">✓ Portada</span>':'<span class="admin-badge badge-warn">Sin portada</span>'}
+          ${hasLocalCover(b)?'<span class="admin-badge badge-ok">✓ Portada</span>':b.portada?'<span class="admin-badge" style="background:#fef3c7;color:#92400e">⚠️ URL expirada</span>':'<span class="admin-badge badge-warn">Sin portada</span>'}
           ${b.quotes.length?`<span class="admin-badge badge-ok">${b.quotes.length} citas</span>`:'<span class="admin-badge badge-warn">Sin citas</span>'}
           ${b.rating?`<span class="admin-badge" style="background:var(--accent-soft);color:var(--accent)">★${b.rating}</span>`:''}
         </div>
