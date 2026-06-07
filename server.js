@@ -22,7 +22,7 @@ let notionCache = { data: null, at: 0 }
 const CACHE_TTL = 15 * 60 * 1000
 
 // ── Middleware ────────────────────────────────────────────────────────────
-app.use(express.json({ limit: '2mb' }))
+app.use(express.json({ limit: '12mb' }))
 app.use(express.static(join(__dirname, 'public')))
 
 // ── Auth middleware ───────────────────────────────────────────────────────
