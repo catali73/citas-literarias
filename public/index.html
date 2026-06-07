@@ -82,6 +82,21 @@
     .nav-btn:hover { background: var(--surface-alt); color: var(--text); }
     .nav-btn.active { background: var(--text); color: #fff; }
 
+    /* ── Form helpers ───────────────────────────── */
+    .flabel { font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.35rem }
+    .finput { width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;background:var(--bg) }
+    .finput:focus { outline:none;border-color:var(--accent) }
+
+    /* ── Botón añadir (admin) ────────────────────── */
+    #admin-add-btn {
+      display:none;
+      background:var(--accent);color:#fff;border:none;
+      padding:.35rem .9rem;border-radius:8px;cursor:pointer;
+      font-family:'Inter',sans-serif;font-size:.875rem;font-weight:500;
+      transition:opacity .15s;
+    }
+    #admin-add-btn:hover { opacity:.85; }
+
     /* ── Hamburger (solo móvil) ──────────────────── */
     .hamburger {
       display: none; margin-left: auto;
@@ -499,6 +514,7 @@
       <button class="nav-btn active" data-view="inicio">Inicio</button>
       <button class="nav-btn" data-view="biblioteca">Biblioteca</button>
       <button class="nav-btn" data-view="favoritas">Favoritas</button>
+      <button id="admin-add-btn" onclick="openAddQuoteModal()">+ Añadir cita</button>
       <button class="nav-btn" id="desktop-admin-btn" onclick="handleAdminMenu()" title="Admin">🔑</button>
     </nav>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">
@@ -618,7 +634,7 @@
   </div>
 </div>
 
-<!-- ══════════ ADMIN FAB ══════════ -->
+<!-- FAB oculto en móvil (se muestra si admin) -->
 <button id="admin-fab" onclick="openAddQuoteModal()" title="Añadir cita"
   style="display:none;position:fixed;bottom:2rem;right:2rem;z-index:300;
     width:52px;height:52px;border-radius:50%;background:var(--accent);
@@ -626,53 +642,88 @@
     box-shadow:0 4px 16px rgba(181,84,28,0.4);transition:transform .15s">+</button>
 
 <!-- ══════════ ADD QUOTE MODAL ══════════ -->
-<div id="add-quote-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto">
-  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:600px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)">
-      <span style="font-family:'Playfair Display',serif;font-weight:600" id="add-quote-modal-title">Añadir cita</span>
+<div id="add-quote-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:1rem;overflow-y:auto">
+  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:640px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);border-radius:16px 16px 0 0;z-index:1">
+      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.1rem" id="add-quote-modal-title">Añadir cita</span>
       <button onclick="closeAddQuoteModal()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--text-3)">✕</button>
     </div>
-    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
+    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1.1rem">
+
       <!-- Libro -->
       <div>
-        <label style="font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.4rem">Libro</label>
+        <label class="flabel">Libro</label>
         <select id="aq-book" style="width:100%">
-          <option value="">— Selecciona un libro o crea uno nuevo —</option>
+          <option value="">— Selecciona un libro —</option>
           <option value="__new__">+ Añadir nuevo libro…</option>
         </select>
       </div>
-      <!-- Nuevo libro (oculto por defecto) -->
-      <div id="aq-new-book-section" style="display:none;background:var(--surface-alt);border-radius:10px;padding:1rem;display:flex;flex-direction:column;gap:.75rem">
-        <div style="font-size:.8rem;font-weight:600;color:var(--text-2)">Nuevo libro</div>
-        <input type="text" id="aq-titulo" placeholder="Título *" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
-        <input type="text" id="aq-autor" placeholder="Autor" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
-          <input type="number" id="aq-valoracion" placeholder="Valoración (1-5)" min="1" max="5" style="padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
-          <input type="date" id="aq-fecha" style="padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+
+      <!-- Nuevo libro -->
+      <div id="aq-new-book-section" style="display:none;background:var(--surface-alt);border-radius:10px;padding:1.1rem;flex-direction:column;gap:.75rem">
+        <div style="font-size:.82rem;font-weight:600;color:var(--accent);margin-bottom:.25rem">Nuevo libro</div>
+        <input type="text" id="aq-titulo" placeholder="Título *" class="finput">
+        <input type="text" id="aq-autor" placeholder="Autor" class="finput">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem">
+          <div>
+            <label class="flabel">Valoración (1-5)</label>
+            <input type="number" id="aq-valoracion" placeholder="—" min="1" max="5" class="finput">
+          </div>
+          <div>
+            <label class="flabel">Páginas del libro</label>
+            <input type="number" id="aq-num-paginas" placeholder="—" min="1" class="finput">
+          </div>
+          <div>
+            <label class="flabel">Fecha de lectura</label>
+            <input type="date" id="aq-fecha" class="finput">
+          </div>
         </div>
-        <input type="url" id="aq-portada" placeholder="URL de portada (opcional)" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+        <!-- Portada: subir imagen o URL -->
+        <div>
+          <label class="flabel">Portada</label>
+          <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
+            <label style="flex:1;min-width:140px;background:var(--surface);border:1px dashed var(--border);border-radius:8px;padding:.5rem .75rem;cursor:pointer;font-size:.82rem;color:var(--text-2);text-align:center">
+              📷 Subir imagen
+              <input type="file" id="aq-portada-file" accept="image/*" style="display:none" onchange="previewCover(this)">
+            </label>
+            <span style="color:var(--text-3);font-size:.75rem">o</span>
+            <input type="url" id="aq-portada-url" placeholder="URL de imagen" class="finput" style="flex:2;min-width:160px">
+          </div>
+          <div id="aq-portada-preview" style="display:none;margin-top:.6rem">
+            <img id="aq-portada-img" style="height:80px;border-radius:4px;object-fit:cover;box-shadow:var(--shadow)">
+          </div>
+        </div>
+        <!-- Reseña -->
+        <div>
+          <label class="flabel">Mi reseña</label>
+          <textarea id="aq-review" rows="3" placeholder="Notas personales sobre el libro…" class="finput" style="resize:vertical;line-height:1.5"></textarea>
+        </div>
       </div>
+
       <!-- Cita -->
       <div>
-        <label style="font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.4rem">Cita *</label>
+        <label class="flabel">Cita *</label>
         <textarea id="aq-cita" rows="4" placeholder="Escribe o pega el texto subrayado…"
-          style="width:100%;padding:.6rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:.97rem;resize:vertical;line-height:1.6"></textarea>
+          style="width:100%;padding:.6rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:.97rem;resize:vertical;line-height:1.65"></textarea>
       </div>
-      <!-- Página y categorías -->
-      <div style="display:grid;grid-template-columns:1fr 2fr;gap:.75rem">
+
+      <!-- Página de la cita y categorías -->
+      <div style="display:grid;grid-template-columns:120px 1fr;gap:.75rem">
         <div>
-          <label style="font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.4rem">Página</label>
-          <input type="number" id="aq-pagina" placeholder="—" min="1" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+          <label class="flabel">Página de la cita</label>
+          <input type="number" id="aq-pagina" placeholder="—" min="1" class="finput">
         </div>
         <div>
-          <label style="font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.4rem">Categorías (separadas por coma)</label>
-          <input type="text" id="aq-cats" placeholder="Vida, Literatura…" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+          <label class="flabel">Categorías (separadas por coma)</label>
+          <input type="text" id="aq-cats" placeholder="Vida, Literatura…" class="finput">
         </div>
       </div>
-      <div id="aq-error" style="display:none;color:#c0392b;font-size:.82rem"></div>
+
+      <div id="aq-error" style="display:none;color:#c0392b;font-size:.82rem;padding:.5rem .75rem;background:#fef2f2;border-radius:8px"></div>
+
       <div style="display:flex;gap:.6rem;justify-content:flex-end;padding-top:.25rem">
         <button onclick="closeAddQuoteModal()" style="background:none;border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem">Cancelar</button>
-        <button onclick="saveQuote()" style="background:var(--accent);color:#fff;border:none;padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem">Guardar cita</button>
+        <button onclick="saveQuote()" id="aq-save-btn" style="background:var(--accent);color:#fff;border:none;padding:.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem">Guardar cita</button>
       </div>
     </div>
   </div>
@@ -1145,14 +1196,20 @@ let adminToken = localStorage.getItem('noray-admin-token') || null
 function isAdmin() { return !!adminToken }
 
 function checkAdminUI() {
+  const show = isAdmin()
+  const d = v => v ? 'block' : 'none'
+
   const fab = document.getElementById('admin-fab')
-  if (fab) fab.style.display = isAdmin() ? 'block' : 'none'
+  if (fab) fab.style.display = d(show)
+
+  const addBtn = document.getElementById('admin-add-btn')
+  if (addBtn) addBtn.style.display = d(show)
 
   const dropBtn = document.getElementById('dropdown-admin-btn')
-  if (dropBtn) dropBtn.textContent = isAdmin() ? '🔓 Cerrar sesión' : '🔑 Admin'
+  if (dropBtn) dropBtn.textContent = show ? '🔓 Cerrar sesión' : '🔑 Admin'
 
   const desktopBtn = document.getElementById('desktop-admin-btn')
-  if (desktopBtn) desktopBtn.textContent = isAdmin() ? '🔓' : '🔑'
+  if (desktopBtn) desktopBtn.textContent = show ? '🔓' : '🔑'
 }
 
 function handleAdminMenu() {
@@ -1221,10 +1278,15 @@ function openAddQuoteModal(prefilledBookId = null) {
   if (prefilledBookId) sel.value = prefilledBookId
 
   // Reset fields
-  ;['aq-cita','aq-titulo','aq-autor','aq-portada','aq-cats'].forEach(id => document.getElementById(id).value = '')
-  ;['aq-valoracion','aq-pagina'].forEach(id => document.getElementById(id).value = '')
+  ;['aq-cita','aq-titulo','aq-autor','aq-portada-url','aq-cats','aq-review'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = ''
+  })
+  ;['aq-valoracion','aq-pagina','aq-num-paginas'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = ''
+  })
   document.getElementById('aq-fecha').value = new Date().toISOString().slice(0,10)
   document.getElementById('aq-new-book-section').style.display = 'none'
+  document.getElementById('aq-portada-preview').style.display = 'none'
   document.getElementById('aq-error').style.display = 'none'
 
   const m = document.getElementById('add-quote-modal')
@@ -1250,14 +1312,20 @@ async function saveQuote() {
     if (bookId === '__new__') {
       const titulo = document.getElementById('aq-titulo').value.trim()
       if (!titulo) { errEl.textContent = 'El título del libro es obligatorio'; errEl.style.display = 'block'; return }
+      // Portada: archivo tiene prioridad sobre URL
+      const portadaUrl = document.getElementById('aq-portada-img')?.src?.startsWith('data:')
+        ? document.getElementById('aq-portada-img').src
+        : document.getElementById('aq-portada-url').value.trim() || null
       const r = await fetch('/api/books', {
         method: 'POST', headers: authHeader(),
         body: JSON.stringify({
           titulo,
-          autor:        document.getElementById('aq-autor').value.trim() || null,
-          portada_url:  document.getElementById('aq-portada').value.trim() || null,
-          valoracion:   parseInt(document.getElementById('aq-valoracion').value) || null,
-          fecha_lectura: document.getElementById('aq-fecha').value || null,
+          autor:          document.getElementById('aq-autor').value.trim() || null,
+          portada_url:    portadaUrl,
+          valoracion:     parseInt(document.getElementById('aq-valoracion').value) || null,
+          fecha_lectura:  document.getElementById('aq-fecha').value || null,
+          numero_paginas: parseInt(document.getElementById('aq-num-paginas').value) || null,
+          my_review:      document.getElementById('aq-review').value.trim() || null,
           estado: 'Leído',
         }),
       })
@@ -1288,6 +1356,18 @@ async function saveQuote() {
   } catch (err) {
     errEl.textContent = err.message; errEl.style.display = 'block'
   }
+}
+
+function previewCover(input) {
+  const file = input.files[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = e => {
+    document.getElementById('aq-portada-img').src = e.target.result
+    document.getElementById('aq-portada-preview').style.display = 'block'
+    document.getElementById('aq-portada-url').value = ''
+  }
+  reader.readAsDataURL(file)
 }
 
 // ── Hamburger menu ─────────────────────────────────────

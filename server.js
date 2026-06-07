@@ -212,26 +212,29 @@ app.patch('/api/quotes/:id/favorite', async (req, res) => {
 
 // ── Admin: Books CRUD ─────────────────────────────────────────────────────
 app.post('/api/books', requireAdmin, async (req, res) => {
-  const { titulo, autor, portada_url, valoracion, estado, fecha_lectura } = req.body
+  const { titulo, autor, portada_url, valoracion, estado, fecha_lectura, numero_paginas, my_review } = req.body
   if (!titulo?.trim()) return res.status(400).json({ error: 'titulo requerido' })
   try {
     const { rows } = await pool.query(
-      `INSERT INTO books (titulo, autor, portada_url, valoracion, estado, fecha_lectura)
-       VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+      `INSERT INTO books (titulo, autor, portada_url, valoracion, estado, fecha_lectura, numero_paginas, my_review)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
       [titulo.trim(), autor?.trim() || null, portada_url || null,
-       valoracion || null, estado || 'Leído', fecha_lectura || null]
+       valoracion || null, estado || 'Leído', fecha_lectura || null,
+       numero_paginas || null, my_review?.trim() || null]
     )
     res.status(201).json(rows[0])
   } catch (err) { res.status(500).json({ error: err.message }) }
 })
 
 app.put('/api/books/:id', requireAdmin, async (req, res) => {
-  const { titulo, autor, portada_url, valoracion, estado, fecha_lectura } = req.body
+  const { titulo, autor, portada_url, valoracion, estado, fecha_lectura, numero_paginas, my_review } = req.body
   try {
     const { rows } = await pool.query(
       `UPDATE books SET titulo=$1, autor=$2, portada_url=$3, valoracion=$4,
-       estado=$5, fecha_lectura=$6, updated_at=NOW() WHERE id=$7 RETURNING *`,
-      [titulo, autor, portada_url, valoracion, estado, fecha_lectura, req.params.id]
+       estado=$5, fecha_lectura=$6, numero_paginas=$7, my_review=$8, updated_at=NOW()
+       WHERE id=$9 RETURNING *`,
+      [titulo, autor, portada_url, valoracion, estado, fecha_lectura,
+       numero_paginas, my_review, req.params.id]
     )
     if (!rows.length) return res.status(404).json({ error: 'Libro no encontrado' })
     res.json(rows[0])

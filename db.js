@@ -12,17 +12,22 @@ export const pool = new Pool({
 export async function initDB() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS books (
-      id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      titulo      TEXT NOT NULL,
-      autor       TEXT,
-      portada_url TEXT,
-      valoracion  SMALLINT CHECK (valoracion BETWEEN 1 AND 5),
-      estado      TEXT DEFAULT 'Leído',
-      fecha_lectura DATE,
-      notion_id   TEXT UNIQUE,
-      created_at  TIMESTAMPTZ DEFAULT NOW(),
-      updated_at  TIMESTAMPTZ DEFAULT NOW()
+      id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      titulo         TEXT NOT NULL,
+      autor          TEXT,
+      portada_url    TEXT,
+      valoracion     SMALLINT CHECK (valoracion BETWEEN 1 AND 5),
+      estado         TEXT DEFAULT 'Leído',
+      fecha_lectura  DATE,
+      numero_paginas INTEGER,
+      my_review      TEXT,
+      notion_id      TEXT UNIQUE,
+      created_at     TIMESTAMPTZ DEFAULT NOW(),
+      updated_at     TIMESTAMPTZ DEFAULT NOW()
     );
+    -- Añadir columnas nuevas si la tabla ya existía
+    ALTER TABLE books ADD COLUMN IF NOT EXISTS numero_paginas INTEGER;
+    ALTER TABLE books ADD COLUMN IF NOT EXISTS my_review TEXT;
 
     CREATE TABLE IF NOT EXISTS quotes (
       id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -67,14 +72,16 @@ export async function getLibrary() {
   `)
 
   return books.map(b => ({
-    id:           b.id,
-    nombre:       b.titulo,
-    author:       b.autor,
-    portada:      b.portada_url,
-    rating:       b.valoracion,
-    shelf:        b.estado,
-    dateRead:     b.fecha_lectura,
-    quotes:       b.quotes || [],
+    id:            b.id,
+    nombre:        b.titulo,
+    author:        b.autor,
+    portada:       b.portada_url,
+    rating:        b.valoracion,
+    shelf:         b.estado,
+    dateRead:      b.fecha_lectura,
+    numeroPaginas: b.numero_paginas,
+    myReview:      b.my_review,
+    quotes:        b.quotes || [],
   }))
 }
 
