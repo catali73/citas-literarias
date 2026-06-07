@@ -600,6 +600,81 @@
   </div>
 </div>
 
+<!-- ══════════ ADMIN LOGIN ══════════ -->
+<div id="admin-login-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+  <div style="background:var(--surface);border-radius:16px;padding:2rem;width:100%;max-width:360px;margin:1rem;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.25rem">Acceso privado</h3>
+    <input type="password" id="admin-pw-input" placeholder="Contraseña" autocomplete="current-password"
+      style="width:100%;padding:.6rem .8rem;border:1px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;margin-bottom:.75rem"
+      onkeydown="if(event.key==='Enter')doLogin()">
+    <div id="admin-login-error" style="display:none;color:#c0392b;font-size:.8rem;margin-bottom:.6rem"></div>
+    <div style="display:flex;gap:.6rem">
+      <button onclick="doLogin()" style="flex:1;background:var(--text);color:#fff;border:none;padding:.6rem;border-radius:8px;cursor:pointer;font-weight:500">Entrar</button>
+      <button onclick="closeLoginModal()" style="flex:1;background:none;border:1px solid var(--border);padding:.6rem;border-radius:8px;cursor:pointer">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN FAB ══════════ -->
+<button id="admin-fab" onclick="openAddQuoteModal()" title="Añadir cita"
+  style="display:none;position:fixed;bottom:2rem;right:2rem;z-index:300;
+    width:52px;height:52px;border-radius:50%;background:var(--accent);
+    color:#fff;border:none;font-size:1.5rem;cursor:pointer;
+    box-shadow:0 4px 16px rgba(181,84,28,0.4);transition:transform .15s">+</button>
+
+<!-- ══════════ ADD QUOTE MODAL ══════════ -->
+<div id="add-quote-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto">
+  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:600px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)">
+      <span style="font-family:'Playfair Display',serif;font-weight:600" id="add-quote-modal-title">Añadir cita</span>
+      <button onclick="closeAddQuoteModal()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--text-3)">✕</button>
+    </div>
+    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
+      <!-- Libro -->
+      <div>
+        <label style="font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.4rem">Libro</label>
+        <select id="aq-book" style="width:100%">
+          <option value="">— Selecciona un libro o crea uno nuevo —</option>
+          <option value="__new__">+ Añadir nuevo libro…</option>
+        </select>
+      </div>
+      <!-- Nuevo libro (oculto por defecto) -->
+      <div id="aq-new-book-section" style="display:none;background:var(--surface-alt);border-radius:10px;padding:1rem;display:flex;flex-direction:column;gap:.75rem">
+        <div style="font-size:.8rem;font-weight:600;color:var(--text-2)">Nuevo libro</div>
+        <input type="text" id="aq-titulo" placeholder="Título *" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+        <input type="text" id="aq-autor" placeholder="Autor" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+          <input type="number" id="aq-valoracion" placeholder="Valoración (1-5)" min="1" max="5" style="padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+          <input type="date" id="aq-fecha" style="padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+        </div>
+        <input type="url" id="aq-portada" placeholder="URL de portada (opcional)" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+      </div>
+      <!-- Cita -->
+      <div>
+        <label style="font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.4rem">Cita *</label>
+        <textarea id="aq-cita" rows="4" placeholder="Escribe o pega el texto subrayado…"
+          style="width:100%;padding:.6rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:.97rem;resize:vertical;line-height:1.6"></textarea>
+      </div>
+      <!-- Página y categorías -->
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:.75rem">
+        <div>
+          <label style="font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.4rem">Página</label>
+          <input type="number" id="aq-pagina" placeholder="—" min="1" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+        </div>
+        <div>
+          <label style="font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.4rem">Categorías (separadas por coma)</label>
+          <input type="text" id="aq-cats" placeholder="Vida, Literatura…" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem">
+        </div>
+      </div>
+      <div id="aq-error" style="display:none;color:#c0392b;font-size:.82rem"></div>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end;padding-top:.25rem">
+        <button onclick="closeAddQuoteModal()" style="background:none;border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem">Cancelar</button>
+        <button onclick="saveQuote()" style="background:var(--accent);color:#fff;border:none;padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem">Guardar cita</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════ MODAL ══════════ -->
 <div id="modal" onclick="closeModalIfBackdrop(event)">
   <div class="modal-box">
@@ -1061,6 +1136,160 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2600)
 }
 
+// ── Admin ──────────────────────────────────────────────
+let adminToken = localStorage.getItem('noray-admin-token') || null
+
+function isAdmin() { return !!adminToken }
+
+function checkAdminUI() {
+  const fab = document.getElementById('admin-fab')
+  if (!fab) return
+  fab.style.display = isAdmin() ? 'block' : 'none'
+  // Añadir botón login/logout en el masthead
+  const existing = document.getElementById('admin-toggle-btn')
+  if (!existing) {
+    const btn = document.createElement('button')
+    btn.id = 'admin-toggle-btn'
+    btn.style.cssText = 'background:none;border:none;cursor:pointer;color:var(--text-3);font-size:.75rem;margin-left:.5rem;padding:.3rem .5rem;border-radius:6px;transition:color .15s'
+    btn.onmouseover = () => btn.style.color = 'var(--text-2)'
+    btn.onmouseout  = () => btn.style.color = 'var(--text-3)'
+    btn.onclick = isAdmin() ? adminLogout : openLoginModal
+    btn.textContent = isAdmin() ? '🔓 Salir' : '🔑'
+    btn.title = isAdmin() ? 'Cerrar sesión admin' : 'Acceso admin'
+    document.querySelector('.masthead-nav')?.appendChild(btn)
+  } else {
+    existing.onclick = isAdmin() ? adminLogout : openLoginModal
+    existing.textContent = isAdmin() ? '🔓 Salir' : '🔑'
+    existing.title = isAdmin() ? 'Cerrar sesión admin' : 'Acceso admin'
+  }
+}
+
+function openLoginModal() {
+  const m = document.getElementById('admin-login-modal')
+  m.style.display = 'flex'
+  document.getElementById('admin-pw-input').focus()
+}
+function closeLoginModal() {
+  document.getElementById('admin-login-modal').style.display = 'none'
+  document.getElementById('admin-pw-input').value = ''
+  document.getElementById('admin-login-error').style.display = 'none'
+}
+
+async function doLogin() {
+  const pw = document.getElementById('admin-pw-input').value
+  const errEl = document.getElementById('admin-login-error')
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw }),
+    })
+    if (!r.ok) { const e = await r.json(); throw new Error(e.error) }
+    const { token } = await r.json()
+    adminToken = token
+    localStorage.setItem('noray-admin-token', token)
+    closeLoginModal()
+    checkAdminUI()
+    showToast('✅ Sesión iniciada')
+  } catch (err) {
+    errEl.textContent = err.message; errEl.style.display = 'block'
+  }
+}
+
+function adminLogout() {
+  adminToken = null
+  localStorage.removeItem('noray-admin-token')
+  checkAdminUI()
+  showToast('Sesión cerrada')
+}
+
+function authHeader() {
+  return { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` }
+}
+
+// ── Add Quote Modal ────────────────────────────────────
+function openAddQuoteModal(prefilledBookId = null) {
+  if (!isAdmin()) { openLoginModal(); return }
+  // Poblar select de libros
+  const sel = document.getElementById('aq-book')
+  sel.innerHTML = '<option value="">— Selecciona un libro o crea uno nuevo —</option><option value="__new__">+ Añadir nuevo libro…</option>'
+  library.forEach(b => {
+    const o = document.createElement('option')
+    o.value = b.id; o.textContent = `${b.nombre}${b.author ? ' — ' + b.author : ''}`
+    sel.appendChild(o)
+  })
+  if (prefilledBookId) sel.value = prefilledBookId
+
+  // Reset fields
+  ;['aq-cita','aq-titulo','aq-autor','aq-portada','aq-cats'].forEach(id => document.getElementById(id).value = '')
+  ;['aq-valoracion','aq-pagina'].forEach(id => document.getElementById(id).value = '')
+  document.getElementById('aq-fecha').value = new Date().toISOString().slice(0,10)
+  document.getElementById('aq-new-book-section').style.display = 'none'
+  document.getElementById('aq-error').style.display = 'none'
+
+  const m = document.getElementById('add-quote-modal')
+  m.style.display = 'flex'
+  setTimeout(() => document.getElementById('aq-cita').focus(), 100)
+}
+
+function closeAddQuoteModal() {
+  document.getElementById('add-quote-modal').style.display = 'none'
+}
+
+async function saveQuote() {
+  const errEl = document.getElementById('aq-error')
+  errEl.style.display = 'none'
+  const cita = document.getElementById('aq-cita').value.trim()
+  if (!cita) { errEl.textContent = 'La cita no puede estar vacía'; errEl.style.display = 'block'; return }
+
+  let bookId = document.getElementById('aq-book').value
+  if (!bookId) { errEl.textContent = 'Selecciona o crea un libro'; errEl.style.display = 'block'; return }
+
+  try {
+    // Crear libro si es nuevo
+    if (bookId === '__new__') {
+      const titulo = document.getElementById('aq-titulo').value.trim()
+      if (!titulo) { errEl.textContent = 'El título del libro es obligatorio'; errEl.style.display = 'block'; return }
+      const r = await fetch('/api/books', {
+        method: 'POST', headers: authHeader(),
+        body: JSON.stringify({
+          titulo,
+          autor:        document.getElementById('aq-autor').value.trim() || null,
+          portada_url:  document.getElementById('aq-portada').value.trim() || null,
+          valoracion:   parseInt(document.getElementById('aq-valoracion').value) || null,
+          fecha_lectura: document.getElementById('aq-fecha').value || null,
+          estado: 'Leído',
+        }),
+      })
+      if (!r.ok) throw new Error((await r.json()).error)
+      const nb = await r.json()
+      bookId = nb.id
+    }
+
+    // Guardar cita
+    const cats = document.getElementById('aq-cats').value
+      .split(',').map(s => s.trim()).filter(Boolean)
+    const r2 = await fetch(`/api/books/${bookId}/quotes`, {
+      method: 'POST', headers: authHeader(),
+      body: JSON.stringify({
+        cita,
+        pagina: parseInt(document.getElementById('aq-pagina').value) || null,
+        categorias: cats,
+      }),
+    })
+    if (!r2.ok) throw new Error((await r2.json()).error)
+
+    closeAddQuoteModal()
+    showToast('✅ Cita guardada')
+    // Refrescar datos
+    library = await fetchLibrary()
+    allQuotes = library.flatMap(b => b.quotes)
+    renderCarousel(); renderWeekly(); renderBiblioteca(); buildFilters()
+  } catch (err) {
+    errEl.textContent = err.message; errEl.style.display = 'block'
+  }
+}
+
 // ── Hamburger menu ─────────────────────────────────────
 function toggleMenu() {
   document.getElementById('dropdown-menu').classList.toggle('open')
@@ -1073,7 +1302,14 @@ document.addEventListener('click', e => {
 })
 
 // ── Start ──────────────────────────────────────────────
+// Listener del select de libros (debe ir después del DOM)
+document.getElementById('aq-book').addEventListener('change', function() {
+  document.getElementById('aq-new-book-section').style.display =
+    this.value === '__new__' ? 'flex' : 'none'
+})
+
 init()
+checkAdminUI()
 </script>
 </body>
 </html>

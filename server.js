@@ -1,32 +1,49 @@
 import express from 'express'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import { pool, initDB, getLibrary, getRandomQuotes } from './db.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const app = express()
+const app  = express()
 const PORT = process.env.PORT || 3000
 
-const NOTION_TOKEN   = process.env.NOTION_TOKEN
-const QUOTES_DB      = process.env.NOTION_QUOTES_DB  || 'e79059209139461fb2c17d39bf0fe687'
-const BOOKS_DB       = process.env.NOTION_BOOKS_DB   || '2b21bd2a8d4f80a5ba96f19f6ad4dac7'
-const CACHE_TTL      = 15 * 60 * 1000 // 15 min — Notion file URLs expire in ~1h
+// ── Config ────────────────────────────────────────────────────────────────
+const NOTION_TOKEN = process.env.NOTION_TOKEN
+const QUOTES_DB    = process.env.NOTION_QUOTES_DB || 'e79059209139461fb2c17d39bf0fe687'
+const BOOKS_DB     = process.env.NOTION_BOOKS_DB  || '2b21bd2a8d4f80a5ba96f19f6ad4dac7'
+const JWT_SECRET   = process.env.JWT_SECRET || 'noray-secret-change-me'
+const ADMIN_HASH   = process.env.ADMIN_PASSWORD_HASH // bcrypt hash of admin password
+const USE_DB       = !!process.env.DATABASE_URL      // use PostgreSQL if available
 
-let cache = { data: null, at: 0 }
+// ── Cache (Notion fallback) ───────────────────────────────────────────────
+let notionCache = { data: null, at: 0 }
+const CACHE_TTL = 15 * 60 * 1000
 
-app.use(express.json())
+// ── Middleware ────────────────────────────────────────────────────────────
+app.use(express.json({ limit: '2mb' }))
 app.use(express.static(join(__dirname, 'public')))
 
-// ── Notion helpers ─────────────────────────────────────────────────────────
+// ── Auth middleware ───────────────────────────────────────────────────────
+function requireAdmin(req, res, next) {
+  const auth = req.headers.authorization
+  if (!auth?.startsWith('Bearer ')) return res.status(401).json({ error: 'No autorizado' })
+  try {
+    req.admin = jwt.verify(auth.slice(7), JWT_SECRET)
+    next()
+  } catch {
+    res.status(401).json({ error: 'Token inválido' })
+  }
+}
 
-async function notionQuery(dbId, filter = null) {
+// ── Notion helpers (fallback) ─────────────────────────────────────────────
+async function notionQuery(dbId) {
   const pages = []
   let cursor
-
   while (true) {
     const body = { page_size: 100 }
     if (cursor) body.start_cursor = cursor
-    if (filter)  body.filter = filter
-
     const res = await fetch(`https://api.notion.com/v1/databases/${dbId}/query`, {
       method: 'POST',
       headers: {
@@ -36,56 +53,38 @@ async function notionQuery(dbId, filter = null) {
       },
       body: JSON.stringify(body),
     })
-
-    if (!res.ok) {
-      const err = await res.text()
-      throw new Error(`Notion query error ${res.status}: ${err}`)
-    }
-
+    if (!res.ok) throw new Error(`Notion ${res.status}: ${await res.text()}`)
     const data = await res.json()
     pages.push(...data.results)
     if (!data.has_more) break
     cursor = data.next_cursor
   }
-
   return pages
 }
 
+function richText(prop) {
+  return (prop?.rich_text ?? prop?.title ?? []).map(i => i.plain_text).join('')
+}
 function fileUrl(prop) {
   if (!prop?.files?.length) return null
   const f = prop.files[0]
   return f.type === 'file' ? f.file?.url : f.external?.url ?? null
 }
-
-function richText(prop) {
-  const items = prop?.rich_text ?? prop?.title ?? []
-  return items.map(i => i.plain_text).join('')
-}
-
 function relationIds(prop) {
   return (prop?.relation ?? []).map(r => r.id)
 }
 
-// ── Build library ──────────────────────────────────────────────────────────
-
-async function buildLibrary() {
-  const [bookPages, quotePagesRaw] = await Promise.all([
+async function buildNotionLibrary() {
+  const [bookPages, quotePages] = await Promise.all([
     notionQuery(BOOKS_DB),
     notionQuery(QUOTES_DB),
   ])
-
-  // Log property names from first book to help debug field mapping
-  if (bookPages.length > 0) {
-    console.log('📖 Book property names:', Object.keys(bookPages[0].properties).join(', '))
-  }
-
-  // Process books
   const books = bookPages
     .map(p => ({
       id:       p.id,
       nombre:   richText(p.properties.Nombre),
-      author:   richText(p.properties.Author ?? p.properties.Autor ?? p.properties.Autores ?? p.properties['Nombre del autor']),
-      rating:   p.properties['My Rating']?.number ?? p.properties['Valoración']?.number ?? p.properties.Valoracion?.number ?? null,
+      author:   richText(p.properties.Author ?? p.properties.Autor ?? p.properties.Autores),
+      rating:   p.properties['My Rating']?.number ?? p.properties['Valoración']?.number ?? null,
       portada:  fileUrl(p.properties.Portada),
       shelf:    p.properties['Exclusive Shelf']?.select?.name ?? null,
       dateRead: p.properties['Date Read']?.date?.start ?? null,
@@ -93,156 +92,286 @@ async function buildLibrary() {
     }))
     .filter(b => b.nombre.trim())
 
-  const bookMap = new Map(books.map(b => [b.id, b]))
-
-  // Process quotes
-  const allQuotes = quotePagesRaw
-    .map(p => {
-      const cita = richText(p.properties.Cita)
-      if (!cita.trim()) return null
-      return {
-        id:         p.id,
-        cita,
-        autor:      richText(p.properties.Autor),
-        obra:       richText(p.properties.Obra),
-        pagina:     p.properties['Página']?.number ?? null,
-        categorias: p.properties['Categoría']?.multi_select?.map(s => s.name) ?? [],
-        favorita:   p.properties.Favorita?.checkbox ?? false,
-        bookIds:    relationIds(p.properties.Libro),
-      }
-    })
-    .filter(Boolean)
-
-  // Attach quotes to their books
-  for (const q of allQuotes) {
-    for (const bid of q.bookIds) {
-      bookMap.get(bid)?.quotes.push(q)
-    }
+  if (bookPages.length > 0) {
+    console.log('📖 Notion book fields:', Object.keys(bookPages[0].properties).join(', '))
   }
 
-  // Library = books with at least one quote, sorted by date read desc
-  const library = books
+  const bookMap = new Map(books.map(b => [b.id, b]))
+  for (const p of quotePages) {
+    const cita = richText(p.properties.Cita)
+    if (!cita.trim()) continue
+    const q = {
+      id:         p.id,
+      cita,
+      autor:      richText(p.properties.Autor),
+      obra:       richText(p.properties.Obra),
+      pagina:     p.properties['Página']?.number ?? null,
+      categorias: p.properties['Categoría']?.multi_select?.map(s => s.name) ?? [],
+      favorita:   p.properties.Favorita?.checkbox ?? false,
+      bookIds:    relationIds(p.properties.Libro),
+    }
+    for (const bid of q.bookIds) bookMap.get(bid)?.quotes.push(q)
+  }
+
+  return books
     .filter(b => b.quotes.length > 0)
     .sort((a, b) => {
       if (a.dateRead && b.dateRead) return b.dateRead.localeCompare(a.dateRead)
       if (a.dateRead) return -1
-      if (b.dateRead) return  1
+      if (b.dateRead) return 1
       return 0
     })
-
-  return { library, allQuotes }
 }
 
-async function getData() {
-  if (cache.data && Date.now() - cache.at < CACHE_TTL) return cache.data
-  const data = await buildLibrary()
-  cache = { data, at: Date.now() }
+async function getNotionData() {
+  if (notionCache.data && Date.now() - notionCache.at < CACHE_TTL) return notionCache.data
+  const data = await buildNotionLibrary()
+  notionCache = { data, at: Date.now() }
   return data
 }
 
-// ── API routes ─────────────────────────────────────────────────────────────
+// ── Data source (DB o Notion) ─────────────────────────────────────────────
+async function getData() {
+  if (USE_DB) return getLibrary()
+  return getNotionData()
+}
 
-// Full library (books + their quotes)
+async function getRandomData(n = 3) {
+  if (USE_DB) return getRandomQuotes(n)
+  const library = await getNotionData()
+  const allQuotes = library.flatMap(b =>
+    b.quotes.map(q => ({
+      ...q,
+      bookIds:    [b.id],
+      bookNombre: b.nombre,
+      bookPortada: b.portada,
+    }))
+  )
+  return allQuotes.sort(() => Math.random() - 0.5).slice(0, n)
+}
+
+// ── Auth routes ───────────────────────────────────────────────────────────
+app.post('/api/auth/login', async (req, res) => {
+  const { password } = req.body
+  if (!ADMIN_HASH) return res.status(503).json({ error: 'Admin no configurado. Añade ADMIN_PASSWORD_HASH.' })
+  const ok = await bcrypt.compare(password, ADMIN_HASH)
+  if (!ok) return res.status(401).json({ error: 'Contraseña incorrecta' })
+  const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '30d' })
+  res.json({ token })
+})
+
+// Util: genera el hash de una contraseña (solo en desarrollo)
+app.get('/api/auth/hash/:pw', (req, res) => {
+  if (process.env.NODE_ENV === 'production') return res.status(404).end()
+  bcrypt.hash(req.params.pw, 10).then(h => res.json({ hash: h }))
+})
+
+// ── Public API ────────────────────────────────────────────────────────────
 app.get('/api/library', async (req, res) => {
-  try {
-    const { library } = await getData()
-    res.json(library)
-  } catch (err) {
-    console.error('GET /api/library', err.message)
-    res.status(500).json({ error: err.message })
-  }
+  try { res.json(await getData()) }
+  catch (err) { console.error(err); res.status(500).json({ error: err.message }) }
 })
 
-// 3 random quotes with their book cover attached
 app.get('/api/random', async (req, res) => {
-  try {
-    const { allQuotes, library } = await getData()
-    if (!allQuotes.length) return res.json([])
-
-    const bookById = new Map(library.map(b => [b.id, b]))
-    const shuffled = [...allQuotes].sort(() => Math.random() - 0.5)
-    const three = shuffled.slice(0, 3).map(q => {
-      const book = q.bookIds.map(id => bookById.get(id)).find(Boolean)
-      return { ...q, bookPortada: book?.portada ?? null, bookNombre: book?.nombre ?? q.obra }
-    })
-
-    res.json(three)
-  } catch (err) {
-    console.error('GET /api/random', err.message)
-    res.status(500).json({ error: err.message })
-  }
+  try { res.json(await getRandomData()) }
+  catch (err) { console.error(err); res.status(500).json({ error: err.message }) }
 })
 
-// Toggle favorite → writes back to Notion
+// Toggle favorite — escribe a Notion si es fallback, a PG si es BD propia
 app.patch('/api/quotes/:id/favorite', async (req, res) => {
   const { id } = req.params
   const { favorita } = req.body
-
-  if (typeof favorita !== 'boolean') {
-    return res.status(400).json({ error: '`favorita` must be boolean' })
-  }
+  if (typeof favorita !== 'boolean') return res.status(400).json({ error: '`favorita` must be boolean' })
 
   try {
-    const notionRes = await fetch(`https://api.notion.com/v1/pages/${id}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${NOTION_TOKEN}`,
-        'Notion-Version': '2022-06-28',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ properties: { Favorita: { checkbox: favorita } } }),
-    })
-
-    if (!notionRes.ok) {
-      const err = await notionRes.text()
-      throw new Error(`Notion PATCH error ${notionRes.status}: ${err}`)
-    }
-
-    // Update in-memory cache immediately so UI stays consistent
-    if (cache.data) {
-      for (const q of cache.data.allQuotes) {
-        if (q.id === id) { q.favorita = favorita; break }
-      }
-      for (const b of cache.data.library) {
-        const q = b.quotes.find(q => q.id === id)
-        if (q) { q.favorita = favorita; break }
+    if (USE_DB) {
+      await pool.query('UPDATE quotes SET favorita=$1, updated_at=NOW() WHERE id=$2', [favorita, id])
+    } else {
+      const r = await fetch(`https://api.notion.com/v1/pages/${id}`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${NOTION_TOKEN}`, 'Notion-Version': '2022-06-28', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ properties: { Favorita: { checkbox: favorita } } }),
+      })
+      if (!r.ok) throw new Error(await r.text())
+      // Update cache
+      if (notionCache.data) {
+        for (const b of notionCache.data) {
+          const q = b.quotes.find(q => q.id === id)
+          if (q) { q.favorita = favorita; break }
+        }
       }
     }
-
     res.json({ ok: true, favorita })
-  } catch (err) {
-    console.error('PATCH /api/quotes/:id/favorite', err.message)
-    res.status(500).json({ error: err.message })
-  }
+  } catch (err) { console.error(err); res.status(500).json({ error: err.message }) }
 })
 
-// Force cache refresh
-app.post('/api/refresh', async (req, res) => {
-  cache = { data: null, at: 0 }
+// ── Admin: Books CRUD ─────────────────────────────────────────────────────
+app.post('/api/books', requireAdmin, async (req, res) => {
+  const { titulo, autor, portada_url, valoracion, estado, fecha_lectura } = req.body
+  if (!titulo?.trim()) return res.status(400).json({ error: 'titulo requerido' })
   try {
-    await getData()
+    const { rows } = await pool.query(
+      `INSERT INTO books (titulo, autor, portada_url, valoracion, estado, fecha_lectura)
+       VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+      [titulo.trim(), autor?.trim() || null, portada_url || null,
+       valoracion || null, estado || 'Leído', fecha_lectura || null]
+    )
+    res.status(201).json(rows[0])
+  } catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+app.put('/api/books/:id', requireAdmin, async (req, res) => {
+  const { titulo, autor, portada_url, valoracion, estado, fecha_lectura } = req.body
+  try {
+    const { rows } = await pool.query(
+      `UPDATE books SET titulo=$1, autor=$2, portada_url=$3, valoracion=$4,
+       estado=$5, fecha_lectura=$6, updated_at=NOW() WHERE id=$7 RETURNING *`,
+      [titulo, autor, portada_url, valoracion, estado, fecha_lectura, req.params.id]
+    )
+    if (!rows.length) return res.status(404).json({ error: 'Libro no encontrado' })
+    res.json(rows[0])
+  } catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+app.delete('/api/books/:id', requireAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM books WHERE id=$1', [req.params.id])
     res.json({ ok: true })
+  } catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+// ── Admin: Quotes CRUD ────────────────────────────────────────────────────
+app.post('/api/books/:bookId/quotes', requireAdmin, async (req, res) => {
+  const { cita, pagina, categorias, favorita } = req.body
+  if (!cita?.trim()) return res.status(400).json({ error: 'cita requerida' })
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO quotes (book_id, cita, pagina, categorias, favorita, fuente)
+       VALUES ($1,$2,$3,$4,$5,'manual') RETURNING *`,
+      [req.params.bookId, cita.trim(), pagina || null,
+       categorias || [], favorita || false]
+    )
+    res.status(201).json(rows[0])
+  } catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+app.put('/api/quotes/:id', requireAdmin, async (req, res) => {
+  const { cita, pagina, categorias, favorita } = req.body
+  try {
+    const { rows } = await pool.query(
+      `UPDATE quotes SET cita=$1, pagina=$2, categorias=$3, favorita=$4,
+       updated_at=NOW() WHERE id=$5 RETURNING *`,
+      [cita, pagina, categorias, favorita, req.params.id]
+    )
+    if (!rows.length) return res.status(404).json({ error: 'Cita no encontrada' })
+    res.json(rows[0])
+  } catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+app.delete('/api/quotes/:id', requireAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM quotes WHERE id=$1', [req.params.id])
+    res.json({ ok: true })
+  } catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+// ── Admin: Import Kindle JSON ─────────────────────────────────────────────
+// Formato: [{ titulo, autor, highlights: [{ text, page }] }]
+app.post('/api/import/kindle', requireAdmin, async (req, res) => {
+  const { books: kindleBooks } = req.body
+  if (!Array.isArray(kindleBooks)) return res.status(400).json({ error: 'Se espera { books: [...] }' })
+
+  let imported = 0, skipped = 0
+  const client = await pool.connect()
+
+  try {
+    await client.query('BEGIN')
+
+    for (const kb of kindleBooks) {
+      if (!kb.titulo?.trim()) continue
+
+      // Buscar o crear libro
+      let { rows } = await client.query(
+        'SELECT id FROM books WHERE LOWER(titulo)=LOWER($1) AND LOWER(COALESCE(autor,\'\'))=LOWER($2)',
+        [kb.titulo.trim(), (kb.autor || '').trim()]
+      )
+
+      let bookId
+      if (rows.length) {
+        bookId = rows[0].id
+      } else {
+        const ins = await client.query(
+          'INSERT INTO books (titulo, autor, estado) VALUES ($1,$2,\'Leído\') RETURNING id',
+          [kb.titulo.trim(), kb.autor?.trim() || null]
+        )
+        bookId = ins.rows[0].id
+      }
+
+      for (const h of (kb.highlights || [])) {
+        if (!h.text?.trim()) continue
+        // Evitar duplicados exactos
+        const dup = await client.query(
+          'SELECT id FROM quotes WHERE book_id=$1 AND cita=$2',
+          [bookId, h.text.trim()]
+        )
+        if (dup.rows.length) { skipped++; continue }
+
+        await client.query(
+          'INSERT INTO quotes (book_id, cita, pagina, fuente) VALUES ($1,$2,$3,\'kindle\')',
+          [bookId, h.text.trim(), h.page || null]
+        )
+        imported++
+      }
+    }
+
+    await client.query('COMMIT')
+    res.json({ ok: true, imported, skipped })
   } catch (err) {
+    await client.query('ROLLBACK')
     res.status(500).json({ error: err.message })
+  } finally {
+    client.release()
   }
 })
 
-// SPA fallback
+// ── Admin: Export to Notion ───────────────────────────────────────────────
+app.post('/api/sync/notion', requireAdmin, async (req, res) => {
+  // TODO: implementar exportación a Notion
+  res.json({ ok: true, message: 'Sync to Notion — próximamente' })
+})
+
+// ── Cache refresh ─────────────────────────────────────────────────────────
+app.post('/api/refresh', async (req, res) => {
+  notionCache = { data: null, at: 0 }
+  try { await getData(); res.json({ ok: true }) }
+  catch (err) { res.status(500).json({ error: err.message }) }
+})
+
+// ── SPA fallback ──────────────────────────────────────────────────────────
 app.get('*', (req, res) => res.sendFile(join(__dirname, 'public', 'index.html')))
 
-app.listen(PORT, () => {
-  console.log(`📚 Biblioteca en http://localhost:${PORT}`)
+// ── Start ─────────────────────────────────────────────────────────────────
+const startServer = async () => {
+  if (USE_DB) {
+    await initDB()
+    console.log('🗄️  Usando PostgreSQL')
+  } else {
+    console.log('📋  Usando Notion como fuente (sin DATABASE_URL)')
+  }
 
-  // Calentar caché al arrancar — el primer usuario no espera
-  getData()
-    .then(d => console.log(`✅ Caché lista: ${d.library.length} libros, ${d.allQuotes.length} citas`))
-    .catch(err => console.error('⚠️  Error precargando caché:', err.message))
-
-  // Auto-refresh cada 12 min para que la caché nunca expire en frío
-  setInterval(() => {
-    cache = { data: null, at: 0 }
+  app.listen(PORT, () => {
+    console.log(`📚 Noray en http://localhost:${PORT}`)
     getData()
-      .then(d => console.log(`🔄 Caché refrescada: ${d.library.length} libros`))
-      .catch(err => console.error('⚠️  Error refrescando caché:', err.message))
-  }, 12 * 60 * 1000)
-})
+      .then(d => console.log(`✅ Datos listos: ${d.length} libros`))
+      .catch(err => console.error('⚠️  Error precargando:', err.message))
+
+    if (!USE_DB) {
+      setInterval(() => {
+        notionCache = { data: null, at: 0 }
+        getData().catch(err => console.error('⚠️  Refresh error:', err.message))
+      }, 12 * 60 * 1000)
+    }
+  })
+}
+
+startServer()

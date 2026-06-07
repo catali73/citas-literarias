@@ -1,0 +1,102 @@
+// db.js — PostgreSQL connection and schema init
+import pg from 'pg'
+const { Pool } = pg
+
+export const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL?.includes('railway')
+    ? { rejectUnauthorized: false }
+    : false,
+})
+
+export async function initDB() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS books (
+      id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      titulo      TEXT NOT NULL,
+      autor       TEXT,
+      portada_url TEXT,
+      valoracion  SMALLINT CHECK (valoracion BETWEEN 1 AND 5),
+      estado      TEXT DEFAULT 'Leído',
+      fecha_lectura DATE,
+      notion_id   TEXT UNIQUE,
+      created_at  TIMESTAMPTZ DEFAULT NOW(),
+      updated_at  TIMESTAMPTZ DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS quotes (
+      id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      book_id     UUID REFERENCES books(id) ON DELETE CASCADE,
+      cita        TEXT NOT NULL,
+      pagina      INTEGER,
+      categorias  TEXT[] DEFAULT '{}',
+      favorita    BOOLEAN DEFAULT FALSE,
+      fuente      TEXT DEFAULT 'manual',
+      notion_id   TEXT UNIQUE,
+      created_at  TIMESTAMPTZ DEFAULT NOW(),
+      updated_at  TIMESTAMPTZ DEFAULT NOW()
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_quotes_book_id ON quotes(book_id);
+    CREATE INDEX IF NOT EXISTS idx_quotes_favorita ON quotes(favorita);
+  `)
+  console.log('✅ DB schema ready')
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+export async function getLibrary() {
+  const { rows: books } = await pool.query(`
+    SELECT b.*,
+           COUNT(q.id)::int       AS ncitas,
+           jsonb_agg(
+             jsonb_build_object(
+               'id',         q.id,
+               'cita',       q.cita,
+               'pagina',     q.pagina,
+               'categorias', q.categorias,
+               'favorita',   q.favorita,
+               'fuente',     q.fuente,
+               'book_id',    q.book_id
+             ) ORDER BY q.created_at
+           ) FILTER (WHERE q.id IS NOT NULL) AS quotes
+    FROM books b
+    LEFT JOIN quotes q ON q.book_id = b.id
+    GROUP BY b.id
+    ORDER BY b.fecha_lectura DESC NULLS LAST, b.created_at DESC
+  `)
+
+  return books.map(b => ({
+    id:           b.id,
+    nombre:       b.titulo,
+    author:       b.autor,
+    portada:      b.portada_url,
+    rating:       b.valoracion,
+    shelf:        b.estado,
+    dateRead:     b.fecha_lectura,
+    quotes:       b.quotes || [],
+  }))
+}
+
+export async function getRandomQuotes(n = 3) {
+  const { rows } = await pool.query(`
+    SELECT q.*, b.titulo AS book_nombre, b.portada_url AS book_portada
+    FROM quotes q
+    JOIN books b ON b.id = q.book_id
+    ORDER BY RANDOM()
+    LIMIT $1
+  `, [n])
+
+  return rows.map(q => ({
+    id:           q.id,
+    cita:         q.cita,
+    autor:        q.autor || '',
+    obra:         q.book_nombre,
+    pagina:       q.pagina,
+    categorias:   q.categorias,
+    favorita:     q.favorita,
+    bookIds:      [q.book_id],
+    bookNombre:   q.book_nombre,
+    bookPortada:  q.book_portada,
+  }))
+}
