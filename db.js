@@ -52,8 +52,22 @@ export async function initDB() {
 
 export async function getLibrary() {
   const { rows: books } = await pool.query(`
-    SELECT b.*,
-           COUNT(q.id)::int       AS ncitas,
+    SELECT b.id,
+           b.titulo,
+           b.autor,
+           b.valoracion,
+           b.estado,
+           b.fecha_lectura,
+           b.numero_paginas,
+           b.my_review,
+           b.notion_id,
+           b.created_at,
+           -- Nunca traer el base64 completo: convertir en SQL
+           CASE
+             WHEN b.portada_url LIKE 'data:%' THEN '/api/covers/' || b.id::text
+             ELSE b.portada_url
+           END AS portada_computed,
+           COUNT(q.id)::int AS ncitas,
            jsonb_agg(
              jsonb_build_object(
                'id',         q.id,
@@ -76,10 +90,7 @@ export async function getLibrary() {
     id:            b.id,
     nombre:        b.titulo,
     author:        b.autor,
-    // Si la portada está en base64 la servimos por endpoint propio (no incluir en la lista)
-    portada:       b.portada_url
-      ? (b.portada_url.startsWith('data:') ? `/api/covers/${b.id}` : b.portada_url)
-      : null,
+    portada:       b.portada_computed || null,
     rating:        b.valoracion,
     shelf:         b.estado,
     dateRead:      b.fecha_lectura,
