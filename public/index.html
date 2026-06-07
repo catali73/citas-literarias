@@ -751,7 +751,7 @@ function renderBookDetail(b) {
 function renderModalQuote(q, book) {
   const tags = (q.categorias||[]).map(c=>`<span class="mq-tag">${esc(c)}</span>`).join('')
   const adminBtns = isAdmin() ? `
-    <button class="edit-btn" onclick="openQuoteForm('${esc(q.id)}')">✏️</button>
+    <button class="edit-btn" onclick="openQuoteForm('${esc(q.id)}','${esc(book.id)}')">✏️ Editar</button>
     <button class="del-btn" onclick="deleteQuote('${esc(q.id)}','${esc(book.id)}')">🗑</button>` : ''
   return `
     <div class="modal-quote${q.favorita?' is-fav':''}" id="mq-${esc(q.id)}">
@@ -884,7 +884,7 @@ function openBookForm(id) {
   else { img.style.display='none'; ph.style.display='flex' }
   document.getElementById('bf-error').style.display='none'
   document.getElementById('book-form-modal').classList.add('open')
-  closeModal()
+  // No cerramos el modal del libro — al guardar lo reabrimos actualizado
 }
 function closeBookForm() { document.getElementById('book-form-modal').classList.remove('open') }
 
@@ -901,6 +901,7 @@ async function saveBook() {
     if(!r.ok) throw new Error((await r.json()).error)
     closeBookForm(); showToast(id?'✅ Libro actualizado':'✅ Libro creado')
     await reload()
+    if(id) openBook(id) // Reabrir modal del libro para seguir editando citas
   } catch(err){errEl.textContent=err.message;errEl.style.display='block'}
 }
 
