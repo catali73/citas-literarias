@@ -22,6 +22,39 @@ const USE_DB       = !!process.env.DATABASE_URL      // use PostgreSQL if availa
 let notionCache = { data: null, at: 0 }
 const CACHE_TTL = 15 * 60 * 1000
 
+// ── Cover memory cache ────────────────────────────────────────────────────
+// Evita una query a PostgreSQL + Sharp por cada petición de imagen
+const coverCache = new Map() // bookId → Buffer (jpeg comprimido)
+
+async function getCoverBuffer(bookId) {
+  if (coverCache.has(bookId)) return coverCache.get(bookId)
+  const { rows } = await pool.query('SELECT portada_url FROM books WHERE id=$1', [bookId])
+  if (!rows.length || !rows[0].portada_url) return null
+  const url = rows[0].portada_url
+  if (!url.startsWith('data:')) return null // URL externa, no cacheamos
+  const [, data] = url.split(',')
+  const buf = await sharp(Buffer.from(data, 'base64'))
+    .resize({ width: 400, withoutEnlargement: true })
+    .jpeg({ quality: 82 })
+    .toBuffer()
+  coverCache.set(bookId, buf)
+  return buf
+}
+
+// Pre-carga todas las portadas en memoria al arrancar
+async function warmCoverCache() {
+  const { rows } = await pool.query(`SELECT id FROM books WHERE portada_url LIKE 'data:%'`)
+  console.log(`🖼️  Pre-cargando ${rows.length} portadas en memoria…`)
+  let ok = 0
+  // Procesamos en lotes de 20 para no saturar
+  for (let i = 0; i < rows.length; i += 20) {
+    await Promise.all(rows.slice(i, i + 20).map(r =>
+      getCoverBuffer(r.id).then(() => ok++).catch(() => {})
+    ))
+  }
+  console.log(`✅ Cover cache lista: ${ok} portadas`)
+}
+
 // ── Middleware ────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '12mb' }))
 app.use(express.static(join(__dirname, 'public')))
@@ -352,25 +385,15 @@ app.post('/api/sync/notion', requireAdmin, async (req, res) => {
 // ── Cover image ──────────────────────────────────────────────────────────────
 app.get('/api/covers/:id', async (req, res) => {
   try {
+    const buf = await getCoverBuffer(req.params.id)
+    if (buf) {
+      res.set({ 'Content-Type': 'image/jpeg', 'Cache-Control': 'public, max-age=31536000', 'Content-Length': buf.length })
+      return res.send(buf)
+    }
+    // Fallback: URL externa o sin portada
     const { rows } = await pool.query('SELECT portada_url FROM books WHERE id=$1', [req.params.id])
     if (!rows.length || !rows[0].portada_url) return res.status(404).end()
-    const url = rows[0].portada_url
-    if (url.startsWith('data:')) {
-      const [, data] = url.split(',')
-      const original = Buffer.from(data, 'base64')
-      // Redimensionar a max 400px ancho, JPEG 82% — ligero para móvil
-      const compressed = await sharp(original)
-        .resize({ width: 400, withoutEnlargement: true })
-        .jpeg({ quality: 82 })
-        .toBuffer()
-      res.set({
-        'Content-Type': 'image/jpeg',
-        'Cache-Control': 'public, max-age=31536000',
-        'Content-Length': compressed.length,
-      })
-      return res.send(compressed)
-    }
-    res.redirect(302, url)
+    res.redirect(302, rows[0].portada_url)
   } catch (err) { console.error('covers err:', err.message); res.status(500).end() }
 })
 
@@ -398,6 +421,8 @@ const startServer = async () => {
     getData()
       .then(d => console.log(`✅ Datos listos: ${d.length} libros`))
       .catch(err => console.error('⚠️  Error precargando:', err.message))
+
+    if (USE_DB) warmCoverCache().catch(err => console.error('⚠️  Cover cache error:', err.message))
 
     if (!USE_DB) {
       setInterval(() => {

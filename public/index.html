@@ -510,13 +510,9 @@ function starsHTML(n) { if (!n) return ''; const r=Math.round(n); return '★'.r
 function strColor(str,l=42) { let h=0; for(const c of str) h=(h*31+c.charCodeAt(0))&0xffff; return `hsl(${h%360},38%,${l}%)` }
 function initials(str) { return (str||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() }
 function bookAuthor(b) { return b.author || b.quotes[0]?.autor || '' }
-// Portada local = en nuestra BD. Notion URLs = expiradas. Resto de URLs = válidas.
+// Solo cuenta como portada guardada si viene de nuestra BD
 function hasLocalCover(b) {
-  if (!b.portada) return false
-  if (b.portada.startsWith('/api/covers/') || b.portada.startsWith('data:')) return true
-  // URL externa no-Notion = válida
-  if (!b.portada.includes('notion') && !b.portada.includes('amazonaws.com/secure.notion')) return true
-  return false // URL Notion = expirada
+  return !!(b.portada?.startsWith('/api/covers/'))
 }
 
 // Seeded random for weekly picks
