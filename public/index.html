@@ -499,6 +499,7 @@
       <button class="nav-btn active" data-view="inicio">Inicio</button>
       <button class="nav-btn" data-view="biblioteca">Biblioteca</button>
       <button class="nav-btn" data-view="favoritas">Favoritas</button>
+      <button class="nav-btn" id="desktop-admin-btn" onclick="handleAdminMenu()" title="Admin">🔑</button>
     </nav>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1144,13 +1145,14 @@ let adminToken = localStorage.getItem('noray-admin-token') || null
 function isAdmin() { return !!adminToken }
 
 function checkAdminUI() {
-  // FAB + / - siempre visible si admin
   const fab = document.getElementById('admin-fab')
   if (fab) fab.style.display = isAdmin() ? 'block' : 'none'
 
-  // Actualizar botón del dropdown
   const dropBtn = document.getElementById('dropdown-admin-btn')
   if (dropBtn) dropBtn.textContent = isAdmin() ? '🔓 Cerrar sesión' : '🔑 Admin'
+
+  const desktopBtn = document.getElementById('desktop-admin-btn')
+  if (desktopBtn) desktopBtn.textContent = isAdmin() ? '🔓' : '🔑'
 }
 
 function handleAdminMenu() {
