@@ -229,7 +229,13 @@
       <button class="nav-btn" data-view="biblioteca">Biblioteca</button>
       <button class="nav-btn" data-view="favoritas">Favoritas</button>
       <button class="nav-btn" id="nav-admin" data-view="admin">⚙️ Admin</button>
-      <button id="admin-add-btn" onclick="openAddForm()">+ Añadir</button>
+      <div style="position:relative" id="admin-add-wrap">
+        <button id="admin-add-btn" onclick="toggleAddMenu()">+ Añadir ▾</button>
+        <div id="add-menu" style="display:none;position:absolute;top:calc(100% + .4rem);right:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-h);padding:.4rem;min-width:160px;z-index:250">
+          <button onclick="openBookForm(null);closeAddMenu()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:.6rem .9rem;border-radius:7px;cursor:pointer;font-size:.875rem;font-family:'Inter',sans-serif" onmouseover="this.style.background='var(--surface-alt)'" onmouseout="this.style.background='none'">📚 Nuevo libro</button>
+          <button onclick="openQuoteForm(null,null);closeAddMenu()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:.6rem .9rem;border-radius:7px;cursor:pointer;font-size:.875rem;font-family:'Inter',sans-serif" onmouseover="this.style.background='var(--surface-alt)'" onmouseout="this.style.background='none'">💬 Nueva cita</button>
+        </div>
+      </div>
       <button class="nav-btn" id="desktop-admin-btn" onclick="handleAdminMenu()">🔑</button>
     </nav>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">
@@ -867,7 +873,9 @@ function renderAdminList() {
 }
 
 // ── Book form ──
-function openAddForm() { openBookForm(null) }
+function toggleAddMenu() { const m=document.getElementById('add-menu'); m.style.display=m.style.display==='none'?'block':'none' }
+function closeAddMenu()  { document.getElementById('add-menu').style.display='none' }
+document.addEventListener('click', e => { if(!e.target.closest('#admin-add-wrap')) closeAddMenu() })
 function openBookForm(id) {
   const b = id ? library.find(x=>x.id===id) : null
   document.getElementById('book-form-title').textContent = b ? 'Editar libro' : 'Nuevo libro'
@@ -966,7 +974,7 @@ function isAdmin() { return !!adminToken }
 function authHeader() { return {'Content-Type':'application/json',Authorization:`Bearer ${adminToken}`} }
 function checkAdminUI() {
   const show=isAdmin()
-  ;['admin-add-btn','nav-admin','dropdown-panel-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=show?'block':'none'})
+  ;['admin-add-wrap','nav-admin','dropdown-panel-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=show?'block':'none'})
   const d=document.getElementById('desktop-admin-btn'); if(d)d.textContent=show?'🔓':'🔑'
   const db=document.getElementById('dropdown-admin-btn'); if(db)db.textContent=show?'🔓 Cerrar sesión':'🔑 Admin'
 }
