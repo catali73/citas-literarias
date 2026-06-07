@@ -348,6 +348,23 @@ app.post('/api/sync/notion', requireAdmin, async (req, res) => {
   res.json({ ok: true, message: 'Sync to Notion — próximamente' })
 })
 
+// ── Cover image ──────────────────────────────────────────────────────────────
+app.get('/api/covers/:id', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT portada_url FROM books WHERE id=$1', [req.params.id])
+    if (!rows.length || !rows[0].portada_url) return res.status(404).end()
+    const url = rows[0].portada_url
+    if (url.startsWith('data:')) {
+      const [meta, data] = url.split(',')
+      const mime = meta.match(/data:([^;]+)/)?.[1] || 'image/jpeg'
+      const buf = Buffer.from(data, 'base64')
+      res.set({ 'Content-Type': mime, 'Cache-Control': 'public, max-age=31536000', 'Content-Length': buf.length })
+      return res.send(buf)
+    }
+    res.redirect(302, url)
+  } catch (err) { res.status(500).end() }
+})
+
 // ── Cache refresh ─────────────────────────────────────────────────────────
 app.post('/api/refresh', async (req, res) => {
   notionCache = { data: null, at: 0 }

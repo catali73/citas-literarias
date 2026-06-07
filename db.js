@@ -76,7 +76,10 @@ export async function getLibrary() {
     id:            b.id,
     nombre:        b.titulo,
     author:        b.autor,
-    portada:       b.portada_url,
+    // Si la portada está en base64 la servimos por endpoint propio (no incluir en la lista)
+    portada:       b.portada_url
+      ? (b.portada_url.startsWith('data:') ? `/api/covers/${b.id}` : b.portada_url)
+      : null,
     rating:        b.valoracion,
     shelf:         b.estado,
     dateRead:      b.fecha_lectura,

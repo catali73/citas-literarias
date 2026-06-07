@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "migrate": "node scripts/migrate-from-notion.js"
+    "migrate": "node scripts/migrate-from-notion.js",
+    "sync-covers": "node scripts/sync-covers.js"
   },
   "dependencies": {
     "express": "^4.22.1",
