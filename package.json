@@ -10,10 +10,11 @@
     "sync-covers": "node scripts/sync-covers.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.22.1",
-    "pg": "^8.12.0",
     "jsonwebtoken": "^9.0.2",
-    "bcryptjs": "^2.4.3"
+    "pg": "^8.12.0",
+    "sharp": "^0.34.5"
   },
   "engines": {
     "node": ">=18.0.0"

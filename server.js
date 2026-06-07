@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import sharp from 'sharp'
 import { pool, initDB, getLibrary, getRandomQuotes } from './db.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -355,14 +356,22 @@ app.get('/api/covers/:id', async (req, res) => {
     if (!rows.length || !rows[0].portada_url) return res.status(404).end()
     const url = rows[0].portada_url
     if (url.startsWith('data:')) {
-      const [meta, data] = url.split(',')
-      const mime = meta.match(/data:([^;]+)/)?.[1] || 'image/jpeg'
-      const buf = Buffer.from(data, 'base64')
-      res.set({ 'Content-Type': mime, 'Cache-Control': 'public, max-age=31536000', 'Content-Length': buf.length })
-      return res.send(buf)
+      const [, data] = url.split(',')
+      const original = Buffer.from(data, 'base64')
+      // Redimensionar a max 400px ancho, JPEG 82% — ligero para móvil
+      const compressed = await sharp(original)
+        .resize({ width: 400, withoutEnlargement: true })
+        .jpeg({ quality: 82 })
+        .toBuffer()
+      res.set({
+        'Content-Type': 'image/jpeg',
+        'Cache-Control': 'public, max-age=31536000',
+        'Content-Length': compressed.length,
+      })
+      return res.send(compressed)
     }
     res.redirect(302, url)
-  } catch (err) { res.status(500).end() }
+  } catch (err) { console.error('covers err:', err.message); res.status(500).end() }
 })
 
 // ── Cache refresh ─────────────────────────────────────────────────────────
