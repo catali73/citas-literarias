@@ -511,6 +511,8 @@
       <button class="nav-btn active" data-view="inicio" onclick="showView('inicio');closeMenu()">Inicio</button>
       <button class="nav-btn" data-view="biblioteca" onclick="showView('biblioteca');closeMenu()">Biblioteca</button>
       <button class="nav-btn" data-view="favoritas" onclick="showView('favoritas');closeMenu()">Favoritas</button>
+      <hr style="border:none;border-top:1px solid var(--border);margin:.25rem 0">
+      <button class="nav-btn" id="dropdown-admin-btn" onclick="handleAdminMenu()">🔑 Admin</button>
     </div>
   </div>
 </header>
@@ -1142,25 +1144,21 @@ let adminToken = localStorage.getItem('noray-admin-token') || null
 function isAdmin() { return !!adminToken }
 
 function checkAdminUI() {
+  // FAB + / - siempre visible si admin
   const fab = document.getElementById('admin-fab')
-  if (!fab) return
-  fab.style.display = isAdmin() ? 'block' : 'none'
-  // Añadir botón login/logout en el masthead
-  const existing = document.getElementById('admin-toggle-btn')
-  if (!existing) {
-    const btn = document.createElement('button')
-    btn.id = 'admin-toggle-btn'
-    btn.style.cssText = 'background:none;border:none;cursor:pointer;color:var(--text-3);font-size:.75rem;margin-left:.5rem;padding:.3rem .5rem;border-radius:6px;transition:color .15s'
-    btn.onmouseover = () => btn.style.color = 'var(--text-2)'
-    btn.onmouseout  = () => btn.style.color = 'var(--text-3)'
-    btn.onclick = isAdmin() ? adminLogout : openLoginModal
-    btn.textContent = isAdmin() ? '🔓 Salir' : '🔑'
-    btn.title = isAdmin() ? 'Cerrar sesión admin' : 'Acceso admin'
-    document.querySelector('.masthead-nav')?.appendChild(btn)
+  if (fab) fab.style.display = isAdmin() ? 'block' : 'none'
+
+  // Actualizar botón del dropdown
+  const dropBtn = document.getElementById('dropdown-admin-btn')
+  if (dropBtn) dropBtn.textContent = isAdmin() ? '🔓 Cerrar sesión' : '🔑 Admin'
+}
+
+function handleAdminMenu() {
+  closeMenu()
+  if (isAdmin()) {
+    adminLogout()
   } else {
-    existing.onclick = isAdmin() ? adminLogout : openLoginModal
-    existing.textContent = isAdmin() ? '🔓 Salir' : '🔑'
-    existing.title = isAdmin() ? 'Cerrar sesión admin' : 'Acceso admin'
+    openLoginModal()
   }
 }
 
