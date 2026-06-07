@@ -62,7 +62,8 @@ export async function getLibrary() {
                'categorias', q.categorias,
                'favorita',   q.favorita,
                'fuente',     q.fuente,
-               'book_id',    q.book_id
+               'book_id',    q.book_id,
+               'bookIds',    jsonb_build_array(q.book_id::text)
              ) ORDER BY q.created_at
            ) FILTER (WHERE q.id IS NOT NULL) AS quotes
     FROM books b

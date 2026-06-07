@@ -9,13 +9,11 @@
   <meta name="theme-color" content="#FAF9F7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Mis Citas">
+  <meta name="apple-mobile-web-app-title" content="Noray">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:          #FAF9F7;
       --surface:     #FFFFFF;
@@ -27,507 +25,193 @@
       --accent:      #B5541C;
       --accent-soft: #FDF0E8;
       --star:        #D4A017;
+      --danger:      #DC2626;
       --shadow:      0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
       --shadow-h:    0 4px 12px rgba(0,0,0,0.10), 0 16px 40px rgba(0,0,0,0.08);
     }
-
     html { scroll-behavior: smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; min-height:100vh; font-size:15px; line-height:1.6; }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      min-height: 100vh;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    /* ── Header ─────────────────────────────────── */
-    header {
-      position: sticky; top: 0; z-index: 200;
-      background: rgba(250,249,247,0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .masthead {
-      max-width: 1100px; margin: 0 auto;
-      padding: 1.5rem 2rem;
-      display: flex; align-items: center; gap: 2rem;
-    }
-    .masthead-seal {
-      width: 110px; height: 110px;
-      object-fit: contain; flex-shrink: 0;
-    }
-    .masthead-text { flex: 1; }
-    .masthead-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem; font-weight: 600;
-      color: var(--text); letter-spacing: -0.03em;
-      line-height: 1;
-    }
-    .masthead-sub {
-      font-size: 0.78rem; font-weight: 500;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--text-3); margin-top: 0.35rem;
-    }
-    .masthead-nav { margin-left: auto; display: flex; gap: 0.25rem; align-items: center; }
-    nav { display: flex; gap: 0.25rem; }
-    .nav-btn {
-      background: none; border: none; color: var(--text-2);
-      font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500;
-      cursor: pointer; padding: 0.35rem 0.85rem; border-radius: 8px;
-      transition: all 0.15s;
-    }
-    .nav-btn:hover { background: var(--surface-alt); color: var(--text); }
-    .nav-btn.active { background: var(--text); color: #fff; }
-
-    /* ── Admin panel ────────────────────────────── */
-    .admin-filter-btn {
-      background:none;border:1px solid var(--border);color:var(--text-2);
-      padding:.35rem .85rem;border-radius:20px;cursor:pointer;font-size:.8rem;
-      font-family:'Inter',sans-serif;transition:all .15s;
-    }
-    .admin-filter-btn:hover { border-color:var(--text-2);color:var(--text); }
-    .admin-filter-btn.active { background:var(--text);color:#fff;border-color:var(--text); }
-    .admin-stat-card {
-      background:var(--surface);border:1px solid var(--border);border-radius:10px;
-      padding:1.1rem 1.25rem;box-shadow:var(--shadow);
-    }
-    .admin-stat-card .stat-num { font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:600;color:var(--text);line-height:1; }
-    .admin-stat-card .stat-label { font-size:.75rem;color:var(--text-2);margin-top:.25rem; }
-    .admin-book-row {
-      background:var(--surface);border:1px solid var(--border);border-radius:10px;
-      padding:.85rem 1rem;display:flex;align-items:center;gap:1rem;
-      box-shadow:var(--shadow);
-    }
-    .admin-book-row img { width:38px;height:52px;object-fit:cover;border-radius:3px;flex-shrink:0; }
-    .admin-book-row .no-cover-ph { width:38px;height:52px;background:var(--surface-alt);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--text-3); }
-    .admin-book-row .book-info { flex:1;min-width:0; }
-    .admin-book-row .book-name { font-weight:600;font-size:.88rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-    .admin-book-row .book-sub { font-size:.75rem;color:var(--text-2); }
-    .admin-badge { font-size:.68rem;padding:.15rem .5rem;border-radius:20px;font-weight:500; }
-    .badge-warn { background:#fef3c7;color:#92400e; }
-    .badge-ok   { background:#d1fae5;color:#065f46; }
-    .edit-btn { background:none;border:1px solid var(--border);color:var(--text-2);padding:.3rem .7rem;border-radius:7px;cursor:pointer;font-size:.75rem;transition:all .15s;white-space:nowrap; }
-    .edit-btn:hover { border-color:var(--accent);color:var(--accent); }
-
-    /* ── Form helpers ───────────────────────────── */
-    .flabel { font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.35rem }
-    .finput { width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;background:var(--bg) }
-    .finput:focus { outline:none;border-color:var(--accent) }
-
-    /* ── Botón añadir (admin) ────────────────────── */
-    #admin-add-btn {
-      display:none;
-      background:var(--accent);color:#fff;border:none;
-      padding:.35rem .9rem;border-radius:8px;cursor:pointer;
-      font-family:'Inter',sans-serif;font-size:.875rem;font-weight:500;
-      transition:opacity .15s;
-    }
+    /* ── Header ── */
+    header { position:sticky; top:0; z-index:200; background:rgba(250,249,247,0.95); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+    .masthead { max-width:1100px; margin:0 auto; padding:1.5rem 2rem; display:flex; align-items:center; gap:2rem; }
+    .masthead-seal { width:110px; height:110px; object-fit:contain; flex-shrink:0; }
+    .masthead-text { flex:1; }
+    .masthead-title { font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:600; color:var(--text); letter-spacing:-0.03em; line-height:1; }
+    .masthead-sub { font-size:0.78rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-3); margin-top:0.35rem; }
+    .masthead-nav { margin-left:auto; display:flex; gap:0.25rem; align-items:center; }
+    .nav-btn { background:none; border:none; color:var(--text-2); font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:500; cursor:pointer; padding:0.4rem 0.9rem; border-radius:8px; transition:all 0.15s; }
+    .nav-btn:hover { background:var(--surface-alt); color:var(--text); }
+    .nav-btn.active { background:var(--text); color:#fff; }
+    #admin-add-btn { display:none; background:var(--accent); color:#fff; border:none; padding:0.35rem 0.9rem; border-radius:8px; cursor:pointer; font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:500; }
     #admin-add-btn:hover { opacity:.85; }
+    #nav-admin { display:none; }
 
-    /* ── Hamburger (solo móvil) ──────────────────── */
-    .hamburger {
-      display: none; margin-left: auto;
-      background: none; border: none; cursor: pointer;
-      color: var(--text); padding: 0.4rem;
-      border-radius: 8px; transition: background 0.15s;
-    }
-    .hamburger:hover { background: var(--surface-alt); }
-    .hamburger svg { display: block; }
+    /* Hamburger */
+    .hamburger { display:none; margin-left:auto; background:none; border:none; cursor:pointer; color:var(--text); padding:0.4rem; border-radius:8px; }
+    .hamburger svg { display:block; }
+    .dropdown-menu { display:none; position:absolute; top:100%; right:1.25rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); padding:0.5rem; min-width:200px; z-index:300; }
+    .dropdown-menu.open { display:flex; flex-direction:column; }
+    .dropdown-menu .nav-btn { text-align:left; padding:0.65rem 1rem; font-size:0.95rem; }
 
-    .dropdown-menu {
-      display: none; position: absolute;
-      top: 100%; right: 1.25rem;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      padding: 0.5rem; min-width: 180px; z-index: 300;
-    }
-    .dropdown-menu.open { display: flex; flex-direction: column; }
-    .dropdown-menu .nav-btn {
-      text-align: left; padding: 0.65rem 1rem;
-      border-radius: 8px; font-size: 0.95rem;
-    }
+    /* ── Views ── */
+    .view { display:none; }
+    .view.active { display:block; }
+    .page-wrap { max-width:1100px; margin:0 auto; padding:3rem 2rem 5rem; }
 
-    /* ── Views ──────────────────────────────────── */
-    .view { display: none; }
-    .view.active { display: block; }
-    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+    /* ── Section header ── */
+    .sec-hdr { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1.5rem; }
+    .sec-title { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:600; letter-spacing:-0.02em; color:var(--text); }
+    .sec-btn { background:none; border:1px solid var(--border); color:var(--text-2); font-size:0.8rem; font-family:'Inter',sans-serif; font-weight:500; padding:0.35rem 0.9rem; border-radius:20px; cursor:pointer; transition:all 0.15s; }
+    .sec-btn:hover { border-color:var(--text-2); color:var(--text); }
 
-    /* ── Section header ─────────────────────────── */
-    .sec-hdr {
-      display: flex; align-items: baseline;
-      justify-content: space-between; margin-bottom: 1.5rem;
-    }
-    .sec-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem; font-weight: 600;
-      letter-spacing: -0.02em; color: var(--text);
-    }
-    .sec-btn {
-      background: none; border: 1px solid var(--border);
-      color: var(--text-2); font-size: 0.8rem;
-      font-family: 'Inter', sans-serif; font-weight: 500;
-      padding: 0.35rem 0.9rem; border-radius: 20px;
-      cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 0.4rem;
-    }
-    .sec-btn:hover { border-color: var(--text-2); color: var(--text); }
-    .sec-btn:disabled { opacity: 0.4; cursor: default; }
+    /* ── Book grid ── */
+    .books-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:1.25rem; }
+    .book-card { position:relative; border-radius:10px; overflow:hidden; aspect-ratio:2/3; cursor:pointer; box-shadow:var(--shadow); transition:box-shadow 0.2s,transform 0.2s; background:var(--surface-alt); }
+    .book-card:hover { box-shadow:var(--shadow-h); transform:translateY(-3px); }
+    .book-cover-img { width:100%; height:100%; object-fit:cover; display:block; }
+    .book-no-cover { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem; padding:1rem; }
+    .book-no-cover-initial { font-family:'Playfair Display',serif; font-size:2rem; font-weight:600; color:rgba(255,255,255,0.85); }
+    .book-no-cover-title { font-size:0.72rem; color:rgba(255,255,255,0.7); text-align:center; line-height:1.3; }
+    .quote-badge { position:absolute; top:0.5rem; right:0.5rem; background:rgba(0,0,0,0.55); color:#fff; backdrop-filter:blur(4px); border-radius:20px; font-size:0.65rem; font-weight:600; padding:0.15rem 0.45rem; }
+    .book-overlay { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top,rgba(0,0,0,0.78) 0%,transparent 100%); padding:2.5rem 0.75rem 0.75rem; }
+    .book-overlay-title { font-family:'Playfair Display',serif; font-size:0.8rem; font-weight:600; color:#fff; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .book-overlay-author { font-size:0.68rem; color:rgba(255,255,255,0.65); margin-top:0.15rem; }
 
-    /* ── Quote cards ─────────────────────────────── */
-    .trio-section { margin-bottom: 4rem; }
-    .trio-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+    /* ── Weekly ── */
+    .weekly-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:4rem; }
+    .weekly-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:2rem; box-shadow:var(--shadow); cursor:pointer; transition:box-shadow 0.2s; }
+    .weekly-card:hover { box-shadow:var(--shadow-h); }
+    .weekly-label { font-size:0.68rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:1.25rem; }
+    .weekly-book-top { display:flex; gap:1.25rem; align-items:flex-start; margin-bottom:1rem; }
+    .weekly-cover { width:64px; height:88px; border-radius:4px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:600; color:rgba(255,255,255,0.85); overflow:hidden; }
+    .weekly-cover img { width:100%; height:100%; object-fit:cover; border-radius:4px; }
+    .weekly-card h3 { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; line-height:1.3; color:var(--text); margin-bottom:0.3rem; }
+    .weekly-autor { font-size:0.82rem; color:var(--text-2); margin-bottom:0.4rem; }
+    .weekly-quote-preview { font-family:'Playfair Display',serif; font-style:italic; font-size:0.85rem; line-height:1.6; color:var(--text-2); border-left:2px solid var(--accent); padding-left:0.85rem; }
+    .author-avatar { width:56px; height:56px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:600; color:rgba(255,255,255,0.85); }
+    .author-books-list { display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem; }
+    .author-book-item { display:flex; align-items:center; gap:0.6rem; padding:0.5rem 0.7rem; background:var(--surface-alt); border-radius:8px; cursor:pointer; transition:background 0.15s; }
+    .author-book-item:hover { background:var(--accent-soft); }
+    .author-book-dot { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
 
-    .quote-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.75rem;
-      box-shadow: var(--shadow);
-      display: flex; flex-direction: column; gap: 1rem;
-      transition: box-shadow 0.2s, transform 0.2s;
-      animation: fadeUp 0.4s ease both;
-    }
-    .quote-card:hover { box-shadow: var(--shadow-h); transform: translateY(-2px); }
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(10px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    .quote-mark {
-      font-family: 'Playfair Display', serif; font-size: 3rem;
-      line-height: 1; color: var(--accent); opacity: 0.2; margin-bottom: -0.5rem;
-    }
-    .quote-text {
-      font-family: 'Playfair Display', serif; font-size: 1rem;
-      font-style: italic; line-height: 1.65; color: var(--text); flex: 1;
-    }
-    .quote-footer {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      border-top: 1px solid var(--border); padding-top: 0.85rem; gap: 0.5rem;
-    }
-    .quote-autor { font-size: 0.78rem; font-weight: 600; color: var(--text); }
-    .quote-obra  { font-size: 0.75rem; color: var(--text-2); font-style: italic; }
-    .card-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
-    .icon-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--text-3); padding: 0.25rem; border-radius: 6px;
-      font-size: 0.9rem; transition: all 0.15s; line-height: 1;
-    }
-    .icon-btn:hover { color: var(--text-2); background: var(--surface-alt); }
-    .fav-btn-active { color: var(--accent) !important; }
-    .quote-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-    .qtag {
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.02em;
-      color: var(--text-2); background: var(--surface-alt);
-      padding: 0.2rem 0.55rem; border-radius: 20px; text-transform: uppercase;
-    }
+    /* ── Filters ── */
+    .filters-bar { display:flex; gap:0.75rem; flex-wrap:wrap; align-items:flex-end; margin-bottom:1.5rem; padding:1.25rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; }
+    .filter-group { display:flex; flex-direction:column; gap:0.35rem; flex:1; min-width:140px; }
+    .filter-label { font-size:0.68rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-3); }
+    .finput, input[type="text"], input[type="number"], input[type="date"], select, textarea { width:100%; padding:0.5rem 0.75rem; border:1px solid var(--border); border-radius:8px; font-family:'Inter',sans-serif; font-size:0.9rem; background:var(--bg); color:var(--text); transition:border-color 0.15s; }
+    .finput:focus, input:focus, select:focus, textarea:focus { outline:none; border-color:var(--accent); }
+    select { cursor:pointer; appearance:none; -webkit-appearance:none; padding-right:2rem; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23ADADAD'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 0.75rem center; }
+    .flabel { font-size:0.7rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-3); display:block; margin-bottom:0.35rem; }
+    .btn-clear { background:none; border:1px solid var(--border); color:var(--text-2); font-size:0.82rem; font-family:'Inter',sans-serif; padding:0.5rem 0.9rem; border-radius:8px; cursor:pointer; transition:all 0.15s; display:none; }
+    .btn-clear.visible { display:block; }
+    .btn-clear:hover { border-color:var(--accent); color:var(--accent); }
 
-    /* ── Carrusel de libros ──────────────────────── */
-    .carousel-section { margin-bottom: 4rem; }
-    .carousel-arrows { display: flex; gap: 0.5rem; }
-    .arrow-btn {
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--text-2); width: 34px; height: 34px;
-      border-radius: 50%; cursor: pointer; font-size: 1.1rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-    }
-    .arrow-btn:hover { border-color: var(--text-2); color: var(--text); }
-    .carousel-track {
-      display: flex; gap: 1rem; overflow-x: auto;
-      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-      scrollbar-width: none; padding-bottom: 0.5rem;
-    }
-    .carousel-track::-webkit-scrollbar { display: none; }
-    .carousel-book {
-      flex-shrink: 0; width: 150px; scroll-snap-align: start;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; overflow: hidden; box-shadow: var(--shadow);
-      cursor: pointer; transition: box-shadow 0.2s, transform 0.2s;
-      display: flex; flex-direction: column;
-    }
-    .carousel-book:hover { box-shadow: var(--shadow-h); transform: translateY(-2px); }
-    .carousel-cover {
-      height: 110px; display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600;
-      color: rgba(255,255,255,0.85); overflow: hidden; flex-shrink: 0;
-    }
-    .carousel-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .carousel-info { padding: 0.75rem 0.8rem; display: flex; flex-direction: column; gap: 0.18rem; }
-    .carousel-title {
-      font-size: 0.78rem; font-weight: 600; color: var(--text); line-height: 1.3;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .carousel-author { font-size: 0.68rem; color: var(--text-2); }
-    .carousel-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 0.3rem; }
-    .stars { color: var(--star); font-size: 0.7rem; }
-    .carousel-ncitas { font-size: 0.65rem; color: var(--text-3); }
+    /* ── Book modal (detail) ── */
+    #modal { display:none; position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.4); backdrop-filter:blur(4px); align-items:flex-start; justify-content:center; padding:1rem; overflow-y:auto; }
+    #modal.open { display:flex; }
+    .modal-box { background:var(--surface); border-radius:16px; width:100%; max-width:720px; margin:auto; box-shadow:0 24px 60px rgba(0,0,0,0.18); animation:fadeUp 0.25s ease; overflow:hidden; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .modal-header-bar { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--surface); z-index:1; }
+    .modal-close { background:none; border:none; color:var(--text-3); font-size:1.2rem; cursor:pointer; padding:0.25rem; border-radius:6px; transition:all 0.15s; }
+    .modal-close:hover { color:var(--text); background:var(--surface-alt); }
+    .modal-book-header { display:flex; gap:1.75rem; padding:1.75rem; border-bottom:1px solid var(--border); }
+    .modal-book-cover { width:110px; height:160px; object-fit:cover; border-radius:8px; flex-shrink:0; box-shadow:var(--shadow); }
+    .modal-no-cover { width:110px; height:160px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:3rem; }
+    .modal-book-title { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:600; color:var(--text); line-height:1.3; margin-bottom:0.35rem; }
+    .modal-book-author { font-size:0.95rem; color:var(--text-2); margin-bottom:0.75rem; }
+    .modal-book-stats { display:flex; flex-wrap:wrap; gap:0.5rem 1.25rem; font-size:0.82rem; color:var(--text-2); margin-bottom:0.85rem; }
+    .mstars { color:var(--star); }
+    .modal-book-review { font-size:0.88rem; color:var(--text-2); line-height:1.6; font-style:italic; border-left:2px solid var(--border); padding-left:0.85rem; margin-top:0.5rem; }
+    .modal-admin-actions { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem; }
+    .modal-quotes-section { padding:1.5rem; }
+    .modal-quotes-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:600; color:var(--text); margin-bottom:1rem; }
+    .modal-quotes-list { display:flex; flex-direction:column; gap:0.85rem; }
+    .modal-quote { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:1.1rem 1.25rem; transition:border-color 0.15s; }
+    .modal-quote.is-fav { border-color:var(--accent); background:var(--accent-soft); }
+    .mq-text { font-family:'Playfair Display',serif; font-style:italic; font-size:0.97rem; line-height:1.65; color:var(--text); margin-bottom:0.75rem; }
+    .mq-footer { display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap; }
+    .mq-tags { display:flex; flex-wrap:wrap; gap:0.3rem; }
+    .mq-tag { font-size:0.65rem; font-weight:500; letter-spacing:0.03em; color:var(--text-2); background:var(--border); padding:0.15rem 0.5rem; border-radius:20px; text-transform:uppercase; }
+    .mq-right { display:flex; align-items:center; gap:0.5rem; flex-shrink:0; }
+    .mq-page { font-size:0.75rem; color:var(--text-3); }
+    .fav-btn { background:none; border:1px solid var(--border); color:var(--text-2); font-size:0.78rem; font-family:'Inter',sans-serif; padding:0.3rem 0.7rem; border-radius:20px; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+    .fav-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .fav-btn.active { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+    .icon-btn { background:none; border:none; cursor:pointer; color:var(--text-3); padding:0.25rem 0.4rem; border-radius:6px; font-size:0.85rem; transition:all 0.15s; }
+    .icon-btn:hover { color:var(--text-2); background:var(--surface-alt); }
+    .edit-btn { background:none; border:1px solid var(--border); color:var(--text-2); padding:0.3rem 0.7rem; border-radius:7px; cursor:pointer; font-size:0.75rem; transition:all 0.15s; white-space:nowrap; }
+    .edit-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .del-btn { background:none; border:1px solid var(--border); color:var(--text-3); padding:0.3rem 0.7rem; border-radius:7px; cursor:pointer; font-size:0.75rem; transition:all 0.15s; }
+    .del-btn:hover { border-color:var(--danger); color:var(--danger); background:#fef2f2; }
 
-    /* ── Weekly picks ────────────────────────────── */
-    .weekly-section { margin-bottom: 4rem; }
-    .weekly-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-    .weekly-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 2rem; box-shadow: var(--shadow);
-    }
-    .weekly-label {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem;
-    }
-    .weekly-book-top { display: flex; gap: 1.25rem; align-items: flex-start; margin-bottom: 1rem; }
-    .weekly-cover {
-      width: 64px; height: 88px; border-radius: 4px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600;
-      color: rgba(255,255,255,0.85); overflow: hidden;
-    }
-    .weekly-cover img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; }
-    .weekly-card h3 {
-      font-family: 'Playfair Display', serif; font-size: 1.1rem;
-      font-weight: 600; line-height: 1.3; color: var(--text); margin-bottom: 0.3rem;
-    }
-    .weekly-autor { font-size: 0.82rem; color: var(--text-2); margin-bottom: 0.4rem; }
-    .weekly-quote-preview {
-      font-family: 'Playfair Display', serif; font-style: italic;
-      font-size: 0.85rem; line-height: 1.6; color: var(--text-2);
-      border-left: 2px solid var(--accent); padding-left: 0.85rem;
-    }
-    .author-avatar {
-      width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600;
-      color: rgba(255,255,255,0.85);
-    }
-    .author-name {
-      font-family: 'Playfair Display', serif; font-size: 1.1rem;
-      font-weight: 600; color: var(--text); margin-bottom: 0.2rem;
-    }
-    .author-books-count { font-size: 0.78rem; color: var(--text-2); }
-    .author-books-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
-    .author-book-item {
-      display: flex; align-items: center; gap: 0.6rem;
-      padding: 0.5rem 0.7rem; background: var(--surface-alt); border-radius: 8px;
-    }
-    .author-book-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
-    .author-book-name { font-size: 0.82rem; color: var(--text); font-weight: 500; }
-    .author-book-stars { margin-left: auto; color: var(--star); font-size: 0.68rem; }
-    .no-weekly { font-size: 0.88rem; color: var(--text-2); font-style: italic; }
+    /* ── Favoritas ── */
+    .fav-book-section { margin-bottom:2rem; }
+    .fav-book-header { display:flex; gap:1rem; align-items:center; margin-bottom:0.85rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border); }
+    .fav-book-thumb { width:44px; height:62px; object-fit:cover; border-radius:4px; flex-shrink:0; box-shadow:var(--shadow); }
+    .fav-book-thumb-empty { width:44px; height:62px; background:var(--surface-alt); border-radius:4px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:var(--text-3); }
+    .fav-book-name { font-family:'Playfair Display',serif; font-size:1rem; font-weight:600; color:var(--text); }
+    .fav-book-author { font-size:0.78rem; color:var(--text-2); }
+    .fav-quote-item { display:flex; align-items:flex-start; gap:0.75rem; padding:0.85rem 0; border-bottom:1px solid var(--border); }
+    .fav-quote-item:last-child { border-bottom:none; }
+    .fav-quote-text { font-family:'Playfair Display',serif; font-style:italic; font-size:0.93rem; line-height:1.6; color:var(--text); flex:1; }
+    .fav-unfav { background:none; border:none; color:var(--text-3); cursor:pointer; font-size:1rem; padding:0.2rem; transition:color 0.15s; flex-shrink:0; }
+    .fav-unfav:hover { color:var(--accent); }
 
-    /* ── Biblioteca — book grid ──────────────────── */
-    .filters-bar {
-      display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end;
-      margin-bottom: 1.5rem; padding: 1.25rem;
-      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-    }
-    .filter-group { display: flex; flex-direction: column; gap: 0.35rem; flex: 1; min-width: 140px; }
-    .filter-label {
-      font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3);
-    }
-    input[type="text"], select {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-      color: var(--text); padding: 0.5rem 0.75rem;
-      font-family: 'Inter', sans-serif; font-size: 0.85rem;
-      transition: border-color 0.15s; width: 100%;
-    }
-    input[type="text"]:focus, select:focus { outline: none; border-color: var(--accent); }
-    select {
-      padding-right: 2rem; cursor: pointer; appearance: none; -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23ADADAD'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 0.75rem center;
-    }
-    .btn-clear {
-      background: none; border: 1px solid var(--border); color: var(--text-2);
-      font-size: 0.82rem; font-family: 'Inter', sans-serif; padding: 0.5rem 0.9rem;
-      border-radius: 8px; cursor: pointer; transition: all 0.15s;
-      display: none; white-space: nowrap;
-    }
-    .btn-clear.visible { display: block; }
-    .btn-clear:hover { border-color: var(--accent); color: var(--accent); }
-    .filter-count { font-size: 0.75rem; color: var(--text-3); align-self: flex-end; padding-bottom: 0.5rem; }
+    /* ── Admin panel ── */
+    .admin-filter-btn { background:none; border:1px solid var(--border); color:var(--text-2); padding:0.35rem 0.85rem; border-radius:20px; cursor:pointer; font-size:0.8rem; font-family:'Inter',sans-serif; transition:all .15s; }
+    .admin-filter-btn:hover { border-color:var(--text-2); color:var(--text); }
+    .admin-filter-btn.active { background:var(--text); color:#fff; border-color:var(--text); }
+    .admin-stat-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.1rem 1.25rem; box-shadow:var(--shadow); }
+    .stat-num { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:600; color:var(--text); line-height:1; }
+    .stat-label { font-size:0.75rem; color:var(--text-2); margin-top:0.25rem; }
+    .admin-book-row { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; display:flex; align-items:center; gap:1rem; box-shadow:var(--shadow); }
+    .admin-book-row img { width:38px; height:52px; object-fit:cover; border-radius:3px; flex-shrink:0; }
+    .admin-book-row .no-cover-ph { width:38px; height:52px; background:var(--surface-alt); border-radius:3px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1rem; color:var(--text-3); }
+    .admin-badge { font-size:0.68rem; padding:0.15rem 0.5rem; border-radius:20px; font-weight:500; }
+    .badge-warn { background:#fef3c7; color:#92400e; }
+    .badge-ok { background:#d1fae5; color:#065f46; }
+    .stars { color:var(--star); font-size:0.78rem; }
 
-    .books-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1.25rem;
-    }
-    .book-card {
-      position: relative; border-radius: 10px; overflow: hidden;
-      aspect-ratio: 2/3; cursor: pointer;
-      box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s;
-      background: var(--surface-alt);
-    }
-    .book-card:hover { box-shadow: var(--shadow-h); transform: translateY(-3px); }
-    .book-cover-img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
-    .book-no-cover {
-      width: 100%; height: 100%; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 0.75rem;
-      background: linear-gradient(135deg, var(--surface-alt), var(--border));
-      padding: 1.25rem;
-    }
-    .nc-icon { font-size: 2.5rem; opacity: 0.5; }
-    .nc-title {
-      font-family: 'Playfair Display', serif; font-style: italic;
-      font-size: 0.8rem; color: var(--text-2); text-align: center; line-height: 1.4;
-    }
-    .quote-badge {
-      position: absolute; top: 0.6rem; right: 0.6rem;
-      background: rgba(0,0,0,0.55); color: #fff; backdrop-filter: blur(4px);
-      border-radius: 20px; font-size: 0.68rem; font-weight: 600;
-      padding: 0.15rem 0.5rem; min-width: 1.4rem; text-align: center;
-    }
-    .book-overlay {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
-      padding: 2.5rem 0.75rem 0.75rem;
-    }
-    .book-title {
-      font-family: 'Playfair Display', serif; font-size: 0.82rem;
-      font-weight: 600; color: #fff; line-height: 1.3;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .book-meta { font-size: 0.68rem; color: rgba(255,255,255,0.7); margin-top: 0.2rem; }
+    /* ── Forms (modals) ── */
+    .form-modal { display:none; position:fixed; inset:0; z-index:400; background:rgba(0,0,0,0.4); backdrop-filter:blur(4px); align-items:flex-start; justify-content:center; padding:1rem; overflow-y:auto; }
+    .form-modal.open { display:flex; }
+    .form-box { background:var(--surface); border-radius:16px; width:100%; max-width:640px; margin:auto; box-shadow:0 24px 60px rgba(0,0,0,0.18); }
+    .form-header { display:flex; align-items:center; justify-content:space-between; padding:1.25rem 1.5rem; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--surface); border-radius:16px 16px 0 0; z-index:1; }
+    .form-header span { font-family:'Playfair Display',serif; font-weight:600; font-size:1.1rem; }
+    .form-body { padding:1.5rem; display:flex; flex-direction:column; gap:1rem; }
+    .form-row { display:grid; gap:0.75rem; }
+    .form-row-2 { grid-template-columns:1fr 1fr; }
+    .form-row-3 { grid-template-columns:1fr 1fr 1fr; }
+    .form-error { display:none; color:#dc2626; font-size:0.82rem; padding:0.5rem 0.75rem; background:#fef2f2; border-radius:8px; }
+    .form-actions { display:flex; gap:0.6rem; justify-content:flex-end; padding-top:0.25rem; }
+    .btn-cancel { background:none; border:1px solid var(--border); padding:0.6rem 1.25rem; border-radius:8px; cursor:pointer; font-size:0.875rem; font-family:'Inter',sans-serif; }
+    .btn-save { background:var(--accent); color:#fff; border:none; padding:0.6rem 1.5rem; border-radius:8px; cursor:pointer; font-weight:500; font-size:0.875rem; font-family:'Inter',sans-serif; }
+    .btn-save:disabled { opacity:0.5; cursor:default; }
+    .cover-upload-row { display:flex; gap:0.75rem; align-items:flex-start; flex-wrap:wrap; }
+    .upload-label { flex:1; min-width:140px; background:var(--surface-alt); border:1px dashed var(--border); border-radius:8px; padding:0.5rem 0.75rem; cursor:pointer; font-size:0.82rem; color:var(--text-2); text-align:center; display:block; }
 
-    /* ── Modal ───────────────────────────────────── */
-    #modal {
-      display: none; position: fixed; inset: 0; z-index: 300;
-      background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
-      align-items: flex-start; justify-content: center;
-      padding: 2rem 1rem; overflow-y: auto;
-    }
-    #modal.open { display: flex; }
-    .modal-box {
-      background: var(--surface); border-radius: 16px;
-      width: 100%; max-width: 700px; margin: auto;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.18);
-      overflow: hidden; animation: fadeUp 0.25s ease;
-    }
-    .modal-header-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
-    }
-    .modal-header-title {
-      font-family: 'Playfair Display', serif; font-size: 0.9rem;
-      font-weight: 600; color: var(--text-2);
-    }
-    .modal-close {
-      background: none; border: none; color: var(--text-3);
-      font-size: 1.2rem; cursor: pointer; padding: 0.25rem;
-      border-radius: 6px; transition: all 0.15s; line-height: 1;
-    }
-    .modal-close:hover { color: var(--text); background: var(--surface-alt); }
-    #modal-content { padding: 2rem; }
-    .modal-book-header { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
-    .modal-book-cover {
-      width: 90px; height: 130px; object-fit: cover;
-      border-radius: 6px; flex-shrink: 0; box-shadow: var(--shadow);
-    }
-    .modal-no-cover {
-      width: 90px; height: 130px; border-radius: 6px; flex-shrink: 0;
-      background: var(--surface-alt); display: flex; align-items: center;
-      justify-content: center; font-size: 2.5rem;
-    }
-    .modal-book-title {
-      font-family: 'Playfair Display', serif; font-size: 1.35rem;
-      font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 0.4rem;
-    }
-    .modal-book-author { font-size: 0.9rem; color: var(--text-2); margin-bottom: 0.6rem; }
-    .modal-book-stats { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 0.82rem; color: var(--text-2); }
-    .mstars { color: var(--star); }
-    .modal-quotes { display: flex; flex-direction: column; gap: 1rem; }
-    .modal-quote {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1.25rem;
-      transition: border-color 0.15s;
-    }
-    .modal-quote.is-fav { border-color: var(--accent); background: var(--accent-soft); }
-    .mq-text {
-      font-family: 'Playfair Display', serif; font-style: italic;
-      font-size: 0.97rem; line-height: 1.65; color: var(--text); margin-bottom: 0.85rem;
-    }
-    .mq-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
-    .mq-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-    .mq-tag {
-      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.03em;
-      color: var(--text-2); background: var(--border);
-      padding: 0.15rem 0.5rem; border-radius: 20px; text-transform: uppercase;
-    }
-    .mq-right { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
-    .mq-page { font-size: 0.75rem; color: var(--text-3); }
-    .fav-btn {
-      background: none; border: 1px solid var(--border);
-      color: var(--text-2); font-size: 0.78rem; font-family: 'Inter', sans-serif;
-      padding: 0.3rem 0.7rem; border-radius: 20px; cursor: pointer;
-      transition: all 0.15s; white-space: nowrap;
-    }
-    .fav-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .fav-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    /* ── Toast ── */
+    #toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(5rem); background:var(--text); color:#fff; padding:0.65rem 1.25rem; border-radius:24px; font-size:0.83rem; font-weight:500; transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index:500; white-space:nowrap; pointer-events:none; }
+    #toast.show { transform:translateX(-50%) translateY(0); }
 
-    /* ── Favoritas ───────────────────────────────── */
-    .fav-count { font-size: 0.78rem; color: var(--text-3); margin-bottom: 1rem; }
-    .fav-card {
-      display: flex; gap: 1rem; align-items: flex-start;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem;
-      cursor: pointer; transition: box-shadow 0.15s;
-      box-shadow: var(--shadow); animation: fadeUp 0.3s ease both;
-    }
-    .fav-card:hover { box-shadow: var(--shadow-h); }
-    .fav-thumb { width: 52px; height: 72px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
-    .fav-thumb-empty {
-      width: 52px; height: 72px; border-radius: 4px; flex-shrink: 0;
-      background: var(--surface-alt); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-    }
-    .fav-body { flex: 1; min-width: 0; }
-    .fav-text {
-      font-family: 'Playfair Display', serif; font-style: italic;
-      font-size: 0.95rem; line-height: 1.6; color: var(--text); margin-bottom: 0.6rem;
-    }
-    .fav-attr { font-size: 0.78rem; font-weight: 600; color: var(--text); }
-    .fav-obra { font-size: 0.75rem; color: var(--text-2); font-style: italic; }
-    .fav-unfav {
-      background: none; border: none; color: var(--text-3);
-      font-size: 1rem; cursor: pointer; padding: 0.25rem;
-      border-radius: 6px; flex-shrink: 0; align-self: flex-start;
-      transition: color 0.15s;
-    }
-    .fav-unfav:hover { color: var(--accent); }
-    .favs-empty { text-align: center; padding: 5rem 2rem; color: var(--text-3); font-style: italic; }
+    /* ── Misc ── */
+    .empty-state { text-align:center; padding:5rem 2rem; color:var(--text-3); font-style:italic; font-size:0.95rem; }
+    .loading-state { text-align:center; padding:4rem 2rem; color:var(--text-3); font-style:italic; }
 
-    /* ── States ─────────────────────────────────── */
-    .error-state {
-      text-align: center; padding: 4rem 2rem; color: var(--text-2);
-    }
-    .error-state h2 { font-family: 'Playfair Display', serif; margin-bottom: 0.75rem; color: var(--text); }
-    .error-state pre { font-size: 0.78rem; color: var(--text-3); margin-top: 0.75rem; }
-    .loading-state { text-align: center; padding: 4rem 2rem; color: var(--text-3); font-style: italic; }
-
-    /* ── Toast ──────────────────────────────────── */
-    #toast {
-      position: fixed; bottom: 2rem; left: 50%;
-      transform: translateX(-50%) translateY(5rem);
-      background: var(--text); color: #fff;
-      padding: 0.65rem 1.25rem; border-radius: 24px;
-      font-size: 0.83rem; font-weight: 500;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-      z-index: 500; white-space: nowrap; pointer-events: none;
-    }
-    #toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* ── Mobile ─────────────────────────────────── */
+    /* ── Mobile ── */
     @media (max-width: 768px) {
-      .trio-grid { grid-template-columns: 1fr; }
-      .weekly-grid { grid-template-columns: 1fr; }
-      .masthead { padding: 1rem 1.25rem; gap: 1rem; position: relative; }
-      .masthead-seal { width: 72px; height: 72px; }
-      .masthead-title { font-size: 1.6rem; }
-      .masthead-nav { display: none; }
-      .hamburger { display: block; }
-      .page-wrap { padding: 2rem 1.25rem 4rem; }
-      .nav-btn { padding: 0.35rem 0.6rem; font-size: 0.8rem; }
-      .books-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-      .modal-book-header { flex-direction: column; }
+      .masthead { padding:1rem 1.25rem; gap:1rem; position:relative; }
+      .masthead-seal { width:72px; height:72px; }
+      .masthead-title { font-size:1.6rem; }
+      .masthead-nav { display:none; }
+      .hamburger { display:block; }
+      .weekly-grid { grid-template-columns:1fr; }
+      .page-wrap { padding:2rem 1.25rem 4rem; }
+      .books-grid { grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+      .modal-book-header { flex-direction:column; }
+      .modal-book-cover, .modal-no-cover { width:100%; height:200px; border-radius:8px; }
+      .form-row-2, .form-row-3 { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -535,7 +219,7 @@
 
 <header>
   <div class="masthead">
-    <img class="masthead-seal" src="/icon-seal.png" alt="Noray Ex Libris">
+    <img class="masthead-seal" src="/icon-seal.png" alt="Noray">
     <div class="masthead-text">
       <div class="masthead-title">Noray</div>
       <div class="masthead-sub">Puerto de Lectura</div>
@@ -544,15 +228,13 @@
       <button class="nav-btn active" data-view="inicio">Inicio</button>
       <button class="nav-btn" data-view="biblioteca">Biblioteca</button>
       <button class="nav-btn" data-view="favoritas">Favoritas</button>
-      <button id="admin-add-btn" onclick="openAddQuoteModal()">+ Añadir cita</button>
-      <button class="nav-btn" id="nav-admin" data-view="admin" style="display:none">⚙️ Admin</button>
-      <button class="nav-btn" id="desktop-admin-btn" onclick="handleAdminMenu()" title="Admin">🔑</button>
+      <button class="nav-btn" id="nav-admin" data-view="admin">⚙️ Admin</button>
+      <button id="admin-add-btn" onclick="openAddForm()">+ Añadir</button>
+      <button class="nav-btn" id="desktop-admin-btn" onclick="handleAdminMenu()">🔑</button>
     </nav>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="2" y1="6" x2="20" y2="6"/>
-        <line x1="2" y1="11" x2="20" y2="11"/>
-        <line x1="2" y1="16" x2="20" y2="16"/>
+        <line x1="2" y1="6" x2="20" y2="6"/><line x1="2" y1="11" x2="20" y2="11"/><line x1="2" y1="16" x2="20" y2="16"/>
       </svg>
     </button>
     <div class="dropdown-menu" id="dropdown-menu">
@@ -561,220 +243,156 @@
       <button class="nav-btn" data-view="favoritas" onclick="showView('favoritas');closeMenu()">Favoritas</button>
       <button class="nav-btn" id="dropdown-panel-btn" data-view="admin" onclick="showView('admin');closeMenu()" style="display:none">⚙️ Admin</button>
       <hr style="border:none;border-top:1px solid var(--border);margin:.25rem 0">
-      <button class="nav-btn" id="dropdown-admin-btn" onclick="handleAdminMenu()">🔑 Admin</button>
+      <button class="nav-btn" id="dropdown-admin-btn" onclick="handleAdminMenu();closeMenu()">🔑 Admin</button>
     </div>
   </div>
 </header>
 
-<!-- ══════════ INICIO ══════════ -->
+<!-- ══ INICIO ══ -->
 <div id="view-inicio" class="view active">
   <div class="page-wrap">
-
-    <!-- Trio de citas aleatorias -->
-    <section class="trio-section">
-      <div class="sec-hdr">
-        <h2 class="sec-title">Citas</h2>
-        <button class="sec-btn" id="btn-refresh-trio" onclick="loadTrio()">↻ Otras citas</button>
-      </div>
-      <div class="trio-grid" id="trio-grid">
-        <div class="quote-card"><p class="quote-text" style="color:var(--text-3)">Cargando…</p></div>
-      </div>
-    </section>
-
-    <!-- Carrusel de libros -->
-    <section class="carousel-section">
-      <div class="sec-hdr">
-        <h2 class="sec-title">Biblioteca</h2>
-        <div class="carousel-arrows">
-          <button class="arrow-btn" onclick="scrollCarousel(-1)">‹</button>
-          <button class="arrow-btn" onclick="scrollCarousel(1)">›</button>
-        </div>
-      </div>
-      <div class="carousel-track" id="carousel-track">
-        <div class="loading-state">Cargando…</div>
-      </div>
-    </section>
-
-    <!-- Esta semana -->
-    <section class="weekly-section">
+    <section style="margin-bottom:4rem">
       <div class="sec-hdr"><h2 class="sec-title">Esta semana</h2></div>
       <div class="weekly-grid">
-        <div class="weekly-card" id="libro-semana-card">
-          <div class="weekly-label">📖 Libro destacado</div>
-          <p class="no-weekly">Cargando…</p>
-        </div>
-        <div class="weekly-card" id="autor-semana-card">
-          <div class="weekly-label">✍️ Autor de la semana</div>
-          <p class="no-weekly">Cargando…</p>
-        </div>
+        <div class="weekly-card" id="libro-semana-card"><div class="weekly-label">📖 Libro destacado</div><p style="color:var(--text-3);font-style:italic">Cargando…</p></div>
+        <div class="weekly-card" id="autor-semana-card"><div class="weekly-label">✍️ Autor de la semana</div><p style="color:var(--text-3);font-style:italic">Cargando…</p></div>
       </div>
     </section>
-
+    <section>
+      <div class="sec-hdr">
+        <h2 class="sec-title">Añadidos recientemente</h2>
+        <button class="sec-btn" onclick="showView('biblioteca')">Ver todos →</button>
+      </div>
+      <div class="books-grid" id="recent-grid"><div class="loading-state">Cargando…</div></div>
+    </section>
   </div>
 </div>
 
-<!-- ══════════ BIBLIOTECA ══════════ -->
+<!-- ══ BIBLIOTECA ══ -->
 <div id="view-biblioteca" class="view">
   <div class="page-wrap">
-    <div class="sec-hdr" style="margin-bottom:1.5rem">
-      <h2 class="sec-title">Biblioteca</h2>
-    </div>
-    <div class="filters-bar" id="filters-bar" style="display:none">
-      <div class="filter-group">
-        <div class="filter-label">Buscar</div>
-        <input type="text" id="filter-search" placeholder="Título o autor…" oninput="applyFilters()">
-      </div>
-      <div class="filter-group">
-        <div class="filter-label">Autor</div>
-        <select id="filter-author" onchange="applyFilters()">
-          <option value="">Todos los autores</option>
-        </select>
-      </div>
+    <div class="sec-hdr" style="margin-bottom:1.5rem"><h2 class="sec-title">Biblioteca</h2><span id="lib-count" style="font-size:.78rem;color:var(--text-3)"></span></div>
+    <div class="filters-bar">
+      <div class="filter-group"><label class="filter-label">Buscar</label><input type="text" id="filter-search" placeholder="Título o autor…" oninput="applyFilters()"></div>
+      <div class="filter-group"><label class="filter-label">Autor</label><select id="filter-author" onchange="applyFilters()"><option value="">Todos los autores</option></select></div>
+      <div class="filter-group"><label class="filter-label">Valoración</label><select id="filter-rating" onchange="applyFilters()"><option value="">Todas</option><option value="5">★★★★★</option><option value="4">★★★★☆ o más</option><option value="3">★★★☆☆ o más</option></select></div>
       <button class="btn-clear" id="btn-clear" onclick="clearFilters()">✕ Limpiar</button>
-      <span class="filter-count" id="filter-count"></span>
     </div>
-    <div id="biblioteca-content">
-      <div class="loading-state">Cargando biblioteca…</div>
-    </div>
+    <div class="books-grid" id="lib-grid"><div class="loading-state">Cargando…</div></div>
   </div>
 </div>
 
-<!-- ══════════ FAVORITAS ══════════ -->
+<!-- ══ FAVORITAS ══ -->
 <div id="view-favoritas" class="view">
   <div class="page-wrap">
-    <div class="sec-hdr" style="margin-bottom:1.5rem">
-      <h2 class="sec-title">Favoritas</h2>
-    </div>
-    <div id="favs-content">
-      <div class="loading-state">Cargando…</div>
-    </div>
+    <div class="sec-hdr" style="margin-bottom:1.5rem"><h2 class="sec-title">Favoritas</h2></div>
+    <div id="favs-content"><div class="loading-state">Cargando…</div></div>
   </div>
 </div>
 
-<!-- ══════════ ADMIN PANEL ══════════ -->
+<!-- ══ ADMIN ══ -->
 <div id="view-admin" class="view">
   <div class="page-wrap">
-    <div class="sec-hdr" style="margin-bottom:2rem">
-      <h2 class="sec-title">Panel de administración</h2>
-    </div>
-
-    <!-- Stats rápidas -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem" id="admin-stats"></div>
-
-    <!-- Filtros de libros -->
+    <div class="sec-hdr" style="margin-bottom:2rem"><h2 class="sec-title">Administración</h2></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem" id="admin-stats"></div>
     <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center">
-      <button class="admin-filter-btn active" data-filter="all" onclick="setAdminFilter('all',this)">Todos</button>
-      <button class="admin-filter-btn" data-filter="no-cover" onclick="setAdminFilter('no-cover',this)">Sin portada</button>
-      <button class="admin-filter-btn" data-filter="no-quotes" onclick="setAdminFilter('no-quotes',this)">Sin citas</button>
-      <input type="text" id="admin-search" placeholder="Buscar libro…" class="finput" style="flex:1;min-width:180px;max-width:300px" oninput="renderAdminList()">
+      <button class="admin-filter-btn active" onclick="setAdminFilter('all',this)">Todos</button>
+      <button class="admin-filter-btn" onclick="setAdminFilter('no-cover',this)">Sin portada</button>
+      <button class="admin-filter-btn" onclick="setAdminFilter('no-quotes',this)">Sin citas</button>
+      <input type="text" id="admin-search" placeholder="Buscar…" style="flex:1;min-width:160px;max-width:280px" oninput="renderAdminList()">
     </div>
-
     <div id="admin-book-list" style="display:flex;flex-direction:column;gap:.6rem"></div>
   </div>
 </div>
 
-<!-- ══════════ EDIT BOOK MODAL ══════════ -->
-<div id="edit-book-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:1rem;overflow-y:auto">
-  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:640px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);border-radius:16px 16px 0 0;z-index:1">
-      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.1rem">Editar libro</span>
-      <button onclick="closeEditBookModal()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--text-3)">✕</button>
+<!-- ══ BOOK MODAL ══ -->
+<div id="modal" onclick="closeModalIfBackdrop(event)">
+  <div class="modal-box">
+    <div class="modal-header-bar">
+      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:.9rem;color:var(--text-2)">Detalle del libro</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
-      <input type="hidden" id="eb-id">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-        <div style="grid-column:1/-1">
-          <label class="flabel">Título *</label>
-          <input type="text" id="eb-titulo" class="finput">
-        </div>
-        <div>
-          <label class="flabel">Autor</label>
-          <input type="text" id="eb-autor" class="finput">
-        </div>
-        <div>
-          <label class="flabel">Valoración (1-5)</label>
-          <input type="number" id="eb-valoracion" min="1" max="5" class="finput">
-        </div>
-        <div>
-          <label class="flabel">Páginas totales</label>
-          <input type="number" id="eb-paginas" min="1" class="finput">
-        </div>
-        <div>
-          <label class="flabel">Fecha de lectura</label>
-          <input type="date" id="eb-fecha" class="finput">
-        </div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ══ FORM: AÑADIR/EDITAR LIBRO ══ -->
+<div id="book-form-modal" class="form-modal">
+  <div class="form-box">
+    <div class="form-header">
+      <span id="book-form-title">Nuevo libro</span>
+      <button class="modal-close" onclick="closeBookForm()">✕</button>
+    </div>
+    <div class="form-body">
+      <input type="hidden" id="bf-id">
+      <div class="form-row form-row-2">
+        <div><label class="flabel">Título *</label><input type="text" id="bf-titulo"></div>
+        <div><label class="flabel">Autor</label><input type="text" id="bf-autor"></div>
       </div>
-      <!-- Portada -->
+      <div class="form-row form-row-3">
+        <div><label class="flabel">Valoración (1-5)</label><input type="number" id="bf-valoracion" min="1" max="5"></div>
+        <div><label class="flabel">Páginas totales</label><input type="number" id="bf-paginas" min="1"></div>
+        <div><label class="flabel">Fecha de lectura</label><input type="date" id="bf-fecha"></div>
+      </div>
       <div>
         <label class="flabel">Portada</label>
-        <div style="display:flex;gap:.75rem;align-items:flex-start;flex-wrap:wrap">
-          <div id="eb-cover-preview" style="flex-shrink:0">
-            <img id="eb-cover-img" style="width:70px;height:95px;object-fit:cover;border-radius:6px;box-shadow:var(--shadow);display:none">
-            <div id="eb-cover-placeholder" style="width:70px;height:95px;background:var(--surface-alt);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:1.5rem">📖</div>
+        <div class="cover-upload-row">
+          <div id="bf-cover-preview-wrap" style="flex-shrink:0">
+            <img id="bf-cover-img" style="width:65px;height:90px;object-fit:cover;border-radius:6px;box-shadow:var(--shadow);display:none">
+            <div id="bf-cover-ph" style="width:65px;height:90px;background:var(--surface-alt);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:1.5rem">📖</div>
           </div>
           <div style="flex:1;display:flex;flex-direction:column;gap:.5rem">
-            <label style="background:var(--surface-alt);border:1px dashed var(--border);border-radius:8px;padding:.5rem .75rem;cursor:pointer;font-size:.82rem;color:var(--text-2);text-align:center;display:block">
-              📷 Cambiar imagen
-              <input type="file" id="eb-portada-file" accept="image/*" style="display:none" onchange="previewEditCover(this)">
-            </label>
-            <input type="text" id="eb-portada-url" placeholder="O pega una URL" class="finput">
+            <label class="upload-label">📷 Subir imagen<input type="file" id="bf-portada-file" accept="image/*" style="display:none" onchange="previewBookCover(this,'bf-cover-img','bf-cover-ph','bf-portada-url')"></label>
+            <input type="text" id="bf-portada-url" placeholder="O pega una URL">
           </div>
         </div>
       </div>
-      <!-- Reseña -->
-      <div>
-        <label class="flabel">Mi reseña</label>
-        <textarea id="eb-review" rows="4" class="finput" style="resize:vertical;line-height:1.55"></textarea>
-      </div>
-      <div id="eb-error" style="display:none;color:#c0392b;font-size:.82rem;padding:.5rem .75rem;background:#fef2f2;border-radius:8px"></div>
-      <div style="display:flex;gap:.6rem;justify-content:flex-end">
-        <button onclick="closeEditBookModal()" style="background:none;border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem">Cancelar</button>
-        <button onclick="saveEditBook()" style="background:var(--accent);color:#fff;border:none;padding:.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem">Guardar cambios</button>
+      <div><label class="flabel">Mi reseña</label><textarea id="bf-review" rows="3" style="resize:vertical;line-height:1.55"></textarea></div>
+      <div class="form-error" id="bf-error"></div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeBookForm()">Cancelar</button>
+        <button class="btn-save" onclick="saveBook()">Guardar libro</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ EDIT QUOTE MODAL ══════════ -->
-<div id="edit-quote-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem">
-  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:580px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)">
-      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.1rem">Editar cita</span>
-      <button onclick="closeEditQuoteModal()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--text-3)">✕</button>
+<!-- ══ FORM: AÑADIR/EDITAR CITA ══ -->
+<div id="quote-form-modal" class="form-modal">
+  <div class="form-box">
+    <div class="form-header">
+      <span id="quote-form-title">Nueva cita</span>
+      <button class="modal-close" onclick="closeQuoteForm()">✕</button>
     </div>
-    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
-      <input type="hidden" id="eq-id">
-      <div>
-        <label class="flabel">Cita *</label>
-        <textarea id="eq-cita" rows="5" class="finput" style="font-family:'Playfair Display',serif;font-style:italic;font-size:.97rem;resize:vertical;line-height:1.65"></textarea>
+    <div class="form-body">
+      <input type="hidden" id="qf-id">
+      <input type="hidden" id="qf-book-id">
+      <div id="qf-book-select-wrap">
+        <label class="flabel">Libro</label>
+        <select id="qf-book"></select>
       </div>
-      <div style="display:grid;grid-template-columns:120px 1fr;gap:.75rem">
-        <div>
-          <label class="flabel">Página de la cita</label>
-          <input type="number" id="eq-pagina" min="1" class="finput">
-        </div>
-        <div>
-          <label class="flabel">Categorías (separadas por coma)</label>
-          <input type="text" id="eq-cats" class="finput">
-        </div>
+      <div><label class="flabel">Cita *</label><textarea id="qf-cita" rows="5" style="font-family:'Playfair Display',serif;font-style:italic;font-size:.97rem;resize:vertical;line-height:1.65"></textarea></div>
+      <div class="form-row form-row-2">
+        <div><label class="flabel">Página de la cita</label><input type="number" id="qf-pagina" min="1"></div>
+        <div><label class="flabel">Categorías (separadas por coma)</label><input type="text" id="qf-cats" placeholder="Vida, Literatura…"></div>
       </div>
-      <div id="eq-error" style="display:none;color:#c0392b;font-size:.82rem;padding:.5rem .75rem;background:#fef2f2;border-radius:8px"></div>
-      <div style="display:flex;gap:.6rem;justify-content:flex-end">
-        <button onclick="closeEditQuoteModal()" style="background:none;border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem">Cancelar</button>
-        <button onclick="saveEditQuote()" style="background:var(--accent);color:#fff;border:none;padding:.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem">Guardar</button>
+      <div class="form-error" id="qf-error"></div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeQuoteForm()">Cancelar</button>
+        <button class="btn-save" onclick="saveQuote()">Guardar cita</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ ADMIN LOGIN ══════════ -->
-<div id="admin-login-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+<!-- ══ ADMIN LOGIN ══ -->
+<div id="admin-login-modal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:center;justify-content:center">
   <div style="background:var(--surface);border-radius:16px;padding:2rem;width:100%;max-width:360px;margin:1rem;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
     <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.25rem">Acceso privado</h3>
     <input type="password" id="admin-pw-input" placeholder="Contraseña" autocomplete="current-password"
-      style="width:100%;padding:.6rem .8rem;border:1px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;margin-bottom:.75rem"
+      style="width:100%;padding:.6rem .8rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem;margin-bottom:.75rem"
       onkeydown="if(event.key==='Enter')doLogin()">
-    <div id="admin-login-error" style="display:none;color:#c0392b;font-size:.8rem;margin-bottom:.6rem"></div>
+    <div id="admin-login-error" style="display:none;color:#dc2626;font-size:.8rem;margin-bottom:.6rem"></div>
     <div style="display:flex;gap:.6rem">
       <button onclick="doLogin()" style="flex:1;background:var(--text);color:#fff;border:none;padding:.6rem;border-radius:8px;cursor:pointer;font-weight:500">Entrar</button>
       <button onclick="closeLoginModal()" style="flex:1;background:none;border:1px solid var(--border);padding:.6rem;border-radius:8px;cursor:pointer">Cancelar</button>
@@ -782,939 +400,506 @@
   </div>
 </div>
 
-<!-- FAB oculto en móvil (se muestra si admin) -->
-<button id="admin-fab" onclick="openAddQuoteModal()" title="Añadir cita"
-  style="display:none;position:fixed;bottom:2rem;right:2rem;z-index:300;
-    width:52px;height:52px;border-radius:50%;background:var(--accent);
-    color:#fff;border:none;font-size:1.5rem;cursor:pointer;
-    box-shadow:0 4px 16px rgba(181,84,28,0.4);transition:transform .15s">+</button>
-
-<!-- ══════════ ADD QUOTE MODAL ══════════ -->
-<div id="add-quote-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:1rem;overflow-y:auto">
-  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:640px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);border-radius:16px 16px 0 0;z-index:1">
-      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.1rem" id="add-quote-modal-title">Añadir cita</span>
-      <button onclick="closeAddQuoteModal()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--text-3)">✕</button>
-    </div>
-    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1.1rem">
-
-      <!-- Libro -->
-      <div>
-        <label class="flabel">Libro</label>
-        <select id="aq-book" style="width:100%">
-          <option value="">— Selecciona un libro —</option>
-          <option value="__new__">+ Añadir nuevo libro…</option>
-        </select>
-      </div>
-
-      <!-- Nuevo libro -->
-      <div id="aq-new-book-section" style="display:none;background:var(--surface-alt);border-radius:10px;padding:1.1rem;flex-direction:column;gap:.75rem">
-        <div style="font-size:.82rem;font-weight:600;color:var(--accent);margin-bottom:.25rem">Nuevo libro</div>
-        <input type="text" id="aq-titulo" placeholder="Título *" class="finput">
-        <input type="text" id="aq-autor" placeholder="Autor" class="finput">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem">
-          <div>
-            <label class="flabel">Valoración (1-5)</label>
-            <input type="number" id="aq-valoracion" placeholder="—" min="1" max="5" class="finput">
-          </div>
-          <div>
-            <label class="flabel">Páginas del libro</label>
-            <input type="number" id="aq-num-paginas" placeholder="—" min="1" class="finput">
-          </div>
-          <div>
-            <label class="flabel">Fecha de lectura</label>
-            <input type="date" id="aq-fecha" class="finput">
-          </div>
-        </div>
-        <!-- Portada: subir imagen o URL -->
-        <div>
-          <label class="flabel">Portada</label>
-          <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
-            <label style="flex:1;min-width:140px;background:var(--surface);border:1px dashed var(--border);border-radius:8px;padding:.5rem .75rem;cursor:pointer;font-size:.82rem;color:var(--text-2);text-align:center">
-              📷 Subir imagen
-              <input type="file" id="aq-portada-file" accept="image/*" style="display:none" onchange="previewCover(this)">
-            </label>
-            <span style="color:var(--text-3);font-size:.75rem">o</span>
-            <input type="text" id="aq-portada-url" placeholder="URL de imagen" class="finput" style="flex:2;min-width:160px">
-          </div>
-          <div id="aq-portada-preview" style="display:none;margin-top:.6rem">
-            <img id="aq-portada-img" style="height:80px;border-radius:4px;object-fit:cover;box-shadow:var(--shadow)">
-          </div>
-        </div>
-        <!-- Reseña -->
-        <div>
-          <label class="flabel">Mi reseña</label>
-          <textarea id="aq-review" rows="3" placeholder="Notas personales sobre el libro…" class="finput" style="resize:vertical;line-height:1.5"></textarea>
-        </div>
-      </div>
-
-      <!-- Cita -->
-      <div>
-        <label class="flabel">Cita *</label>
-        <textarea id="aq-cita" rows="4" placeholder="Escribe o pega el texto subrayado…"
-          style="width:100%;padding:.6rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Playfair Display',serif;font-style:italic;font-size:.97rem;resize:vertical;line-height:1.65"></textarea>
-      </div>
-
-      <!-- Página de la cita y categorías -->
-      <div style="display:grid;grid-template-columns:120px 1fr;gap:.75rem">
-        <div>
-          <label class="flabel">Página de la cita</label>
-          <input type="number" id="aq-pagina" placeholder="—" min="1" class="finput">
-        </div>
-        <div>
-          <label class="flabel">Categorías (separadas por coma)</label>
-          <input type="text" id="aq-cats" placeholder="Vida, Literatura…" class="finput">
-        </div>
-      </div>
-
-      <div id="aq-error" style="display:none;color:#c0392b;font-size:.82rem;padding:.5rem .75rem;background:#fef2f2;border-radius:8px"></div>
-
-      <div style="display:flex;gap:.6rem;justify-content:flex-end;padding-top:.25rem">
-        <button onclick="closeAddQuoteModal()" style="background:none;border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem">Cancelar</button>
-        <button onclick="saveQuote()" id="aq-save-btn" style="background:var(--accent);color:#fff;border:none;padding:.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem">Guardar cita</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════ MODAL ══════════ -->
-<div id="modal" onclick="closeModalIfBackdrop(event)">
-  <div class="modal-box">
-    <div class="modal-header-bar">
-      <span class="modal-header-title">Citas del libro</span>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div id="modal-content"></div>
-  </div>
-</div>
-
 <div id="toast"></div>
 
 <script>
-// ── State ──────────────────────────────────────────────
-let library   = []
+// ── State ──
+let library = []
 let allQuotes = []
-let currentView = 'inicio'
-let trioLoaded = false
+let adminToken = localStorage.getItem('noray-admin-token') || null
+let adminFilter = 'all'
 
-// ── Init ───────────────────────────────────────────────
+// ── Init ──
 async function init() {
   setupNav()
+  checkAdminUI()
   try {
-    library   = await fetchLibrary()
+    library = await fetchLibrary()
     allQuotes = library.flatMap(b => b.quotes)
-    renderCarousel()
-    renderWeekly()
-    buildFilters()
-    loadTrio()
+    renderInicio()
     renderBiblioteca()
-  } catch (err) {
-    document.getElementById('trio-grid').innerHTML =
-      `<div class="error-state"><h2>Error al cargar</h2><p>Verifica que el servidor tiene acceso a Notion.</p></div>`
+    buildFilters()
+  } catch(err) {
+    document.getElementById('recent-grid').innerHTML = `<div class="empty-state">Error al cargar: ${esc(err.message)}</div>`
   }
 }
 
-// ── API ────────────────────────────────────────────────
+// ── API ──
 async function fetchLibrary() {
   const r = await fetch('/api/library')
   if (!r.ok) throw new Error(await r.text())
   return r.json()
 }
-
-async function fetchRandom() {
-  const r = await fetch('/api/random')
-  if (!r.ok) throw new Error(await r.text())
-  return r.json()
-}
-
 async function patchFavorite(id, favorita) {
-  const r = await fetch(`/api/quotes/${id}/favorite`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ favorita }),
-  })
+  const r = await fetch(`/api/quotes/${id}/favorite`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({favorita}) })
   if (!r.ok) throw new Error(await r.text())
   return r.json()
 }
-
-// ── Navigation ─────────────────────────────────────────
-function setupNav() {
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => showView(btn.dataset.view))
-  })
+async function reload() {
+  library = await fetchLibrary()
+  allQuotes = library.flatMap(b => b.quotes)
+  renderInicio(); renderBiblioteca(); buildFilters()
+  if (currentView === 'favoritas') renderFavoritas()
+  if (currentView === 'admin') renderAdminPanel()
 }
 
+// ── Nav ──
+let currentView = 'inicio'
+function setupNav() {
+  document.querySelectorAll('.nav-btn[data-view]').forEach(btn =>
+    btn.addEventListener('click', () => showView(btn.dataset.view))
+  )
+}
 function showView(name) {
   currentView = name
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'))
-  document.querySelectorAll('.nav-btn').forEach(el => el.classList.toggle('active', el.dataset.view === name))
+  document.querySelectorAll('.nav-btn[data-view]').forEach(el => el.classList.toggle('active', el.dataset.view === name))
+  document.getElementById('view-' + name)?.classList.add('active')
+  window.scrollTo({top:0})
   closeMenu()
-  document.getElementById('view-' + name).classList.add('active')
-  window.scrollTo({ top: 0 })
   if (name === 'favoritas') renderFavoritas()
   if (name === 'admin') renderAdminPanel()
 }
+function toggleMenu() { document.getElementById('dropdown-menu').classList.toggle('open') }
+function closeMenu()  { document.getElementById('dropdown-menu').classList.remove('open') }
+document.addEventListener('click', e => { if (!e.target.closest('.hamburger') && !e.target.closest('.dropdown-menu')) closeMenu() })
 
-// ── Utils ──────────────────────────────────────────────
-function esc(s) {
-  return String(s ?? '')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;').replace(/'/g,'&#39;')
-}
+// ── Utils ──
+function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;') }
+function starsHTML(n) { if (!n) return ''; const r=Math.round(n); return '★'.repeat(r)+'☆'.repeat(5-r) }
+function strColor(str,l=42) { let h=0; for(const c of str) h=(h*31+c.charCodeAt(0))&0xffff; return `hsl(${h%360},38%,${l}%)` }
+function initials(str) { return (str||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() }
+function bookAuthor(b) { return b.author || b.quotes[0]?.autor || '' }
 
-function starsHTML(n) {
-  if (!n) return ''
-  const r = Math.round(n)
-  return '★'.repeat(r) + '☆'.repeat(5 - r)
-}
+// Seeded random for weekly picks
+function seededRNG(seed) { let s=seed>>>0; return ()=>{ s^=s<<13; s^=s>>17; s^=s<<5; return (s>>>0)/4294967296 } }
+function shuffleSeeded(arr,seed) { const rng=seededRNG(seed),r=[...arr]; for(let i=r.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[r[i],r[j]]=[r[j],r[i]]} return r }
+function getISOWeek() { const d=new Date(),day=d.getUTCDay()||7; d.setUTCDate(d.getUTCDate()+4-day); const ys=new Date(Date.UTC(d.getUTCFullYear(),0,1)); return {week:Math.ceil((((d-ys)/86400000)+1)/7),year:d.getUTCFullYear()} }
+function weeklyPick(items,salt) { if(!items.length)return null; const{week,year}=getISOWeek(); return shuffleSeeded(items,year*100+salt)[(week-1)%items.length] }
 
-function strColor(str, l = 42) {
-  let h = 0
-  for (const c of str) h = (h * 31 + c.charCodeAt(0)) & 0xffff
-  return `hsl(${h % 360}, 38%, ${l}%)`
-}
-
-function initials(str) {
-  return (str || '').trim().split(/\s+/).slice(0, 2).map(w => w[0] || '').join('').toUpperCase()
-}
-
-// ── Weekly algorithm ───────────────────────────────────
-function seededRNG(seed) {
-  let s = seed >>> 0
-  return () => { s ^= s << 13; s ^= s >> 17; s ^= s << 5; return (s >>> 0) / 4294967296 }
-}
-function shuffleSeeded(arr, seed) {
-  const rng = seededRNG(seed); const r = [...arr]
-  for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [r[i], r[j]] = [r[j], r[i]] }
-  return r
-}
-function getISOWeek() {
-  const d = new Date(); const day = d.getUTCDay() || 7
-  d.setUTCDate(d.getUTCDate() + 4 - day)
-  const ys = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-  return { week: Math.ceil((((d - ys) / 86400000) + 1) / 7), year: d.getUTCFullYear() }
-}
-function weeklyPick(items, salt) {
-  if (!items.length) return null
-  const { week, year } = getISOWeek()
-  return shuffleSeeded(items, year * 100 + salt)[(week - 1) % items.length]
+// Image compression
+async function compressImage(file, maxW=500, quality=0.82) {
+  return new Promise(resolve => {
+    const img=new Image(), url=URL.createObjectURL(file)
+    img.onload=()=>{
+      const scale=Math.min(1,maxW/img.width)
+      const c=document.createElement('canvas')
+      c.width=img.width*scale; c.height=img.height*scale
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height)
+      URL.revokeObjectURL(url)
+      resolve(c.toDataURL('image/jpeg',quality))
+    }
+    img.src=url
+  })
 }
 
-// ── Trio de citas ──────────────────────────────────────
-async function loadTrio() {
-  const btn = document.getElementById('btn-refresh-trio')
-  if (btn) btn.disabled = true
-  const grid = document.getElementById('trio-grid')
-  grid.style.opacity = '0.5'
-  try {
-    const quotes = await fetchRandom()
-    grid.innerHTML = quotes.length
-      ? quotes.map(q => trioCardHTML(q)).join('')
-      : '<div class="error-state"><p>No hay citas disponibles.</p></div>'
-  } catch (err) {
-    grid.innerHTML = `<div class="error-state"><h2>Error</h2><pre>${esc(err.message)}</pre></div>`
-  } finally {
-    grid.style.opacity = '1'
-    if (btn) btn.disabled = false
-  }
+function previewBookCover(input, imgId, phId, urlId) {
+  const file=input.files[0]; if(!file) return
+  compressImage(file).then(data => {
+    const img=document.getElementById(imgId), ph=document.getElementById(phId)
+    img.src=data; img.style.display='block'; ph.style.display='none'
+    document.getElementById(urlId).value=''
+  })
 }
 
-function trioCardHTML(q) {
-  const fav  = q.favorita
-  const tags = (q.categorias || []).slice(0, 3).map(c => `<span class="qtag">${esc(c)}</span>`).join('')
+// ── Book card ──
+function bookCardHTML(b) {
+  const autor = bookAuthor(b)
+  const coverHTML = b.portada
+    ? `<img class="book-cover-img" src="${esc(b.portada)}" alt="${esc(b.nombre)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    : ''
+  const ph = `<div class="book-no-cover" style="background:${strColor(b.nombre)};${b.portada?'display:none':''}"><div class="book-no-cover-initial">${esc(initials(b.nombre))}</div><div class="book-no-cover-title">${esc(b.nombre)}</div></div>`
   return `
-    <div class="quote-card">
-      <div class="quote-mark">&ldquo;</div>
-      <p class="quote-text">${esc(q.cita)}</p>
-      ${tags ? `<div class="quote-tags">${tags}</div>` : ''}
-      <div class="quote-footer">
-        <div>
-          <div class="quote-autor">${esc(q.autor || q.bookNombre || '')}</div>
-          <div class="quote-obra">${esc(q.bookNombre || q.obra || '')}${q.pagina ? `, p. ${q.pagina}` : ''}</div>
-        </div>
-        <div class="card-actions">
-          <button class="icon-btn ${fav ? 'fav-btn-active' : ''}"
-            onclick="toggleFav('${esc(q.id)}', ${!fav}, this)">${fav ? '♥' : '♡'}</button>
-          <button class="icon-btn" onclick="shareQ('${esc(q.id)}', '${esc(q.cita)}', '${esc(q.autor || '')}', '${esc(q.bookNombre || q.obra || '')}')">↗</button>
-        </div>
-      </div>
+    <div class="book-card" onclick="openBook('${esc(b.id)}')">
+      ${coverHTML}${ph}
+      <div class="quote-badge">${b.quotes.length}</div>
+      ${b.portada?`<div class="book-overlay"><div class="book-overlay-title">${esc(b.nombre)}</div><div class="book-overlay-author">${esc(autor)}</div></div>`:''}
     </div>`
 }
 
-function shareQ(id, cita, autor, obra) {
-  const text = `"${cita}"\n\n— ${autor}, ${obra}`
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
-}
-
-// ── Carrusel ───────────────────────────────────────────
-function renderCarousel() {
-  const track = document.getElementById('carousel-track')
-  if (!library.length) { track.innerHTML = '<div class="loading-state">Sin libros aún.</div>'; return }
-
-  track.innerHTML = library.map(b => {
-    const color = strColor(b.nombre || '')
-    const coverInner = b.portada
-      ? `<img src="${esc(b.portada)}" alt="${esc(b.nombre)}" loading="lazy">`
-      : esc(initials(b.nombre))
-    return `
-      <div class="carousel-book" onclick="openBook('${esc(b.id)}')">
-        <div class="carousel-cover" style="background:${color}">${coverInner}</div>
-        <div class="carousel-info">
-          <div class="carousel-title">${esc(b.nombre)}</div>
-          <div class="carousel-author">${esc(b.author || '')}</div>
-          <div class="carousel-meta">
-            <span class="stars">${starsHTML(b.rating)}</span>
-            <span class="carousel-ncitas">${b.quotes.length} cita${b.quotes.length !== 1 ? 's' : ''}</span>
-          </div>
-        </div>
-      </div>`
-  }).join('')
-}
-
-function scrollCarousel(dir) {
-  document.getElementById('carousel-track').scrollBy({ left: dir * 600, behavior: 'smooth' })
-}
-
-// ── Weekly picks ───────────────────────────────────────
-function renderWeekly() {
-  // Libro destacado: rating >= 4
-  const eligibleBooks = library.filter(b => (b.rating || 0) >= 4)
+// ── Inicio ──
+function renderInicio() {
+  // Weekly
+  const eligibleBooks = library.filter(b => (b.rating||0) >= 4)
   renderLibroSemana(weeklyPick(eligibleBooks, 1))
-
-  // Autor semanal: autores con >= 2 libros distintos
-  // Fallback: si el campo author del libro está vacío, tomarlo de sus citas
   const byAuthor = {}
-  library.forEach(b => {
-    const autor = b.author || b.quotes[0]?.autor || ''
-    if (!autor) return
-    b._autor = autor  // cache para no recalcular
-    if (!byAuthor[autor]) byAuthor[autor] = []
-    byAuthor[autor].push(b)
-  })
-  const eligibleAuthors = Object.entries(byAuthor)
-    .filter(([, bs]) => bs.length >= 2)
-    .map(([autor, bs]) => ({ autor, books: bs }))
+  library.forEach(b => { const a=bookAuthor(b); if(!a)return; if(!byAuthor[a])byAuthor[a]=[]; byAuthor[a].push(b) })
+  const eligibleAuthors = Object.entries(byAuthor).filter(([,bs])=>bs.length>=2).map(([autor,books])=>({autor,books}))
   renderAutorSemana(weeklyPick(eligibleAuthors, 2))
+  // Recent books (last 24)
+  const recent = library.slice(0, 24)
+  document.getElementById('recent-grid').innerHTML = recent.map(bookCardHTML).join('')
 }
 
 function renderLibroSemana(b) {
   const card = document.getElementById('libro-semana-card')
-  if (!b) {
-    card.innerHTML = `<div class="weekly-label">📖 Libro destacado</div>
-      <p class="no-weekly">Añade libros con valoración ≥ 4★ en Notion para que aparezca aquí.</p>`
-    return
-  }
-  const color = strColor(b.nombre)
-  const sample = b.quotes[Math.floor(Math.random() * Math.max(b.quotes.length, 1))]
-  const coverInner = b.portada
-    ? `<img src="${esc(b.portada)}" alt="" loading="lazy">`
-    : esc(initials(b.nombre))
-  const displayAuthor = b.author || b.quotes[0]?.autor || ''
-  card.style.cursor = 'pointer'
-  card.onclick = () => openBook(b.id)
-  card.innerHTML = `
+  if (!b) { card.innerHTML=`<div class="weekly-label">📖 Libro destacado</div><p style="color:var(--text-3);font-style:italic">Necesitas libros con valoración ≥ 4★</p>`; return }
+  const color=strColor(b.nombre)
+  const sample=b.quotes[Math.floor(Math.random()*Math.max(b.quotes.length,1))]
+  const coverInner=b.portada?`<img src="${esc(b.portada)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`${esc(initials(b.nombre))}`
+  card.onclick=()=>openBook(b.id)
+  card.innerHTML=`
     <div class="weekly-label">📖 Libro destacado</div>
     <div class="weekly-book-top">
       <div class="weekly-cover" style="background:${color}">${coverInner}</div>
-      <div>
-        <h3>${esc(b.nombre)}</h3>
-        <div class="weekly-autor">${esc(displayAuthor)}</div>
-        <div class="stars">${starsHTML(b.rating)}</div>
-      </div>
+      <div><h3>${esc(b.nombre)}</h3><div class="weekly-autor">${esc(bookAuthor(b))}</div><div class="stars">${starsHTML(b.rating)}</div></div>
     </div>
-    ${sample ? `<p class="weekly-quote-preview">${esc(sample.cita)}</p>` : ''}
-    <p style="font-size:0.72rem;color:var(--text-3);margin-top:1rem;text-align:right">Ver todas las citas →</p>`
+    ${sample?`<p class="weekly-quote-preview">${esc(sample.cita)}</p>`:''}
+    <p style="font-size:.72rem;color:var(--text-3);margin-top:1rem;text-align:right">Ver citas →</p>`
 }
 
 function renderAutorSemana(a) {
   const card = document.getElementById('autor-semana-card')
-  if (!a) {
-    card.innerHTML = `<div class="weekly-label">✍️ Autor de la semana</div>
-      <p class="no-weekly">Necesitas tener ≥ 2 libros leídos del mismo autor en tu biblioteca.</p>`
-    return
-  }
-  const booksHTML = a.books.map(b => `
-    <div class="author-book-item" style="cursor:pointer" onclick="openBook('${esc(b.id)}')">
+  if (!a) { card.innerHTML=`<div class="weekly-label">✍️ Autor de la semana</div><p style="color:var(--text-3);font-style:italic">Necesitas ≥ 2 libros del mismo autor</p>`; return }
+  const booksHTML=a.books.map(b=>`
+    <div class="author-book-item" onclick="openBook('${esc(b.id)}')">
       <div class="author-book-dot" style="background:${strColor(b.nombre)}"></div>
-      <span class="author-book-name">${esc(b.nombre)}</span>
-      <span class="author-book-stars">${starsHTML(b.rating)}</span>
+      <span style="font-size:.82rem;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(b.nombre)}</span>
+      <span class="stars" style="font-size:.68rem">${starsHTML(b.rating)}</span>
     </div>`).join('')
-  card.innerHTML = `
+  card.innerHTML=`
     <div class="weekly-label">✍️ Autor de la semana</div>
     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
-      <div class="author-avatar" style="background:${strColor(a.autor, 38)}">${esc(initials(a.autor))}</div>
-      <div>
-        <div class="author-name">${esc(a.autor)}</div>
-        <div class="author-books-count">${a.books.length} libro${a.books.length !== 1 ? 's' : ''} leídos</div>
-      </div>
+      <div class="author-avatar" style="background:${strColor(a.autor,38)}">${esc(initials(a.autor))}</div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600">${esc(a.autor)}</div><div style="font-size:.78rem;color:var(--text-2)">${a.books.length} libros leídos</div></div>
     </div>
     <div class="author-books-list">${booksHTML}</div>`
 }
 
-// ── Biblioteca ─────────────────────────────────────────
-function renderBiblioteca() {
-  const el = document.getElementById('biblioteca-content')
-  if (!library.length) {
-    el.innerHTML = `<div class="error-state"><h2>Biblioteca vacía</h2>
-      <p>Aún no hay libros con citas en Notion.</p></div>`
-    return
-  }
-  el.innerHTML = `<div class="books-grid">${library.map(bookCardHTML).join('')}</div>`
-}
-
-function bookCardHTML(b) {
-  const coverHtml = b.portada
-    ? `<img class="book-cover-img" src="${esc(b.portada)}" alt="${esc(b.nombre)}" loading="lazy">`
-    : `<div class="book-no-cover"><div class="nc-icon">📖</div><div class="nc-title">${esc(b.nombre)}</div></div>`
-  const stars = starsHTML(b.rating)
-  return `
-    <div class="book-card" onclick="openBook('${esc(b.id)}')" title="${esc(b.nombre)}">
-      ${coverHtml}
-      <div class="quote-badge">${b.quotes.length}</div>
-      <div class="book-overlay">
-        <div class="book-title">${esc(b.nombre)}</div>
-        <div class="book-meta">${b.author ? esc(b.author) : ''}${stars ? ' · ' + stars : ''}</div>
-      </div>
-    </div>`
-}
-
-// ── Filters (Biblioteca) ───────────────────────────────
-function bookAuthor(b) {
-  return b.author || b.quotes[0]?.autor || ''
+// ── Biblioteca ──
+function renderBiblioteca(books) {
+  books = books || library
+  document.getElementById('lib-count').textContent = `${books.length} libro${books.length!==1?'s':''}`
+  document.getElementById('lib-grid').innerHTML = books.length
+    ? books.map(bookCardHTML).join('')
+    : '<div class="empty-state">No hay libros con este filtro.</div>'
 }
 
 function buildFilters() {
-  const authors = [...new Set(library.map(b => bookAuthor(b)).filter(Boolean))].sort()
+  const authors = [...new Set(library.map(b=>bookAuthor(b)).filter(Boolean))].sort()
   const sel = document.getElementById('filter-author')
-  authors.forEach(a => { const o = document.createElement('option'); o.value = a; o.textContent = a; sel.appendChild(o) })
+  sel.innerHTML = '<option value="">Todos los autores</option>'
+  authors.forEach(a => { const o=document.createElement('option'); o.value=a; o.textContent=a; sel.appendChild(o) })
   document.getElementById('filters-bar').style.display = 'flex'
 }
 
 function applyFilters() {
   const search = document.getElementById('filter-search').value.toLowerCase().trim()
   const author = document.getElementById('filter-author').value
+  const rating = parseInt(document.getElementById('filter-rating').value) || 0
   const filtered = library.filter(b => {
-    const bAuthor = bookAuthor(b)
-    if (author && bAuthor !== author) return false
-    if (search && !b.nombre.toLowerCase().includes(search) && !bAuthor.toLowerCase().includes(search)) return false
+    const a = bookAuthor(b)
+    if (author && a !== author) return false
+    if (rating && (b.rating||0) < rating) return false
+    if (search && !b.nombre.toLowerCase().includes(search) && !a.toLowerCase().includes(search)) return false
     return true
   })
-  const hasFilter = search || author
+  const hasFilter = search || author || rating
   document.getElementById('btn-clear').classList.toggle('visible', hasFilter)
-  document.getElementById('filter-count').textContent = hasFilter ? `${filtered.length} libro${filtered.length !== 1 ? 's' : ''}` : ''
-  const grid = document.querySelector('#biblioteca-content .books-grid')
-  if (!grid) return
-  grid.innerHTML = filtered.length
-    ? filtered.map(bookCardHTML).join('')
-    : `<div class="error-state" style="grid-column:1/-1"><h2>Sin resultados</h2><p>Prueba con otro título o autor.</p></div>`
+  renderBiblioteca(filtered)
 }
 
 function clearFilters() {
   document.getElementById('filter-search').value = ''
   document.getElementById('filter-author').value = ''
+  document.getElementById('filter-rating').value = ''
   applyFilters()
 }
 
-// ── Book modal ─────────────────────────────────────────
+// ── Book modal ──
 function openBook(id) {
-  const book = library.find(b => b.id === id)
-  if (!book) return
-  document.getElementById('modal-content').innerHTML = renderModalContent(book)
+  const b = library.find(x=>x.id===id); if(!b) return
+  document.getElementById('modal-content').innerHTML = renderBookDetail(b)
   document.getElementById('modal').classList.add('open')
   document.body.style.overflow = 'hidden'
 }
+function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow='' }
+function closeModalIfBackdrop(e) { if(e.target===document.getElementById('modal')) closeModal() }
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal() })
 
-function renderModalContent(b) {
-  const coverHtml = b.portada
-    ? `<img class="modal-book-cover" src="${esc(b.portada)}" alt="${esc(b.nombre)}">`
-    : `<div class="modal-no-cover">📖</div>`
-  const stars = b.rating ? `<span class="mstars">${starsHTML(b.rating)}</span>` : ''
-  const date  = b.dateRead
-    ? `<span>📅 ${new Date(b.dateRead).toLocaleDateString('es-ES', { year:'numeric', month:'long' })}</span>`
+function renderBookDetail(b) {
+  const autor = bookAuthor(b)
+  const coverHTML = b.portada
+    ? `<img class="modal-book-cover" src="${esc(b.portada)}" alt="${esc(b.nombre)}" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
     : ''
+  const phStyle = b.portada ? 'display:none' : `display:flex;background:${strColor(b.nombre)}`
+  const ph = `<div class="modal-no-cover" style="${phStyle};color:rgba(255,255,255,.85);font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:600">${initials(b.nombre)}</div>`
+  const adminActions = isAdmin() ? `
+    <div class="modal-admin-actions">
+      <button class="edit-btn" onclick="openBookForm('${esc(b.id)}')">✏️ Editar libro</button>
+      <button class="edit-btn" onclick="openQuoteForm(null,'${esc(b.id)}')">+ Añadir cita</button>
+      <button class="del-btn" onclick="deleteBook('${esc(b.id)}','${esc(b.nombre)}')">🗑 Eliminar libro</button>
+    </div>` : ''
+  const quotesHTML = b.quotes.length
+    ? b.quotes.map(q => renderModalQuote(q, b)).join('')
+    : '<p style="color:var(--text-3);font-style:italic;text-align:center;padding:2rem">Este libro no tiene citas aún.</p>'
   return `
     <div class="modal-book-header">
-      ${coverHtml}
-      <div>
+      ${coverHTML}${ph}
+      <div style="flex:1;min-width:0">
         <div class="modal-book-title">${esc(b.nombre)}</div>
-        ${b.author ? `<div class="modal-book-author">${esc(b.author)}</div>` : ''}
-        <div class="modal-book-stats">${stars}${date}<span>📝 ${b.quotes.length} cita${b.quotes.length !== 1 ? 's' : ''}</span></div>
+        ${autor ? `<div class="modal-book-author">${esc(autor)}</div>` : ''}
+        <div class="modal-book-stats">
+          ${b.rating ? `<span class="mstars">${starsHTML(b.rating)}</span>` : ''}
+          ${b.dateRead ? `<span>📅 ${new Date(b.dateRead).toLocaleDateString('es-ES',{year:'numeric',month:'long'})}</span>` : ''}
+          ${b.numeroPaginas ? `<span>📄 ${b.numeroPaginas} págs.</span>` : ''}
+          <span>💬 ${b.quotes.length} cita${b.quotes.length!==1?'s':''}</span>
+        </div>
+        ${b.myReview ? `<div class="modal-book-review">${esc(b.myReview)}</div>` : ''}
+        ${adminActions}
       </div>
     </div>
-    <div class="modal-quotes">${b.quotes.map(q => modalQuoteHTML(q, b)).join('')}</div>`
+    <div class="modal-quotes-section">
+      <div class="modal-quotes-title">Citas (${b.quotes.length})</div>
+      <div class="modal-quotes-list">${quotesHTML}</div>
+    </div>`
 }
 
-function modalQuoteHTML(q, book) {
-  const tags = (q.categorias || []).map(c => `<span class="mq-tag">${esc(c)}</span>`).join('')
+function renderModalQuote(q, book) {
+  const tags = (q.categorias||[]).map(c=>`<span class="mq-tag">${esc(c)}</span>`).join('')
+  const adminBtns = isAdmin() ? `
+    <button class="edit-btn" onclick="openQuoteForm('${esc(q.id)}')">✏️</button>
+    <button class="del-btn" onclick="deleteQuote('${esc(q.id)}','${esc(book.id)}')">🗑</button>` : ''
   return `
-    <div class="modal-quote${q.favorita ? ' is-fav' : ''}" id="mq-${esc(q.id)}">
+    <div class="modal-quote${q.favorita?' is-fav':''}" id="mq-${esc(q.id)}">
       <p class="mq-text">${esc(q.cita)}</p>
       <div class="mq-footer">
         <div class="mq-tags">${tags}</div>
         <div class="mq-right">
-          ${q.pagina ? `<span class="mq-page">p. ${q.pagina}</span>` : ''}
-          <button class="fav-btn ${q.favorita ? 'active' : ''}"
-            onclick="toggleFav('${esc(q.id)}', ${!q.favorita}, this, '${esc(book.id)}')">
-            ${q.favorita ? '♥ Favorita' : '♡ Favorita'}
+          ${q.pagina?`<span class="mq-page">p. ${q.pagina}</span>`:''}
+          <button class="fav-btn ${q.favorita?'active':''}" onclick="toggleFav('${esc(q.id)}',${!q.favorita},this,'${esc(book.id)}')">
+            ${q.favorita?'♥ Favorita':'♡ Favorita'}
           </button>
-          ${isAdmin() ? `<button class="edit-btn" onclick="openEditQuote('${esc(q.id)}')">✏️</button>` : ''}
+          ${adminBtns}
         </div>
       </div>
     </div>`
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open')
-  document.body.style.overflow = ''
-}
-function closeModalIfBackdrop(e) { if (e.target === document.getElementById('modal')) closeModal() }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() })
-
-// ── Favoritas ──────────────────────────────────────────
+// ── Favoritas ──
 function renderFavoritas() {
-  const favs = allQuotes.filter(q => q.favorita)
+  const bookById = new Map(library.map(b=>[b.id,b]))
+  const favsByBook = {}
+  allQuotes.filter(q=>q.favorita).forEach(q => {
+    const bookId = q.book_id || (q.bookIds||[])[0]
+    if (!bookId) return
+    if (!favsByBook[bookId]) favsByBook[bookId]=[]
+    favsByBook[bookId].push(q)
+  })
   const el = document.getElementById('favs-content')
-  if (!favs.length) {
-    el.innerHTML = `<div class="favs-empty">Aún no tienes citas favoritas.<br>Marca el corazón ♡ en cualquier cita.</div>`
-    return
-  }
-  const bookById = new Map(library.map(b => [b.id, b]))
-  el.innerHTML = `
-    <p class="fav-count">${favs.length} cita${favs.length !== 1 ? 's' : ''} favorita${favs.length !== 1 ? 's' : ''}</p>
-    ${favs.map(q => {
-      const book = q.bookIds?.map(id => bookById.get(id)).find(Boolean)
-      const thumb = book?.portada
-        ? `<img class="fav-thumb" src="${esc(book.portada)}" alt="${esc(book.nombre)}" loading="lazy">`
-        : `<div class="fav-thumb-empty">📖</div>`
-      return `
-        <div class="fav-card" onclick="${book ? `openBook('${esc(book.id)}')` : ''}">
-          ${thumb}
-          <div class="fav-body">
-            <p class="fav-text">${esc(q.cita)}</p>
-            <div class="fav-attr">${esc(q.autor || book?.author || '')}</div>
-            <div class="fav-obra">${esc(book?.nombre || q.obra || '')}</div>
-          </div>
-          <button class="fav-unfav" title="Quitar de favoritas"
-            onclick="event.stopPropagation(); toggleFav('${esc(q.id)}', false, this)">♥</button>
-        </div>`
-    }).join('')}`
-}
-
-// ── Toggle favorite ────────────────────────────────────
-async function toggleFav(quoteId, newState, btn, bookId) {
-  // Optimistic UI
-  const isFavBtn = btn.classList.contains('fav-btn')
-  btn.textContent = newState ? (isFavBtn ? '♥ Favorita' : '♥') : (isFavBtn ? '♡ Favorita' : '♡')
-  btn.classList.toggle('active', newState)
-  if (!isFavBtn) btn.classList.toggle('fav-btn-active', newState)
-
-  // Update local state
-  const q = allQuotes.find(q => q.id === quoteId)
-  if (q) q.favorita = newState
-  if (bookId) {
-    const book = library.find(b => b.id === bookId)
-    const bq = book?.quotes.find(q => q.id === quoteId)
-    if (bq) { bq.favorita = newState; document.getElementById(`mq-${quoteId}`)?.classList.toggle('is-fav', newState) }
-  }
-
-  try {
-    await patchFavorite(quoteId, newState)
-    showToast(newState ? '♥ Añadida a favoritas' : 'Eliminada de favoritas')
-  } catch (err) {
-    // Rollback
-    btn.textContent = !newState ? (isFavBtn ? '♥ Favorita' : '♥') : (isFavBtn ? '♡ Favorita' : '♡')
-    btn.classList.toggle('active', !newState)
-    if (q) q.favorita = !newState
-    showToast('Error al actualizar Notion')
-  }
-
-  if (currentView === 'favoritas') renderFavoritas()
-}
-
-// ── Toast ──────────────────────────────────────────────
-let toastTimer
-function showToast(msg) {
-  const t = document.getElementById('toast')
-  t.textContent = msg; t.classList.add('show')
-  clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2600)
-}
-
-// ── Admin ──────────────────────────────────────────────
-let adminToken = localStorage.getItem('noray-admin-token') || null
-
-function isAdmin() { return !!adminToken }
-
-function checkAdminUI() {
-  const show = isAdmin()
-  const d = v => v ? 'block' : 'none'
-  ;['admin-fab','admin-add-btn','nav-admin','dropdown-panel-btn'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.style.display = d(show)
-  })
-  const dropBtn = document.getElementById('dropdown-admin-btn')
-  if (dropBtn) dropBtn.textContent = show ? '🔓 Cerrar sesión' : '🔑 Admin'
-  const desktopBtn = document.getElementById('desktop-admin-btn')
-  if (desktopBtn) desktopBtn.textContent = show ? '🔓' : '🔑'
-}
-
-function handleAdminMenu() {
-  closeMenu()
-  if (isAdmin()) {
-    adminLogout()
-  } else {
-    openLoginModal()
-  }
-}
-
-function openLoginModal() {
-  const m = document.getElementById('admin-login-modal')
-  m.style.display = 'flex'
-  document.getElementById('admin-pw-input').focus()
-}
-function closeLoginModal() {
-  document.getElementById('admin-login-modal').style.display = 'none'
-  document.getElementById('admin-pw-input').value = ''
-  document.getElementById('admin-login-error').style.display = 'none'
-}
-
-async function doLogin() {
-  const pw = document.getElementById('admin-pw-input').value
-  const errEl = document.getElementById('admin-login-error')
-  try {
-    const r = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: pw }),
-    })
-    if (!r.ok) { const e = await r.json(); throw new Error(e.error) }
-    const { token } = await r.json()
-    adminToken = token
-    localStorage.setItem('noray-admin-token', token)
-    closeLoginModal()
-    checkAdminUI()
-    showToast('✅ Sesión iniciada')
-  } catch (err) {
-    errEl.textContent = err.message; errEl.style.display = 'block'
-  }
-}
-
-function adminLogout() {
-  adminToken = null
-  localStorage.removeItem('noray-admin-token')
-  checkAdminUI()
-  showToast('Sesión cerrada')
-}
-
-function authHeader() {
-  return { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` }
-}
-
-// ── Add Quote Modal ────────────────────────────────────
-function openAddQuoteModal(prefilledBookId = null) {
-  if (!isAdmin()) { openLoginModal(); return }
-  // Poblar select de libros
-  const sel = document.getElementById('aq-book')
-  sel.innerHTML = '<option value="">— Selecciona un libro o crea uno nuevo —</option><option value="__new__">+ Añadir nuevo libro…</option>'
-  library.forEach(b => {
-    const o = document.createElement('option')
-    o.value = b.id; o.textContent = `${b.nombre}${b.author ? ' — ' + b.author : ''}`
-    sel.appendChild(o)
-  })
-  if (prefilledBookId) sel.value = prefilledBookId
-
-  // Reset fields
-  ;['aq-cita','aq-titulo','aq-autor','aq-portada-url','aq-cats','aq-review'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.value = ''
-  })
-  ;['aq-valoracion','aq-pagina','aq-num-paginas'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.value = ''
-  })
-  document.getElementById('aq-fecha').value = new Date().toISOString().slice(0,10)
-  document.getElementById('aq-new-book-section').style.display = 'none'
-  document.getElementById('aq-portada-preview').style.display = 'none'
-  document.getElementById('aq-error').style.display = 'none'
-
-  const m = document.getElementById('add-quote-modal')
-  m.style.display = 'flex'
-  setTimeout(() => document.getElementById('aq-cita').focus(), 100)
-}
-
-function closeAddQuoteModal() {
-  document.getElementById('add-quote-modal').style.display = 'none'
-}
-
-async function saveQuote() {
-  const errEl = document.getElementById('aq-error')
-  errEl.style.display = 'none'
-  const cita = document.getElementById('aq-cita').value.trim()
-  if (!cita) { errEl.textContent = 'La cita no puede estar vacía'; errEl.style.display = 'block'; return }
-
-  let bookId = document.getElementById('aq-book').value
-  if (!bookId) { errEl.textContent = 'Selecciona o crea un libro'; errEl.style.display = 'block'; return }
-
-  try {
-    // Crear libro si es nuevo
-    if (bookId === '__new__') {
-      const titulo = document.getElementById('aq-titulo').value.trim()
-      if (!titulo) { errEl.textContent = 'El título del libro es obligatorio'; errEl.style.display = 'block'; return }
-      // Portada: archivo tiene prioridad sobre URL
-      const portadaUrl = document.getElementById('aq-portada-img')?.src?.startsWith('data:')
-        ? document.getElementById('aq-portada-img').src
-        : document.getElementById('aq-portada-url').value.trim() || null
-      const r = await fetch('/api/books', {
-        method: 'POST', headers: authHeader(),
-        body: JSON.stringify({
-          titulo,
-          autor:          document.getElementById('aq-autor').value.trim() || null,
-          portada_url:    portadaUrl,
-          valoracion:     parseInt(document.getElementById('aq-valoracion').value) || null,
-          fecha_lectura:  document.getElementById('aq-fecha').value || null,
-          numero_paginas: parseInt(document.getElementById('aq-num-paginas').value) || null,
-          my_review:      document.getElementById('aq-review').value.trim() || null,
-          estado: 'Leído',
-        }),
-      })
-      if (!r.ok) throw new Error((await r.json()).error)
-      const nb = await r.json()
-      bookId = nb.id
-    }
-
-    // Guardar cita
-    const cats = document.getElementById('aq-cats').value
-      .split(',').map(s => s.trim()).filter(Boolean)
-    const r2 = await fetch(`/api/books/${bookId}/quotes`, {
-      method: 'POST', headers: authHeader(),
-      body: JSON.stringify({
-        cita,
-        pagina: parseInt(document.getElementById('aq-pagina').value) || null,
-        categorias: cats,
-      }),
-    })
-    if (!r2.ok) throw new Error((await r2.json()).error)
-
-    closeAddQuoteModal()
-    showToast('✅ Cita guardada')
-    // Refrescar datos
-    library = await fetchLibrary()
-    allQuotes = library.flatMap(b => b.quotes)
-    renderCarousel(); renderWeekly(); renderBiblioteca(); buildFilters()
-  } catch (err) {
-    errEl.textContent = err.message; errEl.style.display = 'block'
-  }
-}
-
-// ── Admin panel ────────────────────────────────────────
-let adminFilter = 'all'
-
-function renderAdminPanel() {
-  // Stats
-  const noCover  = library.filter(b => !b.portada).length
-  const noQuotes = library.filter(b => !b.quotes.length).length
-  document.getElementById('admin-stats').innerHTML = `
-    <div class="admin-stat-card"><div class="stat-num">${library.length}</div><div class="stat-label">Libros en biblioteca</div></div>
-    <div class="admin-stat-card"><div class="stat-num">${allQuotes.length}</div><div class="stat-label">Citas totales</div></div>
-    <div class="admin-stat-card" style="border-color:${noCover?'#fbbf24':'var(--border)'}">
-      <div class="stat-num" style="color:${noCover?'#92400e':'var(--text)'}">${noCover}</div>
-      <div class="stat-label">Sin portada</div>
-    </div>
-    <div class="admin-stat-card" style="border-color:${noQuotes?'#fbbf24':'var(--border)'}">
-      <div class="stat-num" style="color:${noQuotes?'#92400e':'var(--text)'}">${noQuotes}</div>
-      <div class="stat-label">Sin citas</div>
-    </div>`
-  renderAdminList()
-}
-
-function setAdminFilter(f, btn) {
-  adminFilter = f
-  document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'))
-  btn.classList.add('active')
-  renderAdminList()
-}
-
-function renderAdminList() {
-  const search = document.getElementById('admin-search')?.value.toLowerCase() || ''
-  let books = library.filter(b => {
-    if (adminFilter === 'no-cover'  && b.portada)      return false
-    if (adminFilter === 'no-quotes' && b.quotes.length) return false
-    if (search && !b.nombre.toLowerCase().includes(search) && !(b.author||'').toLowerCase().includes(search)) return false
-    return true
-  })
-  const list = document.getElementById('admin-book-list')
-  if (!books.length) { list.innerHTML = '<div class="empty-state">No hay libros con este filtro.</div>'; return }
-  list.innerHTML = books.map(b => {
-    const coverEl = b.portada
-      ? `<img src="${esc(b.portada)}" alt="" loading="lazy">`
-      : `<div class="no-cover-ph">📖</div>`
-    const coverBadge = b.portada
-      ? '<span class="admin-badge badge-ok">✓ Portada</span>'
-      : '<span class="admin-badge badge-warn">Sin portada</span>'
-    const quotesBadge = b.quotes.length
-      ? `<span class="admin-badge badge-ok">${b.quotes.length} citas</span>`
-      : '<span class="admin-badge badge-warn">Sin citas</span>'
+  const bookIds = Object.keys(favsByBook)
+  if (!bookIds.length) { el.innerHTML='<div class="empty-state">Aún no tienes citas favoritas.<br>Pulsa ♡ en cualquier cita.</div>'; return }
+  el.innerHTML = bookIds.map(bid => {
+    const b = bookById.get(bid)
+    const coverEl = b?.portada
+      ? `<img class="fav-book-thumb" src="${esc(b.portada)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+      : `<div class="fav-book-thumb-empty" style="background:${strColor(b?.nombre||'')};color:rgba(255,255,255,.8)">${initials(b?.nombre||'')}</div>`
+    const quotes = favsByBook[bid].map(q=>`
+      <div class="fav-quote-item">
+        <p class="fav-quote-text">${esc(q.cita)}</p>
+        <button class="fav-unfav" title="Quitar de favoritas" onclick="toggleFav('${esc(q.id)}',false,this)">♥</button>
+      </div>`).join('')
     return `
-      <div class="admin-book-row">
-        ${coverEl}
-        <div class="book-info">
-          <div class="book-name">${esc(b.nombre)}</div>
-          <div class="book-sub" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.2rem">
-            ${coverBadge}${quotesBadge}
-            ${b.rating ? `<span class="admin-badge" style="background:var(--accent-soft);color:var(--accent)">★ ${b.rating}</span>` : ''}
-          </div>
+      <div class="fav-book-section">
+        <div class="fav-book-header" style="cursor:pointer" onclick="openBook('${esc(bid)}')">
+          ${coverEl}
+          <div><div class="fav-book-name">${esc(b?.nombre||'Libro desconocido')}</div><div class="fav-book-author">${esc(bookAuthor(b||{}))}</div></div>
         </div>
-        <div style="display:flex;gap:.4rem;flex-shrink:0">
-          <button class="edit-btn" onclick="openEditBook('${esc(b.id)}')">✏️ Editar</button>
-          <button class="edit-btn" onclick="openBook('${esc(b.id)}')">Ver citas</button>
-        </div>
+        ${quotes}
       </div>`
   }).join('')
 }
 
-// ── Edit Book ──────────────────────────────────────────
-function openEditBook(id) {
-  const b = library.find(x => x.id === id)
-  if (!b) return
-  document.getElementById('eb-id').value        = b.id
-  document.getElementById('eb-titulo').value    = b.nombre || ''
-  document.getElementById('eb-autor').value     = b.author || ''
-  document.getElementById('eb-valoracion').value= b.rating || ''
-  document.getElementById('eb-paginas').value   = b.numeroPaginas || ''
-  document.getElementById('eb-fecha').value     = b.dateRead || ''
-  document.getElementById('eb-portada-url').value = (b.portada && !b.portada.startsWith('data:')) ? b.portada : ''
-  document.getElementById('eb-review').value    = b.myReview || ''
-
-  const img = document.getElementById('eb-cover-img')
-  const ph  = document.getElementById('eb-cover-placeholder')
-  if (b.portada) {
-    img.src = b.portada; img.style.display = 'block'; ph.style.display = 'none'
-  } else {
-    img.style.display = 'none'; ph.style.display = 'flex'
+// ── Toggle favorite ──
+async function toggleFav(quoteId, newState, btn, bookId) {
+  const isFavBtn = btn.classList.contains('fav-btn')
+  btn.textContent = newState ? (isFavBtn?'♥ Favorita':'♥') : (isFavBtn?'♡ Favorita':'♡')
+  btn.classList.toggle('active', newState)
+  const q = allQuotes.find(q=>q.id===quoteId)
+  if (q) q.favorita = newState
+  if (bookId) {
+    const b = library.find(b=>b.id===bookId)
+    const bq = b?.quotes.find(q=>q.id===quoteId)
+    if (bq) { bq.favorita=newState; document.getElementById(`mq-${quoteId}`)?.classList.toggle('is-fav',newState) }
   }
-  document.getElementById('eb-error').style.display = 'none'
-  document.getElementById('edit-book-modal').style.display = 'flex'
-}
-
-function closeEditBookModal() {
-  document.getElementById('edit-book-modal').style.display = 'none'
-}
-
-function previewEditCover(input) {
-  const file = input.files[0]; if (!file) return
-  const reader = new FileReader()
-  reader.onload = e => {
-    const img = document.getElementById('eb-cover-img')
-    img.src = e.target.result; img.style.display = 'block'
-    document.getElementById('eb-cover-placeholder').style.display = 'none'
-    document.getElementById('eb-portada-url').value = ''
-  }
-  reader.readAsDataURL(file)
-}
-
-async function saveEditBook() {
-  const id     = document.getElementById('eb-id').value
-  const titulo = document.getElementById('eb-titulo').value.trim()
-  const errEl  = document.getElementById('eb-error')
-  errEl.style.display = 'none'
-  if (!titulo) { errEl.textContent = 'El título es obligatorio'; errEl.style.display = 'block'; return }
-
-  const img = document.getElementById('eb-cover-img')
-  const portada_url = img.src?.startsWith('data:') ? img.src
-    : document.getElementById('eb-portada-url').value.trim() || null
-
   try {
-    const r = await fetch(`/api/books/${id}`, {
-      method: 'PUT', headers: authHeader(),
-      body: JSON.stringify({
-        titulo,
-        autor:          document.getElementById('eb-autor').value.trim() || null,
-        portada_url,
-        valoracion:     parseInt(document.getElementById('eb-valoracion').value) || null,
-        numero_paginas: parseInt(document.getElementById('eb-paginas').value) || null,
-        fecha_lectura:  document.getElementById('eb-fecha').value || null,
-        my_review:      document.getElementById('eb-review').value.trim() || null,
-        estado: 'Leído',
-      }),
-    })
-    if (!r.ok) throw new Error((await r.json()).error)
-    closeEditBookModal()
-    showToast('✅ Libro actualizado')
-    library = await fetchLibrary()
-    allQuotes = library.flatMap(b => b.quotes)
-    renderCarousel(); renderWeekly(); renderBiblioteca(); buildFilters(); renderAdminPanel()
-  } catch (err) { errEl.textContent = err.message; errEl.style.display = 'block' }
-}
-
-// ── Edit Quote ─────────────────────────────────────────
-function openEditQuote(id) {
-  const q = allQuotes.find(x => x.id === id); if (!q) return
-  document.getElementById('eq-id').value     = q.id
-  document.getElementById('eq-cita').value   = q.cita || ''
-  document.getElementById('eq-pagina').value = q.pagina || ''
-  document.getElementById('eq-cats').value   = (q.categorias || []).join(', ')
-  document.getElementById('eq-error').style.display = 'none'
-  document.getElementById('edit-quote-modal').style.display = 'flex'
-}
-
-function closeEditQuoteModal() {
-  document.getElementById('edit-quote-modal').style.display = 'none'
-}
-
-async function saveEditQuote() {
-  const id   = document.getElementById('eq-id').value
-  const cita = document.getElementById('eq-cita').value.trim()
-  const errEl = document.getElementById('eq-error')
-  errEl.style.display = 'none'
-  if (!cita) { errEl.textContent = 'La cita no puede estar vacía'; errEl.style.display = 'block'; return }
-  try {
-    const r = await fetch(`/api/quotes/${id}`, {
-      method: 'PUT', headers: authHeader(),
-      body: JSON.stringify({
-        cita,
-        pagina:     parseInt(document.getElementById('eq-pagina').value) || null,
-        categorias: document.getElementById('eq-cats').value.split(',').map(s => s.trim()).filter(Boolean),
-        favorita:   allQuotes.find(q => q.id === id)?.favorita || false,
-      }),
-    })
-    if (!r.ok) throw new Error((await r.json()).error)
-    closeEditQuoteModal()
-    showToast('✅ Cita actualizada')
-    library = await fetchLibrary()
-    allQuotes = library.flatMap(b => b.quotes)
-    renderAdminPanel()
-  } catch (err) { errEl.textContent = err.message; errEl.style.display = 'block' }
-}
-
-function previewCover(input) {
-  const file = input.files[0]
-  if (!file) return
-  const reader = new FileReader()
-  reader.onload = e => {
-    document.getElementById('aq-portada-img').src = e.target.result
-    document.getElementById('aq-portada-preview').style.display = 'block'
-    document.getElementById('aq-portada-url').value = ''
+    await patchFavorite(quoteId, newState)
+    showToast(newState?'♥ Añadida a favoritas':'Eliminada de favoritas')
+  } catch(err) {
+    btn.textContent = !newState?(isFavBtn?'♥ Favorita':'♥'):(isFavBtn?'♡ Favorita':'♡')
+    btn.classList.toggle('active',!newState)
+    if(q) q.favorita=!newState
+    showToast('Error al actualizar')
   }
-  reader.readAsDataURL(file)
+  if (currentView==='favoritas') renderFavoritas()
 }
 
-// ── Hamburger menu ─────────────────────────────────────
-function toggleMenu() {
-  document.getElementById('dropdown-menu').classList.toggle('open')
+// ── Admin panel ──
+function renderAdminPanel() {
+  const noCover=library.filter(b=>!b.portada).length, noQuotes=library.filter(b=>!b.quotes.length).length
+  document.getElementById('admin-stats').innerHTML=`
+    <div class="admin-stat-card"><div class="stat-num">${library.length}</div><div class="stat-label">Libros</div></div>
+    <div class="admin-stat-card"><div class="stat-num">${allQuotes.length}</div><div class="stat-label">Citas</div></div>
+    <div class="admin-stat-card" style="${noCover?'border-color:#fbbf24':''}"><div class="stat-num" style="${noCover?'color:#92400e':''}">${noCover}</div><div class="stat-label">Sin portada</div></div>
+    <div class="admin-stat-card" style="${noQuotes?'border-color:#fbbf24':''}"><div class="stat-num" style="${noQuotes?'color:#92400e':''}">${noQuotes}</div><div class="stat-label">Sin citas</div></div>`
+  renderAdminList()
 }
-function closeMenu() {
-  document.getElementById('dropdown-menu').classList.remove('open')
+function setAdminFilter(f,btn) { adminFilter=f; document.querySelectorAll('.admin-filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderAdminList() }
+function renderAdminList() {
+  const search=(document.getElementById('admin-search')?.value||'').toLowerCase()
+  const books=library.filter(b=>{
+    if(adminFilter==='no-cover'&&b.portada) return false
+    if(adminFilter==='no-quotes'&&b.quotes.length) return false
+    if(search&&!b.nombre.toLowerCase().includes(search)&&!bookAuthor(b).toLowerCase().includes(search)) return false
+    return true
+  })
+  const list=document.getElementById('admin-book-list')
+  if(!books.length){list.innerHTML='<div class="empty-state">Sin resultados.</div>';return}
+  list.innerHTML=books.map(b=>`
+    <div class="admin-book-row">
+      ${b.portada?`<img src="${esc(b.portada)}" loading="lazy" onerror="this.style.display='none'">`:`<div class="no-cover-ph" style="background:${strColor(b.nombre)}"><span style="color:rgba(255,255,255,.7);font-size:.7rem">${esc(initials(b.nombre))}</span></div>`}
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(b.nombre)}</div>
+        <div style="font-size:.73rem;color:var(--text-2);display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.2rem">
+          ${b.portada?'<span class="admin-badge badge-ok">✓ Portada</span>':'<span class="admin-badge badge-warn">Sin portada</span>'}
+          ${b.quotes.length?`<span class="admin-badge badge-ok">${b.quotes.length} citas</span>`:'<span class="admin-badge badge-warn">Sin citas</span>'}
+          ${b.rating?`<span class="admin-badge" style="background:var(--accent-soft);color:var(--accent)">★${b.rating}</span>`:''}
+        </div>
+      </div>
+      <div style="display:flex;gap:.4rem;flex-shrink:0">
+        <button class="edit-btn" onclick="openBookForm('${esc(b.id)}')">✏️ Editar</button>
+        <button class="del-btn" onclick="deleteBook('${esc(b.id)}','${esc(b.nombre)}')">🗑</button>
+      </div>
+    </div>`).join('')
 }
-document.addEventListener('click', e => {
-  if (!e.target.closest('.hamburger') && !e.target.closest('.dropdown-menu')) closeMenu()
-})
 
-// ── Start ──────────────────────────────────────────────
-// Listener del select de libros (debe ir después del DOM)
-document.getElementById('aq-book').addEventListener('change', function() {
-  document.getElementById('aq-new-book-section').style.display =
-    this.value === '__new__' ? 'flex' : 'none'
-})
+// ── Book form ──
+function openAddForm() { openBookForm(null) }
+function openBookForm(id) {
+  const b = id ? library.find(x=>x.id===id) : null
+  document.getElementById('book-form-title').textContent = b ? 'Editar libro' : 'Nuevo libro'
+  document.getElementById('bf-id').value = b?.id||''
+  document.getElementById('bf-titulo').value = b?.nombre||''
+  document.getElementById('bf-autor').value = bookAuthor(b||{})||''
+  document.getElementById('bf-valoracion').value = b?.rating||''
+  document.getElementById('bf-paginas').value = b?.numeroPaginas||''
+  document.getElementById('bf-fecha').value = b?.dateRead||''
+  document.getElementById('bf-portada-url').value = (b?.portada&&!b.portada.startsWith('data:'))?b.portada:''
+  document.getElementById('bf-review').value = b?.myReview||''
+  const img=document.getElementById('bf-cover-img'), ph=document.getElementById('bf-cover-ph')
+  if (b?.portada) { img.src=b.portada; img.style.display='block'; ph.style.display='none' }
+  else { img.style.display='none'; ph.style.display='flex' }
+  document.getElementById('bf-error').style.display='none'
+  document.getElementById('book-form-modal').classList.add('open')
+  closeModal()
+}
+function closeBookForm() { document.getElementById('book-form-modal').classList.remove('open') }
 
+async function saveBook() {
+  const id=document.getElementById('bf-id').value, titulo=document.getElementById('bf-titulo').value.trim()
+  const errEl=document.getElementById('bf-error'); errEl.style.display='none'
+  if(!titulo){errEl.textContent='El título es obligatorio';errEl.style.display='block';return}
+  const img=document.getElementById('bf-cover-img')
+  const portada_url=img.src?.startsWith('data:')?img.src:document.getElementById('bf-portada-url').value.trim()||null
+  const body={titulo,autor:document.getElementById('bf-autor').value.trim()||null,portada_url,valoracion:parseInt(document.getElementById('bf-valoracion').value)||null,numero_paginas:parseInt(document.getElementById('bf-paginas').value)||null,fecha_lectura:document.getElementById('bf-fecha').value||null,my_review:document.getElementById('bf-review').value.trim()||null,estado:'Leído'}
+  try {
+    const url=id?`/api/books/${id}`:'/api/books', method=id?'PUT':'POST'
+    const r=await fetch(url,{method,headers:authHeader(),body:JSON.stringify(body)})
+    if(!r.ok) throw new Error((await r.json()).error)
+    closeBookForm(); showToast(id?'✅ Libro actualizado':'✅ Libro creado')
+    await reload()
+  } catch(err){errEl.textContent=err.message;errEl.style.display='block'}
+}
+
+async function deleteBook(id, nombre) {
+  if(!confirm(`¿Eliminar "${nombre}" y todas sus citas?\nEsta acción no se puede deshacer.`)) return
+  try {
+    const r=await fetch(`/api/books/${id}`,{method:'DELETE',headers:authHeader()})
+    if(!r.ok) throw new Error((await r.json()).error)
+    closeModal(); showToast('Libro eliminado'); await reload()
+  } catch(err){showToast('Error: '+err.message)}
+}
+
+// ── Quote form ──
+function openQuoteForm(quoteId, bookId) {
+  const q = quoteId ? allQuotes.find(x=>x.id===quoteId) : null
+  document.getElementById('quote-form-title').textContent = q ? 'Editar cita' : 'Nueva cita'
+  document.getElementById('qf-id').value = q?.id||''
+  document.getElementById('qf-book-id').value = bookId||q?.book_id||''
+  document.getElementById('qf-cita').value = q?.cita||''
+  document.getElementById('qf-pagina').value = q?.pagina||''
+  document.getElementById('qf-cats').value = (q?.categorias||[]).join(', ')
+  // Populate book select
+  const sel=document.getElementById('qf-book')
+  const wrap=document.getElementById('qf-book-select-wrap')
+  if (bookId) { wrap.style.display='none'; sel.innerHTML=`<option value="${esc(bookId)}">${esc(library.find(b=>b.id===bookId)?.nombre||bookId)}</option>` }
+  else { wrap.style.display='block'; sel.innerHTML=library.map(b=>`<option value="${esc(b.id)}"${q?.book_id===b.id?' selected':''}>${esc(b.nombre)}</option>`).join('') }
+  document.getElementById('qf-error').style.display='none'
+  document.getElementById('quote-form-modal').classList.add('open')
+}
+function closeQuoteForm() { document.getElementById('quote-form-modal').classList.remove('open') }
+
+async function saveQuote() {
+  const id=document.getElementById('qf-id').value, bookId=document.getElementById('qf-book-id').value||document.getElementById('qf-book').value
+  const cita=document.getElementById('qf-cita').value.trim()
+  const errEl=document.getElementById('qf-error'); errEl.style.display='none'
+  if(!cita){errEl.textContent='La cita no puede estar vacía';errEl.style.display='block';return}
+  if(!bookId){errEl.textContent='Selecciona un libro';errEl.style.display='block';return}
+  const cats=document.getElementById('qf-cats').value.split(',').map(s=>s.trim()).filter(Boolean)
+  const body={cita,pagina:parseInt(document.getElementById('qf-pagina').value)||null,categorias:cats,favorita:allQuotes.find(q=>q.id===id)?.favorita||false}
+  try {
+    const url=id?`/api/quotes/${id}`:`/api/books/${bookId}/quotes`, method=id?'PUT':'POST'
+    const r=await fetch(url,{method,headers:authHeader(),body:JSON.stringify(body)})
+    if(!r.ok) throw new Error((await r.json()).error)
+    closeQuoteForm(); showToast(id?'✅ Cita actualizada':'✅ Cita guardada'); await reload()
+    // Reabrir modal del libro si estaba abierto
+    if(bookId&&document.getElementById('modal').classList.contains('open')) openBook(bookId)
+  } catch(err){errEl.textContent=err.message;errEl.style.display='block'}
+}
+
+async function deleteQuote(quoteId, bookId) {
+  if(!confirm('¿Eliminar esta cita?')) return
+  try {
+    const r=await fetch(`/api/quotes/${quoteId}`,{method:'DELETE',headers:authHeader()})
+    if(!r.ok) throw new Error((await r.json()).error)
+    showToast('Cita eliminada'); await reload()
+    if(bookId&&document.getElementById('modal').classList.contains('open')) openBook(bookId)
+  } catch(err){showToast('Error: '+err.message)}
+}
+
+// ── Admin auth ──
+function isAdmin() { return !!adminToken }
+function authHeader() { return {'Content-Type':'application/json',Authorization:`Bearer ${adminToken}`} }
+function checkAdminUI() {
+  const show=isAdmin()
+  ;['admin-add-btn','nav-admin','dropdown-panel-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=show?'block':'none'})
+  const d=document.getElementById('desktop-admin-btn'); if(d)d.textContent=show?'🔓':'🔑'
+  const db=document.getElementById('dropdown-admin-btn'); if(db)db.textContent=show?'🔓 Cerrar sesión':'🔑 Admin'
+}
+function handleAdminMenu() { isAdmin()?adminLogout():openLoginModal() }
+function openLoginModal() { document.getElementById('admin-login-modal').style.display='flex'; setTimeout(()=>document.getElementById('admin-pw-input').focus(),100) }
+function closeLoginModal() { document.getElementById('admin-login-modal').style.display='none'; document.getElementById('admin-pw-input').value=''; document.getElementById('admin-login-error').style.display='none' }
+async function doLogin() {
+  const pw=document.getElementById('admin-pw-input').value, errEl=document.getElementById('admin-login-error')
+  try {
+    const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})})
+    if(!r.ok){const e=await r.json();throw new Error(e.error)}
+    adminToken=(await r.json()).token; localStorage.setItem('noray-admin-token',adminToken)
+    closeLoginModal(); checkAdminUI(); showToast('✅ Sesión iniciada')
+  } catch(err){errEl.textContent=err.message;errEl.style.display='block'}
+}
+function adminLogout() { adminToken=null; localStorage.removeItem('noray-admin-token'); checkAdminUI(); showToast('Sesión cerrada') }
+
+// ── Hamburger ──
+function toggleMenu() { document.getElementById('dropdown-menu').classList.toggle('open') }
+function closeMenu()  { document.getElementById('dropdown-menu').classList.remove('open') }
+
+// ── Toast ──
+let toastTimer
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600) }
+
+// ── Start ──
 init()
-checkAdminUI()
 </script>
 </body>
 </html>
