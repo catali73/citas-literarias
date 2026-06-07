@@ -3,7 +3,6 @@ import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import sharp from 'sharp'
 import { pool, initDB, getLibrary, getRandomQuotes } from './db.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -23,34 +22,36 @@ let notionCache = { data: null, at: 0 }
 const CACHE_TTL = 15 * 60 * 1000
 
 // ── Cover memory cache ────────────────────────────────────────────────────
-// Evita una query a PostgreSQL + Sharp por cada petición de imagen
-const coverCache = new Map() // bookId → Buffer (jpeg comprimido)
+// Cache simple: bookId → { mime, buf } — evita leer base64 desde PostgreSQL en cada request
+const coverCache = new Map()
 
 async function getCoverBuffer(bookId) {
   if (coverCache.has(bookId)) return coverCache.get(bookId)
-  const { rows } = await pool.query('SELECT portada_url FROM books WHERE id=$1', [bookId])
+  const { rows } = await pool.query(
+    `SELECT portada_url FROM books WHERE id=$1`, [bookId]
+  )
   if (!rows.length || !rows[0].portada_url) return null
   const url = rows[0].portada_url
-  if (!url.startsWith('data:')) return null // URL externa, no cacheamos
-  const [, data] = url.split(',')
-  const buf = await sharp(Buffer.from(data, 'base64'))
-    .resize({ width: 400, withoutEnlargement: true })
-    .jpeg({ quality: 82 })
-    .toBuffer()
-  coverCache.set(bookId, buf)
-  return buf
+  if (!url.startsWith('data:')) return null
+  const commaIdx = url.indexOf(',')
+  const meta = url.slice(0, commaIdx)        // "data:image/jpeg;base64"
+  const data = url.slice(commaIdx + 1)       // base64 string
+  const mime = meta.match(/data:([^;]+)/)?.[1] || 'image/jpeg'
+  const buf  = Buffer.from(data, 'base64')
+  const entry = { mime, buf }
+  coverCache.set(bookId, entry)
+  return entry
 }
 
-// Pre-carga todas las portadas en memoria al arrancar
+// Pre-carga covers en memoria al arrancar (sin bloquear el servidor)
 async function warmCoverCache() {
   const { rows } = await pool.query(`SELECT id FROM books WHERE portada_url LIKE 'data:%'`)
-  console.log(`🖼️  Pre-cargando ${rows.length} portadas en memoria…`)
+  console.log(`🖼️  Pre-cargando ${rows.length} portadas…`)
   let ok = 0
-  // Procesamos en lotes de 20 para no saturar
   for (let i = 0; i < rows.length; i += 20) {
-    await Promise.all(rows.slice(i, i + 20).map(r =>
-      getCoverBuffer(r.id).then(() => ok++).catch(() => {})
-    ))
+    await Promise.all(
+      rows.slice(i, i + 20).map(r => getCoverBuffer(r.id).then(v => { if(v) ok++ }).catch(() => {}))
+    )
   }
   console.log(`✅ Cover cache lista: ${ok} portadas`)
 }
@@ -385,16 +386,25 @@ app.post('/api/sync/notion', requireAdmin, async (req, res) => {
 // ── Cover image ──────────────────────────────────────────────────────────────
 app.get('/api/covers/:id', async (req, res) => {
   try {
-    const buf = await getCoverBuffer(req.params.id)
-    if (buf) {
-      res.set({ 'Content-Type': 'image/jpeg', 'Cache-Control': 'public, max-age=31536000', 'Content-Length': buf.length })
-      return res.send(buf)
+    const entry = await getCoverBuffer(req.params.id)
+    if (entry) {
+      res.set({
+        'Content-Type':  entry.mime,
+        'Cache-Control': 'public, max-age=31536000',
+        'Content-Length': entry.buf.length,
+      })
+      return res.send(entry.buf)
     }
-    // Fallback: URL externa o sin portada
+    // Fallback: URL externa → redirect
     const { rows } = await pool.query('SELECT portada_url FROM books WHERE id=$1', [req.params.id])
     if (!rows.length || !rows[0].portada_url) return res.status(404).end()
-    res.redirect(302, rows[0].portada_url)
-  } catch (err) { console.error('covers err:', err.message); res.status(500).end() }
+    const url = rows[0].portada_url
+    if (url.startsWith('data:')) return res.status(404).end() // no debería pasar
+    res.redirect(302, url)
+  } catch (err) {
+    console.error('covers err:', err.message)
+    res.status(500).end()
+  }
 })
 
 // ── Cache refresh ─────────────────────────────────────────────────────────
