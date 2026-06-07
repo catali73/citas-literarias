@@ -63,7 +63,12 @@ async function notionQuery(dbId) {
 }
 
 function richText(prop) {
-  return (prop?.rich_text ?? prop?.title ?? []).map(i => i.plain_text).join('')
+  if (!prop) return ''
+  const items = prop.rich_text ?? prop.title
+  if (items) return items.map(i => i.plain_text).join('').trim()
+  if (prop.select?.name) return prop.select.name.trim()
+  if (prop.multi_select?.length) return prop.multi_select.map(s => s.name).join(', ').trim()
+  return ''
 }
 function fileUrl(prop) {
   if (!prop?.files?.length) return null
