@@ -427,6 +427,18 @@
   </div>
 </div>
 
+<!-- ══ CONFIRM MODAL ══ -->
+<div id="confirm-modal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem">
+  <div style="background:var(--surface);border-radius:16px;padding:2rem;width:100%;max-width:380px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2)">
+    <h3 id="confirm-title" style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:.75rem">¿Confirmar?</h3>
+    <p id="confirm-msg" style="font-size:.88rem;color:var(--text-2);line-height:1.5;margin-bottom:1.5rem"></p>
+    <div style="display:flex;gap:.6rem;justify-content:flex-end">
+      <button onclick="resolveConfirm(false)" style="background:none;border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem;font-family:'Inter',sans-serif">Cancelar</button>
+      <button id="confirm-ok-btn" onclick="resolveConfirm(true)" style="background:var(--danger);color:#fff;border:none;padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem;font-family:'Inter',sans-serif">Eliminar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -497,8 +509,14 @@ function starsHTML(n) { if (!n) return ''; const r=Math.round(n); return '★'.r
 function strColor(str,l=42) { let h=0; for(const c of str) h=(h*31+c.charCodeAt(0))&0xffff; return `hsl(${h%360},38%,${l}%)` }
 function initials(str) { return (str||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() }
 function bookAuthor(b) { return b.author || b.quotes[0]?.autor || '' }
-// Solo cuenta como "con portada" si está guardada en nuestra BD
-function hasLocalCover(b) { return b.portada?.startsWith('/api/covers/') || b.portada?.startsWith('data:') }
+// Portada local = en nuestra BD. Notion URLs = expiradas. Resto de URLs = válidas.
+function hasLocalCover(b) {
+  if (!b.portada) return false
+  if (b.portada.startsWith('/api/covers/') || b.portada.startsWith('data:')) return true
+  // URL externa no-Notion = válida
+  if (!b.portada.includes('notion') && !b.portada.includes('amazonaws.com/secure.notion')) return true
+  return false // URL Notion = expirada
+}
 
 // Seeded random for weekly picks
 function seededRNG(seed) { let s=seed>>>0; return ()=>{ s^=s<<13; s^=s>>17; s^=s<<5; return (s>>>0)/4294967296 } }
@@ -914,7 +932,8 @@ async function saveBook() {
 }
 
 async function deleteBook(id, nombre) {
-  if(!confirm(`¿Eliminar "${nombre}" y todas sus citas?\nEsta acción no se puede deshacer.`)) return
+  const ok = await askConfirm('Eliminar libro', `¿Eliminar "${nombre}" y todas sus citas? Esta acción no se puede deshacer.`)
+  if (!ok) return
   try {
     const r=await fetch(`/api/books/${id}`,{method:'DELETE',headers:authHeader()})
     if(!r.ok) throw new Error((await r.json()).error)
@@ -960,7 +979,8 @@ async function saveQuote() {
 }
 
 async function deleteQuote(quoteId, bookId) {
-  if(!confirm('¿Eliminar esta cita?')) return
+  const ok = await askConfirm('Eliminar cita', '¿Seguro que quieres eliminar esta cita?')
+  if (!ok) return
   try {
     const r=await fetch(`/api/quotes/${quoteId}`,{method:'DELETE',headers:authHeader()})
     if(!r.ok) throw new Error((await r.json()).error)
@@ -991,6 +1011,19 @@ async function doLogin() {
   } catch(err){errEl.textContent=err.message;errEl.style.display='block'}
 }
 function adminLogout() { adminToken=null; localStorage.removeItem('noray-admin-token'); checkAdminUI(); showToast('Sesión cerrada') }
+
+// ── Confirm modal ─────────────────────────────────────
+let _confirmResolve = null
+function askConfirm(title, msg) {
+  document.getElementById('confirm-title').textContent = title
+  document.getElementById('confirm-msg').textContent = msg
+  document.getElementById('confirm-modal').style.display = 'flex'
+  return new Promise(resolve => { _confirmResolve = resolve })
+}
+function resolveConfirm(ok) {
+  document.getElementById('confirm-modal').style.display = 'none'
+  if (_confirmResolve) { _confirmResolve(ok); _confirmResolve = null }
+}
 
 // ── Hamburger ──
 function toggleMenu() { document.getElementById('dropdown-menu').classList.toggle('open') }
