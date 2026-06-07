@@ -580,7 +580,6 @@ function buildFilters() {
   const sel = document.getElementById('filter-author')
   sel.innerHTML = '<option value="">Todos los autores</option>'
   authors.forEach(a => { const o=document.createElement('option'); o.value=a; o.textContent=a; sel.appendChild(o) })
-  document.getElementById('filters-bar').style.display = 'flex'
 }
 
 function applyFilters() {
