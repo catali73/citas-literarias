@@ -82,6 +82,36 @@
     .nav-btn:hover { background: var(--surface-alt); color: var(--text); }
     .nav-btn.active { background: var(--text); color: #fff; }
 
+    /* ── Admin panel ────────────────────────────── */
+    .admin-filter-btn {
+      background:none;border:1px solid var(--border);color:var(--text-2);
+      padding:.35rem .85rem;border-radius:20px;cursor:pointer;font-size:.8rem;
+      font-family:'Inter',sans-serif;transition:all .15s;
+    }
+    .admin-filter-btn:hover { border-color:var(--text-2);color:var(--text); }
+    .admin-filter-btn.active { background:var(--text);color:#fff;border-color:var(--text); }
+    .admin-stat-card {
+      background:var(--surface);border:1px solid var(--border);border-radius:10px;
+      padding:1.1rem 1.25rem;box-shadow:var(--shadow);
+    }
+    .admin-stat-card .stat-num { font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:600;color:var(--text);line-height:1; }
+    .admin-stat-card .stat-label { font-size:.75rem;color:var(--text-2);margin-top:.25rem; }
+    .admin-book-row {
+      background:var(--surface);border:1px solid var(--border);border-radius:10px;
+      padding:.85rem 1rem;display:flex;align-items:center;gap:1rem;
+      box-shadow:var(--shadow);
+    }
+    .admin-book-row img { width:38px;height:52px;object-fit:cover;border-radius:3px;flex-shrink:0; }
+    .admin-book-row .no-cover-ph { width:38px;height:52px;background:var(--surface-alt);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--text-3); }
+    .admin-book-row .book-info { flex:1;min-width:0; }
+    .admin-book-row .book-name { font-weight:600;font-size:.88rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .admin-book-row .book-sub { font-size:.75rem;color:var(--text-2); }
+    .admin-badge { font-size:.68rem;padding:.15rem .5rem;border-radius:20px;font-weight:500; }
+    .badge-warn { background:#fef3c7;color:#92400e; }
+    .badge-ok   { background:#d1fae5;color:#065f46; }
+    .edit-btn { background:none;border:1px solid var(--border);color:var(--text-2);padding:.3rem .7rem;border-radius:7px;cursor:pointer;font-size:.75rem;transition:all .15s;white-space:nowrap; }
+    .edit-btn:hover { border-color:var(--accent);color:var(--accent); }
+
     /* ── Form helpers ───────────────────────────── */
     .flabel { font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:.35rem }
     .finput { width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;background:var(--bg) }
@@ -515,6 +545,7 @@
       <button class="nav-btn" data-view="biblioteca">Biblioteca</button>
       <button class="nav-btn" data-view="favoritas">Favoritas</button>
       <button id="admin-add-btn" onclick="openAddQuoteModal()">+ Añadir cita</button>
+      <button class="nav-btn" id="nav-admin" data-view="admin" style="display:none">⚙️ Admin</button>
       <button class="nav-btn" id="desktop-admin-btn" onclick="handleAdminMenu()" title="Admin">🔑</button>
     </nav>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">
@@ -528,6 +559,7 @@
       <button class="nav-btn active" data-view="inicio" onclick="showView('inicio');closeMenu()">Inicio</button>
       <button class="nav-btn" data-view="biblioteca" onclick="showView('biblioteca');closeMenu()">Biblioteca</button>
       <button class="nav-btn" data-view="favoritas" onclick="showView('favoritas');closeMenu()">Favoritas</button>
+      <button class="nav-btn" id="dropdown-panel-btn" data-view="admin" onclick="showView('admin');closeMenu()" style="display:none">⚙️ Admin</button>
       <hr style="border:none;border-top:1px solid var(--border);margin:.25rem 0">
       <button class="nav-btn" id="dropdown-admin-btn" onclick="handleAdminMenu()">🔑 Admin</button>
     </div>
@@ -615,6 +647,122 @@
     </div>
     <div id="favs-content">
       <div class="loading-state">Cargando…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN PANEL ══════════ -->
+<div id="view-admin" class="view">
+  <div class="page-wrap">
+    <div class="sec-hdr" style="margin-bottom:2rem">
+      <h2 class="sec-title">Panel de administración</h2>
+    </div>
+
+    <!-- Stats rápidas -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem" id="admin-stats"></div>
+
+    <!-- Filtros de libros -->
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center">
+      <button class="admin-filter-btn active" data-filter="all" onclick="setAdminFilter('all',this)">Todos</button>
+      <button class="admin-filter-btn" data-filter="no-cover" onclick="setAdminFilter('no-cover',this)">Sin portada</button>
+      <button class="admin-filter-btn" data-filter="no-quotes" onclick="setAdminFilter('no-quotes',this)">Sin citas</button>
+      <input type="text" id="admin-search" placeholder="Buscar libro…" class="finput" style="flex:1;min-width:180px;max-width:300px" oninput="renderAdminList()">
+    </div>
+
+    <div id="admin-book-list" style="display:flex;flex-direction:column;gap:.6rem"></div>
+  </div>
+</div>
+
+<!-- ══════════ EDIT BOOK MODAL ══════════ -->
+<div id="edit-book-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:1rem;overflow-y:auto">
+  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:640px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);border-radius:16px 16px 0 0;z-index:1">
+      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.1rem">Editar libro</span>
+      <button onclick="closeEditBookModal()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--text-3)">✕</button>
+    </div>
+    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
+      <input type="hidden" id="eb-id">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div style="grid-column:1/-1">
+          <label class="flabel">Título *</label>
+          <input type="text" id="eb-titulo" class="finput">
+        </div>
+        <div>
+          <label class="flabel">Autor</label>
+          <input type="text" id="eb-autor" class="finput">
+        </div>
+        <div>
+          <label class="flabel">Valoración (1-5)</label>
+          <input type="number" id="eb-valoracion" min="1" max="5" class="finput">
+        </div>
+        <div>
+          <label class="flabel">Páginas totales</label>
+          <input type="number" id="eb-paginas" min="1" class="finput">
+        </div>
+        <div>
+          <label class="flabel">Fecha de lectura</label>
+          <input type="date" id="eb-fecha" class="finput">
+        </div>
+      </div>
+      <!-- Portada -->
+      <div>
+        <label class="flabel">Portada</label>
+        <div style="display:flex;gap:.75rem;align-items:flex-start;flex-wrap:wrap">
+          <div id="eb-cover-preview" style="flex-shrink:0">
+            <img id="eb-cover-img" style="width:70px;height:95px;object-fit:cover;border-radius:6px;box-shadow:var(--shadow);display:none">
+            <div id="eb-cover-placeholder" style="width:70px;height:95px;background:var(--surface-alt);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:1.5rem">📖</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:.5rem">
+            <label style="background:var(--surface-alt);border:1px dashed var(--border);border-radius:8px;padding:.5rem .75rem;cursor:pointer;font-size:.82rem;color:var(--text-2);text-align:center;display:block">
+              📷 Cambiar imagen
+              <input type="file" id="eb-portada-file" accept="image/*" style="display:none" onchange="previewEditCover(this)">
+            </label>
+            <input type="url" id="eb-portada-url" placeholder="O pega una URL" class="finput">
+          </div>
+        </div>
+      </div>
+      <!-- Reseña -->
+      <div>
+        <label class="flabel">Mi reseña</label>
+        <textarea id="eb-review" rows="4" class="finput" style="resize:vertical;line-height:1.55"></textarea>
+      </div>
+      <div id="eb-error" style="display:none;color:#c0392b;font-size:.82rem;padding:.5rem .75rem;background:#fef2f2;border-radius:8px"></div>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end">
+        <button onclick="closeEditBookModal()" style="background:none;border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem">Cancelar</button>
+        <button onclick="saveEditBook()" style="background:var(--accent);color:#fff;border:none;padding:.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ EDIT QUOTE MODAL ══════════ -->
+<div id="edit-quote-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem">
+  <div style="background:var(--surface);border-radius:16px;width:100%;max-width:580px;margin:auto;box-shadow:0 24px 60px rgba(0,0,0,0.18)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)">
+      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.1rem">Editar cita</span>
+      <button onclick="closeEditQuoteModal()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--text-3)">✕</button>
+    </div>
+    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1rem">
+      <input type="hidden" id="eq-id">
+      <div>
+        <label class="flabel">Cita *</label>
+        <textarea id="eq-cita" rows="5" class="finput" style="font-family:'Playfair Display',serif;font-style:italic;font-size:.97rem;resize:vertical;line-height:1.65"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:120px 1fr;gap:.75rem">
+        <div>
+          <label class="flabel">Página de la cita</label>
+          <input type="number" id="eq-pagina" min="1" class="finput">
+        </div>
+        <div>
+          <label class="flabel">Categorías (separadas por coma)</label>
+          <input type="text" id="eq-cats" class="finput">
+        </div>
+      </div>
+      <div id="eq-error" style="display:none;color:#c0392b;font-size:.82rem;padding:.5rem .75rem;background:#fef2f2;border-radius:8px"></div>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end">
+        <button onclick="closeEditQuoteModal()" style="background:none;border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.875rem">Cancelar</button>
+        <button onclick="saveEditQuote()" style="background:var(--accent);color:#fff;border:none;padding:.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:500;font-size:.875rem">Guardar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -804,6 +952,7 @@ function showView(name) {
   document.getElementById('view-' + name).classList.add('active')
   window.scrollTo({ top: 0 })
   if (name === 'favoritas') renderFavoritas()
+  if (name === 'admin') renderAdminPanel()
 }
 
 // ── Utils ──────────────────────────────────────────────
@@ -1108,6 +1257,7 @@ function modalQuoteHTML(q, book) {
             onclick="toggleFav('${esc(q.id)}', ${!q.favorita}, this, '${esc(book.id)}')">
             ${q.favorita ? '♥ Favorita' : '♡ Favorita'}
           </button>
+          ${isAdmin() ? `<button class="edit-btn" onclick="openEditQuote('${esc(q.id)}')">✏️</button>` : ''}
         </div>
       </div>
     </div>`
@@ -1198,16 +1348,11 @@ function isAdmin() { return !!adminToken }
 function checkAdminUI() {
   const show = isAdmin()
   const d = v => v ? 'block' : 'none'
-
-  const fab = document.getElementById('admin-fab')
-  if (fab) fab.style.display = d(show)
-
-  const addBtn = document.getElementById('admin-add-btn')
-  if (addBtn) addBtn.style.display = d(show)
-
+  ;['admin-fab','admin-add-btn','nav-admin','dropdown-panel-btn'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.style.display = d(show)
+  })
   const dropBtn = document.getElementById('dropdown-admin-btn')
   if (dropBtn) dropBtn.textContent = show ? '🔓 Cerrar sesión' : '🔑 Admin'
-
   const desktopBtn = document.getElementById('desktop-admin-btn')
   if (desktopBtn) desktopBtn.textContent = show ? '🔓' : '🔑'
 }
@@ -1356,6 +1501,186 @@ async function saveQuote() {
   } catch (err) {
     errEl.textContent = err.message; errEl.style.display = 'block'
   }
+}
+
+// ── Admin panel ────────────────────────────────────────
+let adminFilter = 'all'
+
+function renderAdminPanel() {
+  // Stats
+  const noCover  = library.filter(b => !b.portada).length
+  const noQuotes = library.filter(b => !b.quotes.length).length
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="admin-stat-card"><div class="stat-num">${library.length}</div><div class="stat-label">Libros en biblioteca</div></div>
+    <div class="admin-stat-card"><div class="stat-num">${allQuotes.length}</div><div class="stat-label">Citas totales</div></div>
+    <div class="admin-stat-card" style="border-color:${noCover?'#fbbf24':'var(--border)'}">
+      <div class="stat-num" style="color:${noCover?'#92400e':'var(--text)'}">${noCover}</div>
+      <div class="stat-label">Sin portada</div>
+    </div>
+    <div class="admin-stat-card" style="border-color:${noQuotes?'#fbbf24':'var(--border)'}">
+      <div class="stat-num" style="color:${noQuotes?'#92400e':'var(--text)'}">${noQuotes}</div>
+      <div class="stat-label">Sin citas</div>
+    </div>`
+  renderAdminList()
+}
+
+function setAdminFilter(f, btn) {
+  adminFilter = f
+  document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  renderAdminList()
+}
+
+function renderAdminList() {
+  const search = document.getElementById('admin-search')?.value.toLowerCase() || ''
+  let books = library.filter(b => {
+    if (adminFilter === 'no-cover'  && b.portada)      return false
+    if (adminFilter === 'no-quotes' && b.quotes.length) return false
+    if (search && !b.nombre.toLowerCase().includes(search) && !(b.author||'').toLowerCase().includes(search)) return false
+    return true
+  })
+  const list = document.getElementById('admin-book-list')
+  if (!books.length) { list.innerHTML = '<div class="empty-state">No hay libros con este filtro.</div>'; return }
+  list.innerHTML = books.map(b => {
+    const coverEl = b.portada
+      ? `<img src="${esc(b.portada)}" alt="" loading="lazy">`
+      : `<div class="no-cover-ph">📖</div>`
+    const coverBadge = b.portada
+      ? '<span class="admin-badge badge-ok">✓ Portada</span>'
+      : '<span class="admin-badge badge-warn">Sin portada</span>'
+    const quotesBadge = b.quotes.length
+      ? `<span class="admin-badge badge-ok">${b.quotes.length} citas</span>`
+      : '<span class="admin-badge badge-warn">Sin citas</span>'
+    return `
+      <div class="admin-book-row">
+        ${coverEl}
+        <div class="book-info">
+          <div class="book-name">${esc(b.nombre)}</div>
+          <div class="book-sub" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.2rem">
+            ${coverBadge}${quotesBadge}
+            ${b.rating ? `<span class="admin-badge" style="background:var(--accent-soft);color:var(--accent)">★ ${b.rating}</span>` : ''}
+          </div>
+        </div>
+        <div style="display:flex;gap:.4rem;flex-shrink:0">
+          <button class="edit-btn" onclick="openEditBook('${esc(b.id)}')">✏️ Editar</button>
+          <button class="edit-btn" onclick="openBook('${esc(b.id)}')">Ver citas</button>
+        </div>
+      </div>`
+  }).join('')
+}
+
+// ── Edit Book ──────────────────────────────────────────
+function openEditBook(id) {
+  const b = library.find(x => x.id === id)
+  if (!b) return
+  document.getElementById('eb-id').value        = b.id
+  document.getElementById('eb-titulo').value    = b.nombre || ''
+  document.getElementById('eb-autor').value     = b.author || ''
+  document.getElementById('eb-valoracion').value= b.rating || ''
+  document.getElementById('eb-paginas').value   = b.numeroPaginas || ''
+  document.getElementById('eb-fecha').value     = b.dateRead || ''
+  document.getElementById('eb-portada-url').value = (b.portada && !b.portada.startsWith('data:')) ? b.portada : ''
+  document.getElementById('eb-review').value    = b.myReview || ''
+
+  const img = document.getElementById('eb-cover-img')
+  const ph  = document.getElementById('eb-cover-placeholder')
+  if (b.portada) {
+    img.src = b.portada; img.style.display = 'block'; ph.style.display = 'none'
+  } else {
+    img.style.display = 'none'; ph.style.display = 'flex'
+  }
+  document.getElementById('eb-error').style.display = 'none'
+  document.getElementById('edit-book-modal').style.display = 'flex'
+}
+
+function closeEditBookModal() {
+  document.getElementById('edit-book-modal').style.display = 'none'
+}
+
+function previewEditCover(input) {
+  const file = input.files[0]; if (!file) return
+  const reader = new FileReader()
+  reader.onload = e => {
+    const img = document.getElementById('eb-cover-img')
+    img.src = e.target.result; img.style.display = 'block'
+    document.getElementById('eb-cover-placeholder').style.display = 'none'
+    document.getElementById('eb-portada-url').value = ''
+  }
+  reader.readAsDataURL(file)
+}
+
+async function saveEditBook() {
+  const id     = document.getElementById('eb-id').value
+  const titulo = document.getElementById('eb-titulo').value.trim()
+  const errEl  = document.getElementById('eb-error')
+  errEl.style.display = 'none'
+  if (!titulo) { errEl.textContent = 'El título es obligatorio'; errEl.style.display = 'block'; return }
+
+  const img = document.getElementById('eb-cover-img')
+  const portada_url = img.src?.startsWith('data:') ? img.src
+    : document.getElementById('eb-portada-url').value.trim() || null
+
+  try {
+    const r = await fetch(`/api/books/${id}`, {
+      method: 'PUT', headers: authHeader(),
+      body: JSON.stringify({
+        titulo,
+        autor:          document.getElementById('eb-autor').value.trim() || null,
+        portada_url,
+        valoracion:     parseInt(document.getElementById('eb-valoracion').value) || null,
+        numero_paginas: parseInt(document.getElementById('eb-paginas').value) || null,
+        fecha_lectura:  document.getElementById('eb-fecha').value || null,
+        my_review:      document.getElementById('eb-review').value.trim() || null,
+        estado: 'Leído',
+      }),
+    })
+    if (!r.ok) throw new Error((await r.json()).error)
+    closeEditBookModal()
+    showToast('✅ Libro actualizado')
+    library = await fetchLibrary()
+    allQuotes = library.flatMap(b => b.quotes)
+    renderCarousel(); renderWeekly(); renderBiblioteca(); buildFilters(); renderAdminPanel()
+  } catch (err) { errEl.textContent = err.message; errEl.style.display = 'block' }
+}
+
+// ── Edit Quote ─────────────────────────────────────────
+function openEditQuote(id) {
+  const q = allQuotes.find(x => x.id === id); if (!q) return
+  document.getElementById('eq-id').value     = q.id
+  document.getElementById('eq-cita').value   = q.cita || ''
+  document.getElementById('eq-pagina').value = q.pagina || ''
+  document.getElementById('eq-cats').value   = (q.categorias || []).join(', ')
+  document.getElementById('eq-error').style.display = 'none'
+  document.getElementById('edit-quote-modal').style.display = 'flex'
+}
+
+function closeEditQuoteModal() {
+  document.getElementById('edit-quote-modal').style.display = 'none'
+}
+
+async function saveEditQuote() {
+  const id   = document.getElementById('eq-id').value
+  const cita = document.getElementById('eq-cita').value.trim()
+  const errEl = document.getElementById('eq-error')
+  errEl.style.display = 'none'
+  if (!cita) { errEl.textContent = 'La cita no puede estar vacía'; errEl.style.display = 'block'; return }
+  try {
+    const r = await fetch(`/api/quotes/${id}`, {
+      method: 'PUT', headers: authHeader(),
+      body: JSON.stringify({
+        cita,
+        pagina:     parseInt(document.getElementById('eq-pagina').value) || null,
+        categorias: document.getElementById('eq-cats').value.split(',').map(s => s.trim()).filter(Boolean),
+        favorita:   allQuotes.find(q => q.id === id)?.favorita || false,
+      }),
+    })
+    if (!r.ok) throw new Error((await r.json()).error)
+    closeEditQuoteModal()
+    showToast('✅ Cita actualizada')
+    library = await fetchLibrary()
+    allQuotes = library.flatMap(b => b.quotes)
+    renderAdminPanel()
+  } catch (err) { errEl.textContent = err.message; errEl.style.display = 'block' }
 }
 
 function previewCover(input) {
