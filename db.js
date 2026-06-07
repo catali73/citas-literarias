@@ -91,7 +91,10 @@ export async function getLibrary() {
 
 export async function getRandomQuotes(n = 3) {
   const { rows } = await pool.query(`
-    SELECT q.*, b.titulo AS book_nombre, b.portada_url AS book_portada
+    SELECT q.*,
+           b.titulo     AS book_nombre,
+           b.autor      AS book_autor,
+           b.portada_url AS book_portada
     FROM quotes q
     JOIN books b ON b.id = q.book_id
     ORDER BY RANDOM()
@@ -99,15 +102,17 @@ export async function getRandomQuotes(n = 3) {
   `, [n])
 
   return rows.map(q => ({
-    id:           q.id,
-    cita:         q.cita,
-    autor:        q.autor || '',
-    obra:         q.book_nombre,
-    pagina:       q.pagina,
-    categorias:   q.categorias,
-    favorita:     q.favorita,
-    bookIds:      [q.book_id],
-    bookNombre:   q.book_nombre,
-    bookPortada:  q.book_portada,
+    id:          q.id,
+    cita:        q.cita,
+    autor:       q.book_autor || '',
+    obra:        q.book_nombre,
+    pagina:      q.pagina,
+    categorias:  q.categorias,
+    favorita:    q.favorita,
+    bookIds:     [q.book_id],
+    bookNombre:  q.book_nombre,
+    bookPortada: q.book_portada
+      ? (q.book_portada.startsWith('data:') ? `/api/covers/${q.book_id}` : q.book_portada)
+      : null,
   }))
 }
