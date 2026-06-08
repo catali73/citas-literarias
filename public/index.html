@@ -892,37 +892,35 @@ function toggleAddMenu() { const m=document.getElementById('add-menu'); m.style.
 function closeAddMenu()  { document.getElementById('add-menu').style.display='none' }
 document.addEventListener('click', e => { if(!e.target.closest('#admin-add-wrap')) closeAddMenu() })
 function openBookForm(id) {
-  const b = id ? library.find(x=>x.id===id) : null
-  const set = (elId, val) => {
-    const el = document.getElementById(elId)
-    if (!el) { console.error('elemento no encontrado:', elId); return }
-    el.value = val || ''
+  const b = id ? (library.find(function(x){ return x.id===id }) || null) : null
+  function v(val) { return val != null ? val : '' }
+  function setVal(elId, val) {
+    var el = document.getElementById(elId)
+    if (el) el.value = v(val)
   }
-  set('bf-id',         b?.id)
-  set('bf-titulo',     b?.nombre)
-  set('bf-autor',      bookAuthor(b || {}))
-  set('bf-valoracion', b?.rating)
-  set('bf-paginas',    b?.numeroPaginas)
-  set('bf-fecha',      b?.dateRead ? b.dateRead.slice(0,10) : '')
-  set('bf-portada-url', (b?.portada && !b.portada.startsWith('/api/covers/')) ? b.portada : '')
-  set('bf-review',     b?.myReview)
+  setVal('bf-id',         b ? b.id         : null)
+  setVal('bf-titulo',     b ? b.nombre      : null)
+  setVal('bf-autor',      bookAuthor(b || {}))
+  setVal('bf-valoracion', b ? b.rating      : null)
+  setVal('bf-paginas',    b ? b.numeroPaginas : null)
+  setVal('bf-fecha',      b && b.dateRead ? b.dateRead.slice(0,10) : null)
+  setVal('bf-portada-url', b && b.portada && b.portada.indexOf('/api/covers/')===-1 ? b.portada : null)
+  setVal('bf-review',     b ? b.myReview   : null)
 
-  const img = document.getElementById('bf-cover-img')
-  const ph  = document.getElementById('bf-cover-ph')
-  if (img) img.style.display = b?.portada ? 'block' : 'none'
-  if (img && b?.portada) img.src = b.portada
-  if (ph)  ph.style.display  = b?.portada ? 'none'  : 'flex'
+  var img = document.getElementById('bf-cover-img')
+  var ph  = document.getElementById('bf-cover-ph')
+  var portada = b ? b.portada : null
+  if (img) { img.style.display = portada ? 'block' : 'none'; if (portada) img.src = portada }
+  if (ph)  { ph.style.display  = portada ? 'none'  : 'flex' }
 
-  const titleEl = document.getElementById('book-form-title')
+  var titleEl = document.getElementById('book-form-title')
   if (titleEl) titleEl.textContent = b ? 'Editar libro' : 'Nuevo libro'
 
-  const errEl = document.getElementById('bf-error')
+  var errEl = document.getElementById('bf-error')
   if (errEl) errEl.style.display = 'none'
 
-  // Abrir modal
-  const modal = document.getElementById('book-form-modal')
+  var modal = document.getElementById('book-form-modal')
   if (modal) modal.style.display = 'flex'
-  else console.error('book-form-modal no encontrado')
 }
 function closeBookForm() { document.getElementById('book-form-modal').style.display = 'none' }
 
