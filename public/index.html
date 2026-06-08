@@ -892,22 +892,28 @@ function toggleAddMenu() { const m=document.getElementById('add-menu'); m.style.
 function closeAddMenu()  { document.getElementById('add-menu').style.display='none' }
 document.addEventListener('click', e => { if(!e.target.closest('#admin-add-wrap')) closeAddMenu() })
 function openBookForm(id) {
-  const b = id ? library.find(x=>x.id===id) : null
-  document.getElementById('book-form-title').textContent = b ? 'Editar libro' : 'Nuevo libro'
-  document.getElementById('bf-id').value = b?.id||''
-  document.getElementById('bf-titulo').value = b?.nombre||''
-  document.getElementById('bf-autor').value = bookAuthor(b||{})||''
-  document.getElementById('bf-valoracion').value = b?.rating||''
-  document.getElementById('bf-paginas').value = b?.numeroPaginas||''
-  document.getElementById('bf-fecha').value = b?.dateRead||''
-  document.getElementById('bf-portada-url').value = (b?.portada&&!b.portada.startsWith('data:'))?b.portada:''
-  document.getElementById('bf-review').value = b?.myReview||''
-  const img=document.getElementById('bf-cover-img'), ph=document.getElementById('bf-cover-ph')
-  if (b?.portada) { img.src=b.portada; img.style.display='block'; ph.style.display='none' }
-  else { img.style.display='none'; ph.style.display='flex' }
-  document.getElementById('bf-error').style.display='none'
-  document.getElementById('book-form-modal').classList.add('open')
-  // No cerramos el modal del libro — al guardar lo reabrimos actualizado
+  try {
+    const b = id ? library.find(x=>x.id===id) : null
+    document.getElementById('book-form-title').textContent = b ? 'Editar libro' : 'Nuevo libro'
+    document.getElementById('bf-id').value        = b?.id || ''
+    document.getElementById('bf-titulo').value    = b?.nombre || ''
+    document.getElementById('bf-autor').value     = bookAuthor(b || {}) || ''
+    document.getElementById('bf-valoracion').value= b?.rating || ''
+    document.getElementById('bf-paginas').value   = b?.numeroPaginas || ''
+    // dateRead puede venir como "2026-05-30T00:00:00.000Z" — recortamos a YYYY-MM-DD
+    document.getElementById('bf-fecha').value     = b?.dateRead ? b.dateRead.slice(0,10) : ''
+    document.getElementById('bf-portada-url').value = (b?.portada && !b.portada.startsWith('/api/covers/')) ? b.portada : ''
+    document.getElementById('bf-review').value    = b?.myReview || ''
+    const img = document.getElementById('bf-cover-img')
+    const ph  = document.getElementById('bf-cover-ph')
+    if (b?.portada) { img.src = b.portada; img.style.display='block'; ph.style.display='none' }
+    else            { img.style.display='none'; ph.style.display='flex' }
+    document.getElementById('bf-error').style.display = 'none'
+    document.getElementById('book-form-modal').classList.add('open')
+  } catch(err) {
+    console.error('openBookForm error:', err)
+    showToast('Error al abrir formulario: ' + err.message)
+  }
 }
 function closeBookForm() { document.getElementById('book-form-modal').classList.remove('open') }
 
