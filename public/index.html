@@ -395,9 +395,15 @@
     <div class="form-body">
       <input type="hidden" id="qf-id">
       <input type="hidden" id="qf-book-id">
-      <div id="qf-book-select-wrap">
+      <div>
         <label class="flabel">Libro</label>
-        <select id="qf-book"></select>
+        <div id="qf-book-select-wrap">
+          <select id="qf-book"></select>
+        </div>
+        <button id="qf-change-book-btn" type="button" onclick="changeQuoteBook()"
+          style="display:none;margin-top:.4rem;background:none;border:none;color:var(--text-2);font-size:.78rem;cursor:pointer;text-decoration:underline;padding:0">
+          Cambiar libro
+        </button>
       </div>
       <div><label class="flabel">Cita *</label><textarea id="qf-cita" rows="5" style="font-family:'Playfair Display',serif;font-style:italic;font-size:.97rem;resize:vertical;line-height:1.65"></textarea></div>
       <div class="form-row form-row-2">
@@ -448,6 +454,7 @@ let library = []
 let allQuotes = []
 let adminToken = localStorage.getItem('noray-admin-token') || null
 let adminFilter = 'all'
+let lastBookId = null // recuerda el último libro usado en el formulario de citas
 
 // ── Init ──
 async function init() {
@@ -883,7 +890,8 @@ function renderAdminList() {
         </div>
       </div>
       <div style="display:flex;gap:.4rem;flex-shrink:0">
-        <button class="edit-btn" onclick="openBookForm('${esc(b.id)}')">✏️ Editar</button>
+        <button class="edit-btn" onclick="openBook('${esc(b.id)}')">📖 Ver / Citas</button>
+        <button class="edit-btn" onclick="openBookForm('${esc(b.id)}')">✏️</button>
         <button class="del-btn" onclick="deleteBook('${esc(b.id)}','${esc(b.nombre)}')">🗑</button>
       </div>
     </div>`).join('')
@@ -956,38 +964,73 @@ async function deleteBook(id, nombre) {
 // ── Quote form ──
 function openQuoteForm(quoteId, bookId) {
   const q = quoteId ? allQuotes.find(x=>x.id===quoteId) : null
+  // Si no viene bookId, usar el último libro recordado
+  const effectiveBookId = bookId || (q ? q.book_id : null) || lastBookId || null
   document.getElementById('quote-form-title').textContent = q ? 'Editar cita' : 'Nueva cita'
-  document.getElementById('qf-id').value = q?.id||''
-  document.getElementById('qf-book-id').value = bookId||q?.book_id||''
-  document.getElementById('qf-cita').value = q?.cita||''
-  document.getElementById('qf-pagina').value = q?.pagina||''
-  document.getElementById('qf-cats').value = (q?.categorias||[]).join(', ')
-  // Populate book select
-  const sel=document.getElementById('qf-book')
-  const wrap=document.getElementById('qf-book-select-wrap')
-  if (bookId) { wrap.style.display='none'; sel.innerHTML=`<option value="${esc(bookId)}">${esc(library.find(b=>b.id===bookId)?.nombre||bookId)}</option>` }
-  else { wrap.style.display='block'; sel.innerHTML=library.map(b=>`<option value="${esc(b.id)}"${q?.book_id===b.id?' selected':''}>${esc(b.nombre)}</option>`).join('') }
-  document.getElementById('qf-error').style.display='none'
-  document.getElementById('quote-form-modal').classList.add('open')
+  document.getElementById('qf-id').value = q ? q.id : ''
+  document.getElementById('qf-book-id').value = effectiveBookId || ''
+  document.getElementById('qf-cita').value = q ? q.cita : ''
+  document.getElementById('qf-pagina').value = q ? (q.pagina || '') : ''
+  document.getElementById('qf-cats').value = q ? (q.categorias || []).join(', ') : ''
+  // Selector de libro
+  const sel = document.getElementById('qf-book')
+  const wrap = document.getElementById('qf-book-select-wrap')
+  if (effectiveBookId) {
+    const bookName = (library.find(b=>b.id===effectiveBookId) || {}).nombre || effectiveBookId
+    wrap.style.display = 'none'
+    sel.innerHTML = `<option value="${esc(effectiveBookId)}">${esc(bookName)}</option>`
+    // Botón para cambiar de libro
+    document.getElementById('qf-change-book-btn').style.display = 'inline-block'
+  } else {
+    wrap.style.display = 'block'
+    sel.innerHTML = library.map(b=>`<option value="${esc(b.id)}">${esc(b.nombre)}</option>`).join('')
+    document.getElementById('qf-change-book-btn').style.display = 'none'
+  }
+  document.getElementById('qf-error').style.display = 'none'
+  document.getElementById('quote-form-modal').style.display = 'flex'
 }
-function closeQuoteForm() { document.getElementById('quote-form-modal').classList.remove('open') }
+function changeQuoteBook() {
+  const wrap = document.getElementById('qf-book-select-wrap')
+  const sel = document.getElementById('qf-book')
+  wrap.style.display = 'block'
+  sel.innerHTML = library.map(b=>`<option value="${esc(b.id)}">${esc(b.nombre)}</option>`).join('')
+  document.getElementById('qf-change-book-btn').style.display = 'none'
+  document.getElementById('qf-book-id').value = ''
+}
+function closeQuoteForm() { document.getElementById('quote-form-modal').style.display = 'none' }
 
 async function saveQuote() {
-  const id=document.getElementById('qf-id').value, bookId=document.getElementById('qf-book-id').value||document.getElementById('qf-book').value
-  const cita=document.getElementById('qf-cita').value.trim()
-  const errEl=document.getElementById('qf-error'); errEl.style.display='none'
-  if(!cita){errEl.textContent='La cita no puede estar vacía';errEl.style.display='block';return}
-  if(!bookId){errEl.textContent='Selecciona un libro';errEl.style.display='block';return}
-  const cats=document.getElementById('qf-cats').value.split(',').map(s=>s.trim()).filter(Boolean)
-  const body={cita,pagina:parseInt(document.getElementById('qf-pagina').value)||null,categorias:cats,favorita:allQuotes.find(q=>q.id===id)?.favorita||false}
+  const id = document.getElementById('qf-id').value
+  const bookId = document.getElementById('qf-book-id').value || document.getElementById('qf-book').value
+  const cita = document.getElementById('qf-cita').value.trim()
+  const errEl = document.getElementById('qf-error'); errEl.style.display='none'
+  if (!cita)   { errEl.textContent='La cita no puede estar vacía'; errEl.style.display='block'; return }
+  if (!bookId) { errEl.textContent='Selecciona un libro';          errEl.style.display='block'; return }
+  const cats = document.getElementById('qf-cats').value.split(',').map(s=>s.trim()).filter(Boolean)
+  const favQ = allQuotes.find(q=>q.id===id)
+  const body = { cita, pagina: parseInt(document.getElementById('qf-pagina').value)||null, categorias: cats, favorita: favQ ? favQ.favorita : false }
   try {
-    const url=id?`/api/quotes/${id}`:`/api/books/${bookId}/quotes`, method=id?'PUT':'POST'
-    const r=await fetch(url,{method,headers:authHeader(),body:JSON.stringify(body)})
-    if(!r.ok) throw new Error((await r.json()).error)
-    closeQuoteForm(); showToast(id?'✅ Cita actualizada':'✅ Cita guardada'); await reload()
-    // Reabrir modal del libro si estaba abierto
-    if(bookId&&document.getElementById('modal').classList.contains('open')) openBook(bookId)
-  } catch(err){errEl.textContent=err.message;errEl.style.display='block'}
+    const url = id ? `/api/quotes/${id}` : `/api/books/${bookId}/quotes`
+    const r = await fetch(url, { method: id?'PUT':'POST', headers: authHeader(), body: JSON.stringify(body) })
+    if (!r.ok) throw new Error((await r.json()).error)
+
+    lastBookId = bookId  // recordar para la siguiente cita
+    await reload()
+    showToast(id ? '✅ Cita actualizada' : '✅ Cita guardada — añade otra ↓')
+
+    if (id) {
+      // Edición: cerrar formulario
+      closeQuoteForm()
+      if (document.getElementById('modal').classList.contains('open')) openBook(bookId)
+    } else {
+      // Nueva cita: limpiar solo el texto para añadir otra del mismo libro
+      document.getElementById('qf-cita').value = ''
+      document.getElementById('qf-pagina').value = ''
+      document.getElementById('qf-cita').focus()
+      // Actualizar modal de libro si estaba abierto
+      if (document.getElementById('modal').classList.contains('open')) openBook(bookId)
+    }
+  } catch(err) { errEl.textContent=err.message; errEl.style.display='block' }
 }
 
 async function deleteQuote(quoteId, bookId) {
