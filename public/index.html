@@ -509,7 +509,7 @@ function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function starsHTML(n) { if (!n) return ''; const r=Math.round(n); return '★'.repeat(r)+'☆'.repeat(5-r) }
 function strColor(str,l=42) { let h=0; for(const c of str) h=(h*31+c.charCodeAt(0))&0xffff; return `hsl(${h%360},38%,${l}%)` }
 function initials(str) { return (str||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() }
-function bookAuthor(b) { return b.author || b.quotes[0]?.autor || '' }
+function bookAuthor(b) { return (b && b.author) || (b && b.quotes && b.quotes[0] && b.quotes[0].autor) || '' }
 // Solo cuenta como portada guardada si viene de nuestra BD
 function hasLocalCover(b) {
   return !!(b.portada?.startsWith('/api/covers/'))
