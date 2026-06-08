@@ -272,6 +272,8 @@ app.put('/api/books/:id', requireAdmin, async (req, res) => {
        numero_paginas, my_review, req.params.id]
     )
     if (!rows.length) return res.status(404).json({ error: 'Libro no encontrado' })
+    // Invalidar caché de portada para que se sirva la nueva imagen
+    coverCache.delete(req.params.id)
     res.json(rows[0])
   } catch (err) { res.status(500).json({ error: err.message }) }
 })
