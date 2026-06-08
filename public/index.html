@@ -353,9 +353,18 @@
     </div>
     <div class="form-body">
       <input type="hidden" id="bf-id">
+      <!-- Datalists para autocomplete -->
+      <datalist id="dl-autores"></datalist>
+      <datalist id="dl-publishers"></datalist>
+      <datalist id="dl-bindings"></datalist>
+
       <div class="form-row form-row-2">
         <div><label class="flabel">Título *</label><input type="text" id="bf-titulo"></div>
-        <div><label class="flabel">Autor</label><input type="text" id="bf-autor"></div>
+        <div><label class="flabel">Autor</label><input type="text" id="bf-autor" list="dl-autores" autocomplete="off"></div>
+      </div>
+      <div class="form-row form-row-2">
+        <div><label class="flabel">Editorial (Publisher)</label><input type="text" id="bf-publisher" list="dl-publishers" autocomplete="off"></div>
+        <div><label class="flabel">Formato (Binding)</label><input type="text" id="bf-binding" list="dl-bindings" autocomplete="off"></div>
       </div>
       <div class="form-row form-row-3">
         <div><label class="flabel">Valoración (1-5)</label><input type="number" id="bf-valoracion" min="1" max="5"></div>
@@ -915,6 +924,16 @@ function renderAdminList() {
 }
 
 // ── Book form ──
+function fillDatalist(id, values) {
+  var dl = document.getElementById(id)
+  if (!dl) return
+  var unique = []
+  var seen = {}
+  values.forEach(function(v) { if (v && !seen[v]) { seen[v]=1; unique.push(v) } })
+  unique.sort()
+  dl.innerHTML = unique.map(function(v) { return '<option value="' + esc(v) + '">' }).join('')
+}
+
 function toggleAddMenu() { const m=document.getElementById('add-menu'); m.style.display=m.style.display==='none'?'block':'none' }
 function closeAddMenu()  { document.getElementById('add-menu').style.display='none' }
 document.addEventListener('click', e => { if(!e.target.closest('#admin-add-wrap')) closeAddMenu() })
@@ -928,11 +947,17 @@ function openBookForm(id) {
   setVal('bf-id',         b ? b.id         : null)
   setVal('bf-titulo',     b ? b.nombre      : null)
   setVal('bf-autor',      bookAuthor(b || {}))
+  setVal('bf-publisher',  b ? b.publisher   : null)
+  setVal('bf-binding',    b ? b.binding     : null)
   setVal('bf-valoracion', b ? b.rating      : null)
   setVal('bf-paginas',    b ? b.numeroPaginas : null)
   setVal('bf-fecha',      b && b.dateRead ? b.dateRead.slice(0,10) : null)
   setVal('bf-portada-url', b && b.portada && b.portada.indexOf('/api/covers/')===-1 ? b.portada : null)
   setVal('bf-review',     b ? b.myReview   : null)
+  // Poblar datalists con valores únicos de la biblioteca
+  fillDatalist('dl-autores',    library.map(function(x){ return bookAuthor(x) }))
+  fillDatalist('dl-publishers', library.map(function(x){ return x.publisher }))
+  fillDatalist('dl-bindings',   library.map(function(x){ return x.binding }))
 
   var img = document.getElementById('bf-cover-img')
   var ph  = document.getElementById('bf-cover-ph')
@@ -963,7 +988,18 @@ async function saveBook() {
   const uploadedData = document.getElementById('bf-portada-data').value
   const urlInput = document.getElementById('bf-portada-url').value.trim()
   const portada_url = uploadedData || urlInput || (existingBook ? existingBook.portada : null) || null
-  const body={titulo,autor:document.getElementById('bf-autor').value.trim()||null,portada_url,valoracion:parseInt(document.getElementById('bf-valoracion').value)||null,numero_paginas:parseInt(document.getElementById('bf-paginas').value)||null,fecha_lectura:document.getElementById('bf-fecha').value||null,my_review:document.getElementById('bf-review').value.trim()||null,estado:'Leído'}
+  const body={
+    titulo,
+    autor:          document.getElementById('bf-autor').value.trim()||null,
+    publisher:      document.getElementById('bf-publisher').value.trim()||null,
+    binding:        document.getElementById('bf-binding').value.trim()||null,
+    portada_url,
+    valoracion:     parseInt(document.getElementById('bf-valoracion').value)||null,
+    numero_paginas: parseInt(document.getElementById('bf-paginas').value)||null,
+    fecha_lectura:  document.getElementById('bf-fecha').value||null,
+    my_review:      document.getElementById('bf-review').value.trim()||null,
+    estado:'Leído'
+  }
   try {
     const url=id?`/api/books/${id}`:'/api/books', method=id?'PUT':'POST'
     const r=await fetch(url,{method,headers:authHeader(),body:JSON.stringify(body)})
