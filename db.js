@@ -28,6 +28,8 @@ export async function initDB() {
     -- Añadir columnas nuevas si la tabla ya existía
     ALTER TABLE books ADD COLUMN IF NOT EXISTS numero_paginas INTEGER;
     ALTER TABLE books ADD COLUMN IF NOT EXISTS my_review TEXT;
+    ALTER TABLE books ADD COLUMN IF NOT EXISTS publisher TEXT;
+    ALTER TABLE books ADD COLUMN IF NOT EXISTS binding TEXT;
 
     CREATE TABLE IF NOT EXISTS quotes (
       id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),

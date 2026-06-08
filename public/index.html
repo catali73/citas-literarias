@@ -353,11 +353,6 @@
     </div>
     <div class="form-body">
       <input type="hidden" id="bf-id">
-      <!-- Datalists para autocomplete -->
-      <datalist id="dl-autores"></datalist>
-      <datalist id="dl-publishers"></datalist>
-      <datalist id="dl-bindings"></datalist>
-
       <div class="form-row form-row-2">
         <div><label class="flabel">Título *</label><input type="text" id="bf-titulo"></div>
         <div><label class="flabel">Autor</label><input type="text" id="bf-autor" list="dl-autores" autocomplete="off"></div>
@@ -455,6 +450,11 @@
     </div>
   </div>
 </div>
+
+<!-- Datalists globales para autocomplete (fuera de modales ocultos) -->
+<datalist id="dl-autores"></datalist>
+<datalist id="dl-publishers"></datalist>
+<datalist id="dl-bindings"></datalist>
 
 <div id="toast"></div>
 
