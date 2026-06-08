@@ -60,6 +60,8 @@ export async function getLibrary() {
            b.fecha_lectura,
            b.numero_paginas,
            b.my_review,
+           b.publisher,
+           b.binding,
            b.notion_id,
            b.created_at,
            -- Nunca traer el base64 completo: convertir en SQL
@@ -96,6 +98,8 @@ export async function getLibrary() {
     dateRead:      b.fecha_lectura,
     numeroPaginas: b.numero_paginas,
     myReview:      b.my_review,
+    publisher:     b.publisher,
+    binding:       b.binding,
     quotes:        b.quotes || [],
   }))
 }

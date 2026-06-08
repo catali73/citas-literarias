@@ -757,6 +757,8 @@ function renderBookDetail(b) {
           ${b.rating ? `<span class="mstars">${starsHTML(b.rating)}</span>` : ''}
           ${b.dateRead ? `<span>📅 ${new Date(b.dateRead).toLocaleDateString('es-ES',{year:'numeric',month:'long'})}</span>` : ''}
           ${b.numeroPaginas ? `<span>📄 ${b.numeroPaginas} págs.</span>` : ''}
+          ${b.publisher ? `<span>🏠 ${esc(b.publisher)}</span>` : ''}
+          ${b.binding ? `<span>📎 ${esc(b.binding)}</span>` : ''}
           <span>💬 ${b.quotes.length} cita${b.quotes.length!==1?'s':''}</span>
         </div>
         ${b.myReview ? `<div class="modal-book-review">${esc(b.myReview)}</div>` : ''}

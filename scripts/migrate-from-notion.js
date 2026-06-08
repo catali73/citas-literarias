@@ -100,21 +100,38 @@ async function run() {
     const titulo = richText(p.properties.Nombre ?? p.properties.Título ?? p.properties.Name)
     if (!titulo) { booksSkipped++; continue }
 
-    const autor = richText(p.properties.Author ?? p.properties.Autor ?? p.properties.Autores)
-    const valoracion = p.properties['My Rating']?.number ?? p.properties['Valoración']?.number ?? null
-    const estado = p.properties['Exclusive Shelf']?.select?.name ?? p.properties.Estado?.select?.name ?? 'Leído'
-    const fecha = p.properties['Date Read']?.date?.start ?? p.properties['Fecha de lectura']?.date?.start ?? null
-    const portada = fileUrl(p.properties.Portada ?? p.properties.Cover)
-    const notionId = p.id
+    const autor        = richText(p.properties.Author ?? p.properties.Autor ?? p.properties.Autores)
+    const valoracion   = p.properties['My Rating']?.number ?? p.properties['Valoración']?.number ?? null
+    const estado       = p.properties['Exclusive Shelf']?.select?.name ?? p.properties.Estado?.select?.name ?? 'Leído'
+    const fecha        = p.properties['Date Read']?.date?.start ?? p.properties['Fecha de lectura']?.date?.start ?? null
+    const portada      = fileUrl(p.properties.Portada ?? p.properties.Cover)
+    const myReview     = richText(p.properties['My Review'] ?? p.properties['Reseña'] ?? p.properties['Review'])
+    const numPaginas   = p.properties['Number of Pages']?.number ?? p.properties['Número de páginas']?.number ?? null
+    const publisher    = richText(p.properties.Publisher ?? p.properties.Editorial)
+    const binding      = p.properties.Binding?.select?.name ?? p.properties['Tipo']?.select?.name ?? null
+    const notionId     = p.id
+
+    // Asegurar columnas extra existen (ejecución idempotente)
+    await pool.query(`
+      ALTER TABLE books ADD COLUMN IF NOT EXISTS my_review TEXT;
+      ALTER TABLE books ADD COLUMN IF NOT EXISTS numero_paginas INTEGER;
+      ALTER TABLE books ADD COLUMN IF NOT EXISTS publisher TEXT;
+      ALTER TABLE books ADD COLUMN IF NOT EXISTS binding TEXT;
+    `).catch(() => {})
 
     const { rows } = await pool.query(
-      `INSERT INTO books (titulo, autor, portada_url, valoracion, estado, fecha_lectura, notion_id)
-       VALUES ($1,$2,$3,$4,$5,$6,$7)
+      `INSERT INTO books (titulo, autor, portada_url, valoracion, estado, fecha_lectura,
+                          my_review, numero_paginas, publisher, binding, notion_id)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
        ON CONFLICT (notion_id) DO UPDATE SET
          titulo=EXCLUDED.titulo, autor=EXCLUDED.autor, valoracion=EXCLUDED.valoracion,
+         estado=EXCLUDED.estado, fecha_lectura=EXCLUDED.fecha_lectura,
+         my_review=EXCLUDED.my_review, numero_paginas=EXCLUDED.numero_paginas,
+         publisher=EXCLUDED.publisher, binding=EXCLUDED.binding,
          updated_at=NOW()
        RETURNING id`,
-      [titulo, autor || null, portada, valoracion, estado, fecha, notionId]
+      [titulo, autor || null, portada, valoracion, estado, fecha,
+       myReview || null, numPaginas, publisher || null, binding, notionId]
     )
     notionIdToDbId.set(notionId, rows[0].id)
     booksInserted++
