@@ -615,6 +615,7 @@ async function loadTrio() {
   try {
     const quotes = await fetch('/api/random').then(r=>r.json())
     grid.innerHTML = quotes.length ? quotes.map(q => quoteCardHTML(q)).join('') : '<div class="empty-state">No hay citas.</div>'
+    if (quotes.length) requestAnimationFrame(checkQuoteTruncation)
   } catch(err) {
     grid.innerHTML = '<div class="empty-state">Error al cargar citas.</div>'
   } finally {
@@ -628,7 +629,10 @@ function quoteCardHTML(q) {
   return `
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.75rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:1rem;scroll-snap-align:start">
       <div style="font-family:'Playfair Display',serif;font-size:3rem;line-height:1;color:var(--accent);opacity:.2;margin-bottom:-.5rem">&ldquo;</div>
-      <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;line-height:1.65;color:var(--text);flex:1">${esc(q.cita)}</p>
+      <div style="position:relative">
+        <p id="qc-${esc(q.id)}" style="font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;line-height:1.65;color:var(--text);display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden">${esc(q.cita)}</p>
+        <button onclick="expandQuote('qc-${esc(q.id)}',this)" style="margin-top:.3rem;background:none;border:none;color:var(--accent);font-size:.8rem;cursor:pointer;padding:0;font-family:'Inter',sans-serif">+ Ver más</button>
+      </div>
       ${tags?`<div style="display:flex;flex-wrap:wrap;gap:.3rem">${tags}</div>`:''}
       <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--border);padding-top:.85rem;gap:.5rem">
         <div>
@@ -641,6 +645,26 @@ function quoteCardHTML(q) {
         </div>
       </div>
     </div>`
+}
+
+function expandQuote(pId, btn) {
+  var p = document.getElementById(pId)
+  if (!p) return
+  p.style.webkitLineClamp = 'unset'
+  p.style.webkitBoxOrient = 'unset'
+  p.style.display = 'block'
+  p.style.overflow = 'visible'
+  btn.style.display = 'none'
+}
+
+// Ocultar botón "Ver más" si la cita no está truncada
+function checkQuoteTruncation() {
+  document.querySelectorAll('#trio-grid p[id^="qc-"]').forEach(function(p) {
+    var btn = p.nextElementSibling
+    if (!btn) return
+    // Si scrollHeight <= clientHeight la cita cabe entera → ocultar botón
+    if (p.scrollHeight <= p.clientHeight + 2) btn.style.display = 'none'
+  })
 }
 
 function shareQuote(id, cita, autor, obra) {
