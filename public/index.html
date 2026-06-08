@@ -370,8 +370,9 @@
             <div id="bf-cover-ph" style="width:65px;height:90px;background:var(--surface-alt);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:1.5rem">📖</div>
           </div>
           <div style="flex:1;display:flex;flex-direction:column;gap:.5rem">
-            <label class="upload-label">📷 Subir imagen<input type="file" id="bf-portada-file" accept="image/*" style="display:none" onchange="previewBookCover(this,'bf-cover-img','bf-cover-ph','bf-portada-url')"></label>
+            <label class="upload-label">📷 Subir imagen<input type="file" id="bf-portada-file" accept="image/*" style="display:none" onchange="previewBookCover(this)"></label>
             <input type="text" id="bf-portada-url" placeholder="O pega una URL">
+            <input type="hidden" id="bf-portada-data">
           </div>
         </div>
       </div>
@@ -544,12 +545,15 @@ async function compressImage(file, maxW=500, quality=0.82) {
   })
 }
 
-function previewBookCover(input, imgId, phId, urlId) {
-  const file=input.files[0]; if(!file) return
-  compressImage(file).then(data => {
-    const img=document.getElementById(imgId), ph=document.getElementById(phId)
-    img.src=data; img.style.display='block'; ph.style.display='none'
-    document.getElementById(urlId).value=''
+function previewBookCover(input) {
+  const file = input.files[0]; if (!file) return
+  compressImage(file).then(function(data) {
+    var img = document.getElementById('bf-cover-img')
+    var ph  = document.getElementById('bf-cover-ph')
+    // Guardar base64 en campo oculto (img.src no es fiable en todos los navegadores)
+    document.getElementById('bf-portada-data').value = data
+    document.getElementById('bf-portada-url').value = ''
+    img.src = data; img.style.display = 'block'; ph.style.display = 'none'
   })
 }
 
@@ -922,6 +926,9 @@ function openBookForm(id) {
   var portada = b ? b.portada : null
   if (img) { img.style.display = portada ? 'block' : 'none'; if (portada) img.src = portada }
   if (ph)  { ph.style.display  = portada ? 'none'  : 'flex' }
+  // Limpiar base64 guardado de subida anterior
+  var dataEl = document.getElementById('bf-portada-data')
+  if (dataEl) dataEl.value = ''
 
   var titleEl = document.getElementById('book-form-title')
   if (titleEl) titleEl.textContent = b ? 'Editar libro' : 'Nuevo libro'
@@ -938,8 +945,11 @@ async function saveBook() {
   const id=document.getElementById('bf-id').value, titulo=document.getElementById('bf-titulo').value.trim()
   const errEl=document.getElementById('bf-error'); errEl.style.display='none'
   if(!titulo){errEl.textContent='El título es obligatorio';errEl.style.display='block';return}
-  const img=document.getElementById('bf-cover-img')
-  const portada_url=img.src?.startsWith('data:')?img.src:document.getElementById('bf-portada-url').value.trim()||null
+  const existingBook = id ? library.find(function(x){ return x.id===id }) : null
+  // Prioridad: 1) base64 subido, 2) URL pegada, 3) portada existente del libro
+  const uploadedData = document.getElementById('bf-portada-data').value
+  const urlInput = document.getElementById('bf-portada-url').value.trim()
+  const portada_url = uploadedData || urlInput || (existingBook ? existingBook.portada : null) || null
   const body={titulo,autor:document.getElementById('bf-autor').value.trim()||null,portada_url,valoracion:parseInt(document.getElementById('bf-valoracion').value)||null,numero_paginas:parseInt(document.getElementById('bf-paginas').value)||null,fecha_lectura:document.getElementById('bf-fecha').value||null,my_review:document.getElementById('bf-review').value.trim()||null,estado:'Leído'}
   try {
     const url=id?`/api/books/${id}`:'/api/books', method=id?'PUT':'POST'
