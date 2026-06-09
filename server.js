@@ -1,6 +1,7 @@
 import express from 'express'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import { Readable } from 'stream'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { pool, initDB, getLibrary, getRandomQuotes } from './db.js'
@@ -398,13 +399,16 @@ app.get('/api/covers/:id', async (req, res) => {
       })
       return res.send(entry.buf)
     }
-    // Fallback: URL externa → redirect
+    // Fallback: URL externa → proxy para evitar redirect loops en Safari
     const { rows } = await pool.query('SELECT portada_url FROM books WHERE id=$1', [req.params.id])
     if (!rows.length || !rows[0].portada_url) return res.status(404).end()
     const url = rows[0].portada_url
     if (url.startsWith('data:')) return res.status(404).end() // no debería pasar
-    res.set('Cache-Control', 'no-store')
-    res.redirect(302, url)
+    const imgRes = await fetch(url, { redirect: 'follow' })
+    if (!imgRes.ok) return res.status(404).end()
+    const contentType = imgRes.headers.get('content-type') || 'image/jpeg'
+    res.set({ 'Content-Type': contentType, 'Cache-Control': 'public, max-age=86400' })
+    Readable.fromWeb(imgRes.body).pipe(res)
   } catch (err) {
     console.error('covers err:', err.message)
     res.status(500).end()
