@@ -403,7 +403,7 @@ app.get('/api/covers/:id', async (req, res) => {
     const { rows } = await pool.query('SELECT portada_url FROM books WHERE id=$1', [req.params.id])
     if (!rows.length || !rows[0].portada_url) return res.status(404).end()
     const url = rows[0].portada_url
-    if (url.startsWith('data:')) return res.status(404).end() // no debería pasar
+    if (url.startsWith('data:') || url.startsWith('/')) return res.status(404).end()
     const imgRes = await fetch(url, {
       redirect: 'follow',
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; citas-app/1.0)' },

@@ -46,6 +46,9 @@ export async function initDB() {
 
     CREATE INDEX IF NOT EXISTS idx_quotes_book_id ON quotes(book_id);
     CREATE INDEX IF NOT EXISTS idx_quotes_favorita ON quotes(favorita);
+
+    -- Limpiar portada_url corruptas (rutas relativas en lugar de URLs)
+    UPDATE books SET portada_url = NULL WHERE portada_url LIKE '/api/covers/%';
   `)
   console.log('✅ DB schema ready')
 }
