@@ -263,19 +263,24 @@ app.post('/api/books', requireAdmin, async (req, res) => {
 })
 
 app.put('/api/books/:id', requireAdmin, async (req, res) => {
-  const { titulo, autor, portada_url, valoracion, estado, fecha_lectura, numero_paginas, my_review, publisher, binding } = req.body
+  const { titulo, autor, valoracion, estado, fecha_lectura, numero_paginas, my_review, publisher, binding } = req.body
+  const updatePortada = 'portada_url' in req.body
   try {
-    const { rows } = await pool.query(
-      `UPDATE books SET titulo=$1, autor=$2, portada_url=$3, valoracion=$4,
-       estado=$5, fecha_lectura=$6, numero_paginas=$7, my_review=$8,
-       publisher=$9, binding=$10, updated_at=NOW()
-       WHERE id=$11 RETURNING *`,
-      [titulo, autor, portada_url, valoracion, estado, fecha_lectura,
-       numero_paginas, my_review, publisher||null, binding||null, req.params.id]
-    )
+    const baseParams = [titulo, autor, valoracion, estado, fecha_lectura,
+      numero_paginas, my_review, publisher||null, binding||null, req.params.id]
+    const query = updatePortada
+      ? `UPDATE books SET titulo=$1, autor=$2, portada_url=$11, valoracion=$3,
+         estado=$4, fecha_lectura=$5, numero_paginas=$6, my_review=$7,
+         publisher=$8, binding=$9, updated_at=NOW()
+         WHERE id=$10 RETURNING *`
+      : `UPDATE books SET titulo=$1, autor=$2, valoracion=$3,
+         estado=$4, fecha_lectura=$5, numero_paginas=$6, my_review=$7,
+         publisher=$8, binding=$9, updated_at=NOW()
+         WHERE id=$10 RETURNING *`
+    const params = updatePortada ? [...baseParams.slice(0,9), req.params.id, req.body.portada_url] : baseParams
+    const { rows } = await pool.query(query, params)
     if (!rows.length) return res.status(404).json({ error: 'Libro no encontrado' })
-    // Invalidar caché de portada para que se sirva la nueva imagen
-    coverCache.delete(req.params.id)
+    if (updatePortada) coverCache.delete(req.params.id)
     res.json(rows[0])
   } catch (err) { res.status(500).json({ error: err.message }) }
 })

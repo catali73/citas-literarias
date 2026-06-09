@@ -1011,13 +1011,17 @@ async function saveBook() {
   // Prioridad: 1) base64 subido, 2) URL pegada, 3) portada existente del libro
   const uploadedData = document.getElementById('bf-portada-data').value
   const urlInput = document.getElementById('bf-portada-url').value.trim()
-  const portada_url = uploadedData || urlInput || (existingBook ? existingBook.portada : null) || null
+  const existingExternal = existingBook?.portada && !existingBook.portada.startsWith('/api/covers/') ? existingBook.portada : null
+  const portada_url = uploadedData || urlInput || existingExternal || null
+  // Si la portada existente es data: (servida por /api/covers/), no enviar portada_url
+  // para que el servidor no sobreescriba la imagen almacenada en BD
+  const keepExistingCover = !uploadedData && !urlInput && existingBook?.portada?.startsWith('/api/covers/')
   const body={
     titulo,
     autor:          document.getElementById('bf-autor').value.trim()||null,
     publisher:      document.getElementById('bf-publisher').value.trim()||null,
     binding:        document.getElementById('bf-binding').value.trim()||null,
-    portada_url,
+    ...(keepExistingCover ? {} : { portada_url }),
     valoracion:     parseInt(document.getElementById('bf-valoracion').value)||null,
     numero_paginas: parseInt(document.getElementById('bf-paginas').value)||null,
     fecha_lectura:  document.getElementById('bf-fecha').value||null,
