@@ -404,8 +404,14 @@ app.get('/api/covers/:id', async (req, res) => {
     if (!rows.length || !rows[0].portada_url) return res.status(404).end()
     const url = rows[0].portada_url
     if (url.startsWith('data:')) return res.status(404).end() // no debería pasar
-    const imgRes = await fetch(url, { redirect: 'follow' })
-    if (!imgRes.ok) return res.status(404).end()
+    const imgRes = await fetch(url, {
+      redirect: 'follow',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; citas-app/1.0)' },
+    })
+    if (!imgRes.ok) {
+      console.error('covers proxy failed:', imgRes.status, url)
+      return res.status(404).end()
+    }
     const contentType = imgRes.headers.get('content-type') || 'image/jpeg'
     res.set({ 'Content-Type': contentType, 'Cache-Control': 'public, max-age=86400' })
     Readable.fromWeb(imgRes.body).pipe(res)
