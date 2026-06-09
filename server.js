@@ -403,6 +403,7 @@ app.get('/api/covers/:id', async (req, res) => {
     if (!rows.length || !rows[0].portada_url) return res.status(404).end()
     const url = rows[0].portada_url
     if (url.startsWith('data:')) return res.status(404).end() // no debería pasar
+    res.set('Cache-Control', 'no-store')
     res.redirect(302, url)
   } catch (err) {
     console.error('covers err:', err.message)
