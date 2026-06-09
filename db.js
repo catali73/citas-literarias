@@ -66,10 +66,10 @@ export async function getLibrary() {
            b.binding,
            b.notion_id,
            b.created_at,
-           -- Nunca traer el base64 completo: convertir en SQL
+           -- Siempre usar el proxy para evitar redirect loops en Safari
            CASE
-             WHEN b.portada_url LIKE 'data:%' THEN '/api/covers/' || b.id::text
-             ELSE b.portada_url
+             WHEN b.portada_url IS NOT NULL THEN '/api/covers/' || b.id::text
+             ELSE NULL
            END AS portada_computed,
            COUNT(q.id)::int AS ncitas,
            jsonb_agg(
@@ -128,8 +128,6 @@ export async function getRandomQuotes(n = 3) {
     favorita:    q.favorita,
     bookIds:     [q.book_id],
     bookNombre:  q.book_nombre,
-    bookPortada: q.book_portada
-      ? (q.book_portada.startsWith('data:') ? `/api/covers/${q.book_id}` : q.book_portada)
-      : null,
+    bookPortada: q.book_portada ? `/api/covers/${q.book_id}` : null,
   }))
 }
