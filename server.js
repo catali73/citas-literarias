@@ -50,7 +50,7 @@ async function getCoverBuffer(bookId) {
 // ── Traslado al Dashboard Vital ───────────────────────────────────────────
 // La biblioteca vive ahora en el Dashboard: las páginas redirigen allí y la
 // API antigua queda en solo lectura para que nadie escriba en el sitio viejo.
-const NUEVA_BIBLIOTECA = 'https://dashboard-vital-production-99e9.up.railway.app/biblioteca/'
+const NUEVA_BIBLIOTECA = 'https://vital.catali.es/biblioteca/'
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) {
     if (req.method === 'GET') return next()
