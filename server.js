@@ -5,6 +5,7 @@ import { Readable } from 'stream'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { pool, initDB, getLibrary, getRandomQuotes } from './db.js'
+import { shrinkDataUrl, shrinkStoredCovers } from './covers.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app  = express()
@@ -23,7 +24,9 @@ let notionCache = { data: null, at: 0 }
 const CACHE_TTL = 15 * 60 * 1000
 
 // ── Cover memory cache ────────────────────────────────────────────────────
-// Cache simple: bookId → { mime, buf } — evita leer base64 desde PostgreSQL en cada request
+// Cache simple: bookId → { mime, buf } — evita leer base64 desde PostgreSQL en cada request.
+// Solo guarda portadas ya reducidas, para no llenar la RAM con originales de ~1 MB.
+const COVER_CACHE_MAX_BYTES = 200_000
 const coverCache = new Map()
 
 async function getCoverBuffer(bookId) {
@@ -40,21 +43,8 @@ async function getCoverBuffer(bookId) {
   const mime = meta.match(/data:([^;]+)/)?.[1] || 'image/jpeg'
   const buf  = Buffer.from(data, 'base64')
   const entry = { mime, buf }
-  coverCache.set(bookId, entry)
+  if (buf.length <= COVER_CACHE_MAX_BYTES) coverCache.set(bookId, entry)
   return entry
-}
-
-// Pre-carga covers en memoria al arrancar (sin bloquear el servidor)
-async function warmCoverCache() {
-  const { rows } = await pool.query(`SELECT id FROM books WHERE portada_url LIKE 'data:%'`)
-  console.log(`🖼️  Pre-cargando ${rows.length} portadas…`)
-  let ok = 0
-  for (let i = 0; i < rows.length; i += 20) {
-    await Promise.all(
-      rows.slice(i, i + 20).map(r => getCoverBuffer(r.id).then(v => { if(v) ok++ }).catch(() => {}))
-    )
-  }
-  console.log(`✅ Cover cache lista: ${ok} portadas`)
 }
 
 // ── Middleware ────────────────────────────────────────────────────────────
@@ -254,7 +244,7 @@ app.post('/api/books', requireAdmin, async (req, res) => {
     const { rows } = await pool.query(
       `INSERT INTO books (titulo, autor, portada_url, valoracion, estado, fecha_lectura, numero_paginas, my_review, publisher, binding)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [titulo.trim(), autor?.trim()||null, portada_url||null,
+      [titulo.trim(), autor?.trim()||null, (await shrinkDataUrl(portada_url))||null,
        valoracion||null, estado||'Leído', fecha_lectura||null,
        numero_paginas||null, my_review?.trim()||null, publisher?.trim()||null, binding?.trim()||null]
     )
@@ -277,7 +267,7 @@ app.put('/api/books/:id', requireAdmin, async (req, res) => {
          estado=$4, fecha_lectura=$5, numero_paginas=$6, my_review=$7,
          publisher=$8, binding=$9, updated_at=NOW()
          WHERE id=$10 RETURNING *`
-    const params = updatePortada ? [...baseParams.slice(0,9), req.params.id, req.body.portada_url] : baseParams
+    const params = updatePortada ? [...baseParams.slice(0,9), req.params.id, await shrinkDataUrl(req.body.portada_url)] : baseParams
     const { rows } = await pool.query(query, params)
     if (!rows.length) return res.status(404).json({ error: 'Libro no encontrado' })
     if (updatePortada) coverCache.delete(req.params.id)
@@ -451,7 +441,8 @@ const startServer = async () => {
       .then(d => console.log(`✅ Datos listos: ${d.length} libros`))
       .catch(err => console.error('⚠️  Error precargando:', err.message))
 
-    if (USE_DB) warmCoverCache().catch(err => console.error('⚠️  Cover cache error:', err.message))
+    if (USE_DB) shrinkStoredCovers(pool, id => coverCache.delete(id))
+      .catch(err => console.error('⚠️  Error reduciendo portadas:', err.message))
 
     if (!USE_DB) {
       setInterval(() => {
