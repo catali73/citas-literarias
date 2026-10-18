@@ -47,6 +47,18 @@ async function getCoverBuffer(bookId) {
   return entry
 }
 
+// ── Traslado al Dashboard Vital ───────────────────────────────────────────
+// La biblioteca vive ahora en el Dashboard: las páginas redirigen allí y la
+// API antigua queda en solo lectura para que nadie escriba en el sitio viejo.
+const NUEVA_BIBLIOTECA = 'https://dashboard-vital-production-99e9.up.railway.app/biblioteca/'
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    if (req.method === 'GET') return next()
+    return res.status(410).json({ error: `La biblioteca se ha trasladado a ${NUEVA_BIBLIOTECA}` })
+  }
+  res.redirect(301, NUEVA_BIBLIOTECA)
+})
+
 // ── Middleware ────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '12mb' }))
 app.use(express.static(join(__dirname, 'public')))
